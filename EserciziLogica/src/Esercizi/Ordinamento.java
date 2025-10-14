@@ -8,7 +8,7 @@ public class Ordinamento {
 
 	// dato il seguente array ordinalo in modo crescente e decrescente
 	// [5, 9, 11, 0, 1, 40]
-	
+	//ciao
 
 	public static void main(String[] args) {
 		invertiArray();
