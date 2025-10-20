@@ -8,7 +8,7 @@ public class Ordinamento {
 
 	// dato il seguente array ordinalo in modo crescente e decrescente
 	// [5, 9, 11, 0, 1, 40]
-	//ciao
+	
 
 	public static void main(String[] args) {
 		invertiArray();
@@ -30,7 +30,9 @@ public class Ordinamento {
 
 	public static void crescente() {
 		int[] arrayDaOrdinare = { 5, 9, 11, 0, 1, 40 };
+		
 		System.out.println("\nArray Originale: " + Arrays.toString(arrayDaOrdinare));
+		
 		for (int i = 0; i < arrayDaOrdinare.length - 1; i++) {
 			for (int j = i + 1; j < arrayDaOrdinare.length; j++) {
 				if (arrayDaOrdinare[i] > arrayDaOrdinare[j]) {
