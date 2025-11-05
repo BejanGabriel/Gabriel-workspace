@@ -40,6 +40,54 @@ public class Corso {
 	public String getInfoCorso() {
 		return "\nNome corso: " + titolo + "\nCodice corso: " + codCorso +"\nPartecipanti: " + numPartecipanti.size();
 	}
+
+	/*
+	AGGIUNTA CODICE FATA A SCUOLA
 	
+	public class Corso implements Comparable<Corso> {
+	public static int contatore = 0;
+	private int id;
+	private String titolo;
+	private String codCorso;
+	private List<Corso> listaCorsi;
+
+	public Corso(String titolo, String codCorso) {
+		this.id = contatore++;
+		this.titolo = titolo;
+		this.codCorso = codCorso;
+		this.listaCorsi = new ArrayList<>();
+
+	}
+
+	public String getTitolo() {
+		return titolo;
+	}
+
+	public String getCodCorso() {
+		return codCorso;
+	}
+
+	public List<Corso> getListaCorsi() {
+		return listaCorsi;
+	}
+
+	//add e remove vanno messi nel controller
+
+	public String getInfoCorso() {
+		return "\nNome corso: " + titolo + "\nCodice corso: " + codCorso
+				+ "\nPartecipanti: " + listaCorsi.size();
+	}
+
+	@Override
+	public int compareTo(Corso corso) {
+		int confrontoTitolo = this.titolo.compareTo(corso.getTitolo());
+		if (confrontoTitolo == 0) {
+			int confCodCorso = this.codCorso.compareTo(corso.getCodCorso());
+			if (confCodCorso == 0) {
+				return confCodCorso;
+			}
+		}
+		return confrontoTitolo;
+	}*/
 	
 }
