@@ -45,6 +45,8 @@ public class Studente {
 		return "\nNome: " + nome + "\nCognome: " + "\nCodice Fiscale: " + codFiscale + "\nIscritto a " + listaCorsi.size() + " corsi.";
 	}
 	
+	//aggiungere la possibilita di poter vedere i corsi a cui lo studente è scritto quando si visualizza getInfoStudente()
+	
 	
 	
 	

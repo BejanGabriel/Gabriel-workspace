@@ -2,7 +2,8 @@
 Crea un programma per gestire l'inserimento di aule, studenti e corsi.
 Hai a disposizione 2 file DB: CorsiDB.csv e StudentiDB.csv
 
-Prepara una maschera di inserimento (menu da console) dove l'utente può scegliere se inserire un nuovo corso oppure un nuovo studente, scegliere se mostrare tutti i corsi o tutti gli studenti, scegliere di inserire un nuovo corso o un nuovo studente.
+Prepara una maschera di inserimento (menu da console) dove l'utente può scegliere se inserire un nuovo corso oppure un nuovo studente,
+scegliere se mostrare tutti i corsi o tutti gli studenti, scegliere di inserire un nuovo corso o un nuovo studente.
 
 Struttura dei Model:
 - Corso (id, titolo, codice, numPartecipanti)
