@@ -14,12 +14,12 @@ import model.Corso;
 public class CorsoController {
 	private static final String FILE_PATH = "CorsiDB.csv";
 	private List<Corso> listaCorsi;
-	
+
 	public CorsoController() {
 		caricaCorsiDaDB();
 		this.listaCorsi = new ArrayList<>();
-	}
-	
+	} 
+
 	private void caricaCorsiDaDB() {
 		File fileCorsi = new File(FILE_PATH);
 
@@ -41,58 +41,66 @@ public class CorsoController {
 			System.out.println("Non ci sono corsi nel DB!!");
 		}
 	}
-	
+
 	public boolean addCorso(String titolo, String codCorso) {
-		if(!titolo.equals(null) && !codCorso.equals(null)) {
+		if (!titolo.equals(null) && !codCorso.equals(null)) {
 			Corso nuovo = new Corso(titolo, codCorso);
-			if(listaCorsi.size() == 0) {
+			if (listaCorsi.size() == 0) {
 				listaCorsi.add(nuovo);
+				scriviNelDB();
 				return true;
-			}else {
+			} else {
 				for (Corso corsoInLista : listaCorsi) {
-					if(corsoInLista.compareTo(nuovo) == 0) {
+					if (corsoInLista.compareTo(nuovo) == 0) {
 						System.out.println("Il corso è gia presente nella lista");
 						return false;
-					}else {
+					} else {
 						listaCorsi.add(nuovo);
+						scriviNelDB();
 						return true;
 					}
 				}
 			}
-			try {
-				PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH, true));
-				pw.print("\n" + nuovo.getTitolo() + "," + nuovo.getCodCorso());
-				pw.close();
-			} catch (IOException e) {
-				System.out.println("Errore durante scrittura nel DB");
-				return false;
-			}
-			System.out.println("Corso aggiunto correttamente nel Database");
-			return true;
 		}
 		return false;
+//			try {
+//				PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH, true));
+//				pw.print("\n" + nuovo.getTitolo() + "," + nuovo.getCodCorso());
+//				pw.close();
+//			} catch (IOException e) {
+//				System.out.println("Errore durante scrittura nel DB");
+//				return false;
+//			}
+//			System.out.println("Corso aggiunto correttamente nel Database");
+//			return true;
+//		}
+//		return false;
 	}
 
-
 	public boolean removeCorso(String codCorso) {
-		if(!codCorso.equals(null)) {
-		return listaCorsi.removeIf(c -> c.getCodCorso().equals(codCorso));
-		}else {
+		if (!codCorso.equals(null)) {
+			return listaCorsi.removeIf(c -> c.getCodCorso().equals(codCorso));
+		} else {
 			System.out.println("Codice Corso non valido!!");
 			return false;
 		}
 	}
-	
-	//siccome il metodo removeCorso rimuoverebbe il parametro solo dalla List e non dal file CSV, si decide di riscrivere il CSV aggiornandolo
-	
-	public static scriviNelDB() {
-		try(PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH, true))){
-			for(Corso c : )
+
+	// siccome il metodo removeCorso rimuoverebbe il parametro solo dalla List e non
+	// dal file CSV, si decide di riscrivere il CSV aggiornandolo
+
+	public void scriviNelDB() {
+		try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH, true))) {
+			for (Corso corso : listaCorsi) {
+				pw.print("\n" + corso.getTitolo() + "," + corso.getCodCorso());
+			}
+		} catch (IOException e) {
+			System.out.println("Errore durante scrittura nel DB");
 		}
 	}
 
 	public List<Corso> visualizzaCorsi() {
 		return new ArrayList<>(listaCorsi);
 	}
-	
+
 }
