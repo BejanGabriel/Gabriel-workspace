@@ -26,9 +26,9 @@ public class ControlBanca {
 			conto.getCorrentista().aggiungiConto(conto);
 		}
 		
-		public String getInfoConto(int numConto) {
-			
-		}
+//		public String getInfoConto(int numConto) {
+//			
+//		}
 		
 		
 	}

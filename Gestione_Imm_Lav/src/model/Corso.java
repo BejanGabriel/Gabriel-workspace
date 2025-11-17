@@ -1,18 +1,19 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 public class Corso implements Comparable<Corso> {
 	public static int contatore = 0;
 	private int id;
 	private String titolo;
 	private String codCorso;
+	private Date dataCreazione;
 
-	public Corso(String titolo, String codCorso) {
+	public Corso(String titolo, String codCorso, Date dataCreazione) {
 		this.id = contatore++;
 		this.titolo = titolo;
 		this.codCorso = codCorso;
+		this.dataCreazione = dataCreazione;
 
 	}
 
@@ -23,7 +24,11 @@ public class Corso implements Comparable<Corso> {
 	public String getCodCorso() {
 		return codCorso;
 	}
-
+	
+	public Date getDataCreazione() {
+		return dataCreazione;
+	}
+	
 	//add, remove e lista, vanno messi nel controller
 
 	public String getInfoCorso() {
@@ -41,5 +46,7 @@ public class Corso implements Comparable<Corso> {
 		}
 		return confrontoTitolo;
 	}
+	
+	
 	
 }
