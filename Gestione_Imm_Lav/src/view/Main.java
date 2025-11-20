@@ -3,10 +3,14 @@ package view;
 import java.util.Scanner;
 
 import controller.CorsoController;
+import controller.IstitutoController;
+import controller.StudenteController;
 
 public class Main {
 	private static Scanner scan;
+	private static IstitutoController istCtrl = new IstitutoController();
 	private static CorsoController corsoCtrl = new CorsoController();
+	private static StudenteController studCtrl = new StudenteController();
 
 	public static void main(String[] args) {
 
@@ -67,7 +71,9 @@ public class Main {
 		String titolo = scan.next();
 		System.out.println("Inserisci codice corso: ");
 		String codCorso = scan.next();
-		corsoCtrl.addCorso(titolo, codCorso);
+		System.out.println("Inserisci il nome aula del corso: ");
+		String aula = scan.next();
+		corsoCtrl.addCorso(titolo, codCorso, aula);
 	}
 	
 	private static void mostraCorsi() {
@@ -81,15 +87,23 @@ public class Main {
 	}
 	
 	private static void rimuoviStudente() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Digita il codice fiscale dello studente da eliminare: ");
+		String elimina = scan.next();
+		studCtrl.removeStudente(elimina);
 	}
 	private static void mostraStudenti() {
-		// TODO Auto-generated method stub
-		
+		System.out.println(studCtrl.visualizzaStudenti());
 	}
 	private static void aggiungiStudente() {
-		// TODO Auto-generated method stub
-		
+				System.out.println("Inserisci il nome dello studente: ");
+		String nome= scan.next();
+		System.out.println("Inserisci il cognome dello studente: ");
+		String cognome = scan.next();
+		System.out.println("Inserisci il codice fiscale dello studente: ");
+		String codFiscale= scan.next();
+		// implementare logica per permettere l'aggiunta di molteplici corsi, magari ciclo while finchè riposta "no".
+		System.out.println("Inserisci il codice del corso a cui è iscritto: ");
+		String codCorsoIscritto = scan.next();
+		istCtrl.aggiungiStudenteEIscrivi(nome, cognome, codFiscale, codCorsoIscritto);
 	}
 }

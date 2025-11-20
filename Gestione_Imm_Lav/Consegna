@@ -21,6 +21,8 @@ AGGIUNTIVA GABRIEL
 	
 	- bisogna anche assegnare un'aula al corso.
 	
+	- voglio poter vedere per ogni corso, quanti studenti sono iscritti.
+	
 	- 3 tipi di menù:
 		- il principale che ti fa segliere a quale menù accedere: corsi, studenti, esci
 		- il menù corso, che si occupa di tutte le operazioni da fare sui corsi

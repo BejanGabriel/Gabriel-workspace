@@ -57,6 +57,7 @@ public class StudenteController {
 				}
 			}
 			listaStudenti.add(nuovo);
+			
 			scriviNelDB();
 			System.out.println("Studente aggiunto correttamente");
 			System.out.println("Aggiornamento DB in corso...");
@@ -100,7 +101,8 @@ public class StudenteController {
 			info.append("\nNessun Studente presente");
 		}
 		for (Studente studente : listaStudenti) {
-			info.append("\nNome: " + studente.getNome() + "  |  Cognome: " + studente.getCognome() + "  |  Codice Fiscale: " + studente.getCodFiscale() + "   |   Iscritto");
+			info.append("\nNome: " + studente.getNome() + "  |  Cognome: " + studente.getCognome() +
+					"  |  Codice Fiscale: " + studente.getCodFiscale() + "   |   Iscritto a: \n" + studente.getListaCorsi());
 		}
 		return info.toString();
 	}

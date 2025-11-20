@@ -35,10 +35,11 @@ public class CorsoController {
 				String riga = scan.nextLine();
 				String[] separate = riga.split(",");
 				String titolo = separate[0];
-				String codCorso = separate[1];
-				Date data = DF.parse(separate[2]);
+					String codCorso = separate[1];
+				String aula = separate[2];
+				Date data = DF.parse(separate[3]);
 
-				Corso corso = new Corso(titolo, codCorso, data);
+				Corso corso = new Corso(titolo, codCorso, aula, data);
 				this.listaCorsi.add(corso);
 
 			}
@@ -50,9 +51,9 @@ public class CorsoController {
 		}
 	}
 
-	public boolean addCorso(String titolo, String codCorso) {
+	public boolean addCorso(String titolo, String codCorso, String aula) {
 		if (!titolo.equals(null) && !codCorso.equals(null)) {
-			Corso nuovo = new Corso(titolo, codCorso, new Date());
+			Corso nuovo = new Corso(titolo, codCorso, aula, new Date());
 
 			for (Corso corsoInLista : listaCorsi) {
 				if (corsoInLista.compareTo(nuovo) == 0) {
@@ -89,18 +90,29 @@ public class CorsoController {
 	public void scriviNelDB() {
 		try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH, false))) {
 			for (Corso corso : listaCorsi) {
-				pw.println(corso.getTitolo() + "," + corso.getCodCorso() + "," + DF.format(corso.getDataCreazione()));
+				pw.println(corso.getTitolo() + "," + corso.getCodCorso() + "," + corso.getAula() + "," + DF.format(corso.getDataCreazione()));
 			}
 		} catch (IOException e) {
 			System.out.println("Errore durante scrittura nel DB");
 		}
+	}
+	
+	public Corso findCorso(String codCorso) {
+		for (Corso corso : listaCorsi) {
+			if(corso.getCodCorso().equals(codCorso)) {
+				return corso;
+			}
+		}
+		return null;
 	}
 
 	public String visualizzaCorsi() {
 		StringBuffer info = new StringBuffer();
 		info.append("==== Lista Corsi ====");
 		for (Corso corso : listaCorsi) {
-			info.append("\nTitolo: " + corso.getTitolo() + "  |  Codice Corso: " + corso.getCodCorso() + "  |  Creato il: " + DF.format(corso.getDataCreazione()));
+			info.append("\nTitolo: " + corso.getTitolo() + "  |  Codice Corso: " + corso.getCodCorso() +
+					"   |  Aula: " + corso.getAula() + "  |  Creato il: " + DF.format(corso.getDataCreazione()) +
+					"   |  Studenti Iscritti: \n" + corso.getListaStudenti());
 		}
 		return info.toString();
 	}
