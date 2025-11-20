@@ -23,6 +23,13 @@ AGGIUNTIVA GABRIEL
 	
 	- voglio poter vedere per ogni corso, quanti studenti sono iscritti.
 	
+	- Al momento della creazione di uno studente, quando arrivo a dover inserire il corso a cui si iscriverà
+		Voglio poter vedere il titolo e il codice di ogni corso per poterli copiare ed inserire.
+			- Forse si potrebbe farli vedere in una lista numerata, dove viene inserito l'indice del corso nella lista,
+				e a studente viene passato il corso associato all'indice.	
+		
+		
+	
 	- 3 tipi di menù:
 		- il principale che ti fa segliere a quale menù accedere: corsi, studenti, esci
 		- il menù corso, che si occupa di tutte le operazioni da fare sui corsi
