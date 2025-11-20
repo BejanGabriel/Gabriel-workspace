@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.font.FontRenderContext;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,15 +40,13 @@ public class Corso implements Comparable<Corso> {
 		return aula;
 	}
 	
+	
+	
 	public List<Studente> getListaStudenti() {
 		return listaStudenti;
 	}
-	
-	//add, remove e lista, vanno messi nel controller
 
-	public String getInfoCorso() {
-		return "\nNome corso: " + titolo + "\nCodice corso: " + codCorso;
-	}
+	//add, remove e lista, vanno messi nel controller
 
 	@Override
 	public int compareTo(Corso corso) {
@@ -60,7 +59,19 @@ public class Corso implements Comparable<Corso> {
 		}
 		return confrontoTitolo;
 	}
-	
+
+	public String getListaCorsoStudenti() {
+		StringBuffer info = new StringBuffer();
+		info.append("=== Lista Studenti del corso " + this.titolo + " ===");
+		if(listaStudenti.size() == 0) {
+			info.append("Nessun studente iscritto!");
+		}
+		for (Studente studente : listaStudenti) {
+			info.append("\nNome: " + studente.getNome() + " Cognome: " + studente.getCognome() +
+					" Cod. Fiscale: " + studente.getCodFiscale());
+		}
+		return info.toString();
+	}	
 	
 	
 }

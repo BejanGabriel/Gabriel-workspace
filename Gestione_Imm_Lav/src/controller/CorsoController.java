@@ -104,7 +104,7 @@ public class CorsoController {
 			}
 		}
 		return null;
-	}
+	}	
 
 	public String visualizzaCorsi() {
 		StringBuffer info = new StringBuffer();
@@ -112,7 +112,7 @@ public class CorsoController {
 		for (Corso corso : listaCorsi) {
 			info.append("\nTitolo: " + corso.getTitolo() + "  |  Codice Corso: " + corso.getCodCorso() +
 					"   |  Aula: " + corso.getAula() + "  |  Creato il: " + DF.format(corso.getDataCreazione()) +
-					"   |  Studenti Iscritti: \n" + corso.getListaStudenti());
+					"   |  Studenti Iscritti: \n" + corso.getListaCorsoStudenti());
 		}
 		return info.toString();
 	}

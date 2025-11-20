@@ -8,9 +8,9 @@ import controller.StudenteController;
 
 public class Main {
 	private static Scanner scan;
-	private static IstitutoController istCtrl = new IstitutoController();
 	private static CorsoController corsoCtrl = new CorsoController();
 	private static StudenteController studCtrl = new StudenteController();
+	private static IstitutoController istCtrl = new IstitutoController(corsoCtrl, studCtrl);
 
 	public static void main(String[] args) {
 
@@ -41,8 +41,6 @@ public class Main {
 				rimuoviStudente();
 				break;
 			case 7:
-				
-			case 8:
 				flag = false;
 				System.out.println("Bhe fanculo anche a te");
 				break;
@@ -62,8 +60,7 @@ public class Main {
 		System.out.println("4. Aggiungi studenti");
 		System.out.println("5. Mostra tutti i studenti");
 		System.out.println("6. Rimuovi uno studente");
-		System.out.println("7. Aggiungi studenti");
-		System.out.println("8. Esci");
+		System.out.println("7. Esci");
 	}
 
 	private static void aggiungiCorso() {

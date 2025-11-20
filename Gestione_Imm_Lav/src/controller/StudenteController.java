@@ -46,23 +46,23 @@ public class StudenteController {
 		} 
 	}
 
-	public boolean addStudente(String nome, String cognome, String codFiscale, String corsoIscritto) {
+	public Studente addStudente(String nome, String cognome, String codFiscale, String corsoIscritto) {
 		if (!codFiscale.equals(null) && !corsoIscritto.equals(null)) {
 			Studente nuovo = new Studente(nome, cognome, codFiscale, corsoIscritto);
 
 			for (Studente studentiInLista : listaStudenti) {
 				if (studentiInLista.compareTo(nuovo) == 0) {
 					System.out.println("Il corso è gia presente nella lista");
-					return false;
+					return null;
 				}
 			}
 			listaStudenti.add(nuovo);
-			
 			scriviNelDB();
 			System.out.println("Studente aggiunto correttamente");
 			System.out.println("Aggiornamento DB in corso...");
+			return nuovo;
 		}
-		return false;
+		return null;
 	}
 
 	public boolean removeStudente(String codFiscale) {
