@@ -18,13 +18,18 @@ public class IstitutoController {
 
 
 
-	public void aggiungiStudenteEIscrivi(String nome, String cognome, String codFiscale, String codCorso) {
-		Studente studente = studCtrl.addStudente(nome, cognome, codFiscale, codCorso);
-		Corso corso = corsoCtrl.findCorso(codCorso);
+	public void aggiungiStudenteEIscrivi(String nome, String cognome, String codFiscale, String titoloCorso) {
+		Studente studente = studCtrl.addStudente(nome, cognome, codFiscale, titoloCorso);
+		Corso corso = corsoCtrl.findCorso(titoloCorso);
 
 		if (studente != null && corso != null) {
 			studente.getListaCorsi().add(corso);
 			corso.getListaStudenti().add(studente);
 		}
+	}
+	
+	public void studentiIscritti(String nome, String cognome, String codFiscale, String titoloCorso) {
+		
+		
 	}
 }

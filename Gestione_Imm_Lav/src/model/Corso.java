@@ -64,11 +64,11 @@ public class Corso implements Comparable<Corso> {
 		StringBuffer info = new StringBuffer();
 		info.append("=== Lista Studenti del corso " + this.titolo + " ===");
 		if(listaStudenti.size() == 0) {
-			info.append("Nessun studente iscritto!");
+			info.append("\nNessun studente iscritto!");
 		}
 		for (Studente studente : listaStudenti) {
-			info.append("\nNome: " + studente.getNome() + " Cognome: " + studente.getCognome() +
-					" Cod. Fiscale: " + studente.getCodFiscale());
+			info.append("\nNome: " + studente.getNome() + "   |  Cognome: " + studente.getCognome() +
+					"   |  Cod. Fiscale: " + studente.getCodFiscale());
 		}
 		return info.toString();
 	}	

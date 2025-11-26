@@ -97,9 +97,9 @@ public class CorsoController {
 		}
 	}
 	
-	public Corso findCorso(String codCorso) {
+	public Corso findCorso(String titoloCorso) {
 		for (Corso corso : listaCorsi) {
-			if(corso.getCodCorso().equals(codCorso)) {
+			if(corso.getTitolo().equals(titoloCorso)) {
 				return corso;
 			}
 		}
@@ -112,7 +112,7 @@ public class CorsoController {
 		for (Corso corso : listaCorsi) {
 			info.append("\nTitolo: " + corso.getTitolo() + "  |  Codice Corso: " + corso.getCodCorso() +
 					"   |  Aula: " + corso.getAula() + "  |  Creato il: " + DF.format(corso.getDataCreazione()) +
-					"   |  Studenti Iscritti: \n" + corso.getListaCorsoStudenti());
+					"   |  " + corso.getListaStudenti().size() + " Iscritti: \n" + corso.getListaCorsoStudenti());
 		}
 		return info.toString();
 	}
