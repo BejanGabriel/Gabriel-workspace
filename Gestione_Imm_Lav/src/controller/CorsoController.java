@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,9 +68,9 @@ public class CorsoController {
 		return false;
 	}
 
-	public boolean removeCorso(String codCorso) {
-		if (!codCorso.equals(null)) {
-			boolean rimosso = listaCorsi.removeIf(c -> c.getCodCorso().equals(codCorso));
+	public boolean removeCorso(String titoloCorso) {
+		if (!titoloCorso.equals(null)) {
+			boolean rimosso = listaCorsi.removeIf(c -> c.getTitolo().equals(titoloCorso));
 			if (rimosso) {
 				System.out.println("Corso rimosso correttamente");
 				System.out.println("Riscrittura DB in corso...");
@@ -114,7 +113,7 @@ public class CorsoController {
 		for (Corso corso : listaCorsi) {
 			info.append("\nId: " + corso.getId() +"  |  Titolo: " + corso.getTitolo() + "  |  Codice Corso: " + corso.getCodCorso() + "   |  Aula: "
 					+ corso.getAula() + "  |  Creato il: " + DF.format(corso.getDataCreazione()) + "   |  "
-					+ corso.getListaStudenti().size() + " Iscritti: \n" + corso.getListaCorsoStudenti());
+					+ corso.getListaStudenti().size());
 		}
 		return info.toString();
 	}

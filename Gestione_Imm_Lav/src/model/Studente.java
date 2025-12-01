@@ -1,8 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Studente implements Comparable<Studente> {
 	private static int contatore = 0;
 	private int id;
@@ -10,7 +7,7 @@ public class Studente implements Comparable<Studente> {
 	private String cognome;
 	private String codFiscale;
 	private String corsoIscritto;
-	private List<Corso> listaCorsi;
+
 
 	public Studente(String nome, String cognome, String codFiscale, String corsoIscritto) {
 		this.id = contatore++;
@@ -18,7 +15,7 @@ public class Studente implements Comparable<Studente> {
 		this.cognome = cognome;
 		this.codFiscale = codFiscale;
 		this.corsoIscritto = corsoIscritto;
-		this.listaCorsi = new ArrayList<>();
+
 	}
 
 	public String getNome() {
@@ -37,13 +34,11 @@ public class Studente implements Comparable<Studente> {
 		return corsoIscritto;
 	}
 
-	public List<Corso> getListaCorsi() {
-		return listaCorsi;
-	}
+
 
 	public String getInfoStudente() {
-		return "\nNome: " + nome + "\nCognome: " + "\nCodice Fiscale: " + codFiscale + "\nIscritto a "
-				+ listaCorsi.size() + " corsi.";
+		return "\nNome: " + nome + "\nCognome: " + "\nCodice Fiscale: " + codFiscale + "\nIscritto al corso:  "
+				+ corsoIscritto;
 	}
 
 	// aggiungere la possibilita di poter vedere i corsi a cui lo studente è scritto

@@ -5,8 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 import model.Corso;
 import model.Studente;
@@ -18,9 +16,9 @@ public class IstitutoController {
 	private StudenteController studCtrl = new StudenteController();
 
 	public IstitutoController(CorsoController corsoCtrl, StudenteController studCtrl) {
-		super();
 		this.corsoCtrl = corsoCtrl;
 		this.studCtrl = studCtrl;
+		collegaStudentiAiCorsi();
 	}
 
 	public void caricaIscrizioni() {
@@ -46,6 +44,21 @@ public class IstitutoController {
 			System.out.println("Qualcosa è andato storto nel DB Iscrizioni.csv");
 		}
 	}
+	
+	public void collegaStudentiAiCorsi() {
+
+	    for (Studente s : studCtrl.getListaStudenti()) {
+
+	        String titoloCorso = s.getCorsoIscritto();
+	        if (titoloCorso == null || titoloCorso.isEmpty())
+	            continue;
+
+	        Corso corso = corsoCtrl.findCorso(titoloCorso);
+	        if (corso != null) {
+	            corso.getListaStudenti().add(s);
+	        }
+	    }
+	}
 
 // questo va scritto subito in un db, perche ho gia dati studente e il corso a cui fa riferimento
 	public void aggiungiStudenteEIscrivi(String nome, String cognome, String codFiscale, String titoloCorso) {
@@ -54,17 +67,17 @@ public class IstitutoController {
 		Corso corso = corsoCtrl.findCorso(titoloCorso);
 
 		if (studente != null && corso != null) {
-			studente.getListaCorsi().add(corso);
+//			studente.getListaCorsi().add(corso);    	da capire cosa fà
 			corso.getListaStudenti().add(studente);
 
 			scriviIscrizioneNelDB(corso.getCodCorso(), studente.getCodFiscale());
 		}
 	}
 
-	private void scriviIscrizioneNelDB(String codCorso, String codFiscale) {
-		try (PrintWriter pw = new PrintWriter(new FileWriter(TABELLA_COMUNE, false))) {
+	private void scriviIscrizioneNelDB(String codFiscale, String codCorso) {
+		try (PrintWriter pw = new PrintWriter(new FileWriter(TABELLA_COMUNE, true))) {
 
-			pw.println(codCorso + "," + codFiscale);
+			pw.println(codFiscale + "," + codCorso);
 
 		} catch (IOException e) {
 			System.out.println("Errore durante scrittura nel DB Ponte	");
@@ -74,22 +87,19 @@ public class IstitutoController {
 	public String mostraCorsiEStudenti() {
 		StringBuffer info = new StringBuffer();
 		for(Corso c : corsoCtrl.getListaCorsi()) {
-			info.append("\nCorso: --- " + c.getListaCorsoStudenti());
+			info.append("\n=== Corso di " + c.getTitolo() + " ===");
 			if(c.getListaStudenti().size() == 0) {
-				info.append("Nessuno studente ISCRITTO!");
+				info.append("\nNessuno studente iscritto!");
 			}
-			for(Studente s : studCtrl.getListaStudenti()) {
-				if(s.getCorsoIscritto().equals(c.getTitolo())) {
-					info.append("\n   |  Nome Studente: " + s.getNome());
+			for(Studente studente : studCtrl.getListaStudenti()) {
+				if(studente.getCorsoIscritto().equals(c.getTitolo())) {
+					info.append("\nNome: " + studente.getNome() + "   |  Cognome: " + studente.getCognome() +
+							"   |  Cod. Fiscale: " + studente.getCodFiscale());
 				}
 			}
 			
 		}
 		return info.toString();
-
 	}
-
-	public void studentiIscritti(String nome, String cognome, String codFiscale, String titoloCorso) {
-
-	}
+	
 }

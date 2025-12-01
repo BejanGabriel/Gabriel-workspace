@@ -6,6 +6,8 @@ import java.util.Scanner;
 import controller.CorsoController;
 import controller.IstitutoController;
 import controller.StudenteController;
+import model.Corso;
+import model.Studente;
 
 public class Main {
 	private static Scanner scan;
@@ -20,6 +22,7 @@ public class Main {
 
 		do {
 			mostraMenu();
+
 			int scelta = scan.nextInt();
 
 			switch (scelta) {
@@ -43,15 +46,17 @@ public class Main {
 				break;
 			case 7:
 				flag = false;
-				System.out.println("Bhe fanculo anche a te");
-				break;
+				System.out.println("Chiusura in corso");
+				return;
+				
 				
 			default:
-				throw new IllegalArgumentException("Unexpected value: " + scan);
+				throw new IllegalArgumentException("Non ho capito il comando:" + scan);
 			}
 		} while (flag);
 
 	}
+	
 	public static void mostraMenu() {
 		System.out.println("\n==== Immaginazione e Lavoro ====");
 		System.out.println("1. Aggiungi corso");
@@ -74,9 +79,27 @@ public class Main {
 	}
 	
 	private static void mostraCorsi() {
-//		System.out.println(corsoCtrl.visualizzaCorsi());
-		System.out.println(istCtrl.mostraCorsiEStudenti());
-
+		System.out.println(corsoCtrl.visualizzaCorsi());
+		mostraStudentiCorsi();
+	}
+	
+	private static void mostraStudentiCorsi() {
+		boolean flag = true;
+		do {
+			System.out.println("1. Visualizza gli studenti");
+			System.out.println("2. Torna indietro");
+			int scelta = scan.nextInt();
+			switch(scelta) {
+			case 1:
+				System.out.println(istCtrl.mostraCorsiEStudenti());
+				break;
+			case 2:
+				flag = false;
+				System.out.println("Stai ritornando indietro...");
+				break;
+			}
+		}while(flag);
+		
 	}
 	
 	private static void rimuoviCorso() {
@@ -101,7 +124,7 @@ public class Main {
 		System.out.println("Inserisci il codice fiscale dello studente: ");
 		String codFiscale= scan.next();
 		// implementare logica per permettere l'aggiunta di molteplici corsi, magari ciclo while finchè riposta "no".
-		System.out.println("Inserisci il codice del corso a cui è iscritto: ");
+		System.out.println("Inserisci il nome del corso a cui è iscritto: ");
 		String codCorsoIscritto = scan.next();
 		istCtrl.aggiungiStudenteEIscrivi(nome, cognome, codFiscale, codCorsoIscritto);
 	}
