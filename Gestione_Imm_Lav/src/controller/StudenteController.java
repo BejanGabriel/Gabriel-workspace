@@ -93,6 +93,18 @@ public class StudenteController {
 			System.out.println("Errore durante scrittura nel DB");
 		}
 	}
+	
+	public Studente findStudente(String codFiscale) {
+
+		for (Studente studente : listaStudenti) {
+			if (studente.getCodFiscale().equals(codFiscale)) {
+				return studente;
+			}else {
+				System.out.println("Nessun Studente trovato");
+			}
+		}
+		return null;
+	}
 
 	public String visualizzaStudenti() {
 		StringBuffer info = new StringBuffer();
@@ -102,10 +114,14 @@ public class StudenteController {
 		}
 		for (Studente studente : listaStudenti) {
 			info.append("\nNome: " + studente.getNome() + "  |  Cognome: " + studente.getCognome() +
-					"  |  Codice Fiscale: " + studente.getCodFiscale() + "   |   Iscritto a: \n" + studente.getListaCorsi());
+					"  |  Codice Fiscale: " + studente.getCodFiscale() + "   |   Iscritto a: " + studente.getCorsoIscritto());
 		}
 		return info.toString();
 	}
 
-
+	public List<Studente> getListaStudenti(){
+		
+		return listaStudenti;
+	}
+	
 }

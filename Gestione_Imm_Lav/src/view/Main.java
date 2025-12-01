@@ -1,3 +1,4 @@
+
 package view;
 
 import java.util.Scanner;
@@ -45,7 +46,6 @@ public class Main {
 				System.out.println("Bhe fanculo anche a te");
 				break;
 				
-				
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + scan);
 			}
@@ -74,7 +74,9 @@ public class Main {
 	}
 	
 	private static void mostraCorsi() {
-		System.out.println(corsoCtrl.visualizzaCorsi());
+//		System.out.println(corsoCtrl.visualizzaCorsi());
+		System.out.println(istCtrl.mostraCorsiEStudenti());
+
 	}
 	
 	private static void rimuoviCorso() {

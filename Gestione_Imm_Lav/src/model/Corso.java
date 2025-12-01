@@ -21,7 +21,10 @@ public class Corso implements Comparable<Corso> {
 		this.aula = aula;
 		this.dataCreazione = dataCreazione;
 		this.listaStudenti = new ArrayList<>();
+	}
 
+	public int getId() {
+		return id;
 	}
 
 	public String getTitolo() {
@@ -39,8 +42,6 @@ public class Corso implements Comparable<Corso> {
 	public String getAula() {
 		return aula;
 	}
-	
-	
 	
 	public List<Studente> getListaStudenti() {
 		return listaStudenti;
