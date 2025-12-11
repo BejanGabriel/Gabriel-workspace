@@ -9,7 +9,7 @@ public class Semaforo {
 	}
 
 	public StatoSemaforo cambiaStato() {
-		return statoCorrente.prossimoStato();
+		return statoCorrente = statoCorrente.prossimoStato();
 	}
 
 	public boolean verificaPassaggio(TipoVeicolo veicolo) {

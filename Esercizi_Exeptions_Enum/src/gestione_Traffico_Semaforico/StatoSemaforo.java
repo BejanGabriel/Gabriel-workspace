@@ -37,7 +37,7 @@ public enum StatoSemaforo {
 	VERDE(45) {
 		@Override
 		public StatoSemaforo prossimoStato() {
-			return ROSSO;
+			return GIALLO;
 		}
 
 		@Override
