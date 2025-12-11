@@ -1,6 +1,8 @@
 package gestione_Traffico_Semaforico;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 /*	--Considerazioni aggiuntive--
   
@@ -23,10 +25,17 @@ public class Main {
 			
 
 			Random rand = new Random();
+			Set<Integer> usati = new HashSet<>();
 
 			for (int i = 0; i < veicoliPassati; i++) {
 				
-				int numero = rand.nextInt(veicolo.length);
+				int numero;
+
+			    do {
+			        numero = rand.nextInt(veicolo.length);
+			    } while (usati.contains(numero));
+
+			    usati.add(numero);
 		
 				output += veicolo[numero] + " può passare? ";
 				if(veicolo[numero].getPriorita() == 5) {
