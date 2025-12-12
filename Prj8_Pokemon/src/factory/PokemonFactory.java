@@ -8,7 +8,7 @@ import model.Charmender;
 public class PokemonFactory {
 
 	
-	public static Pokemon create(String specie, String genere, int livello, boolean shiny) {
+	public static Pokemon create(String specie, String genere, int livello, int hp, boolean shiny) {
 		
 		if(specie == null) {
 			throw new IllegalArgumentException();
@@ -17,11 +17,11 @@ public class PokemonFactory {
 		switch(specie.toLowerCase()) {
 		
 		case "pikachu":
-			return new Pikachu(genere, livello, shiny);
+			return new Pikachu(genere, livello, hp, shiny);
 		case "charmender":
-			return new Charmender(genere, livello, shiny);
+			return new Charmender(genere, livello, hp, shiny);
 		case "bulbasaur":
-			return new Bulbasaur(genere, livello, shiny);
+			return new Bulbasaur(genere, livello, hp, shiny);
 		default:
 			return null;
 		}

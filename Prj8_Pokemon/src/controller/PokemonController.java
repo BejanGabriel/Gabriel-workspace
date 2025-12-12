@@ -1,20 +1,23 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import factory.PokemonFactory;
 import model.Pokemon;
 
 public class PokemonController {
-
+	private static int CONTATORE= 0;
 	private static List<Pokemon> listaPokemon = new ArrayList<Pokemon>();
+	private static Map<Integer, Pokemon> pokemons = new HashMap<>();
 
 	public void lvlUp(Pokemon pokemon, int livelli) {
 		pokemon.setLivello(pokemon.getLivello() + livelli);
 	}
 
-	public Pokemon creaPokemon(String specie, String genere, int livello, String shiny) {
+	public Pokemon creaPokemon(String specie, String genere, int livello, int hp, String shiny) {
 
 		boolean eShiny = false;
 
@@ -23,7 +26,7 @@ public class PokemonController {
 		}
 
 		try {
-			Pokemon pokemonCreato = PokemonFactory.create(specie, genere, livello, eShiny);
+			Pokemon pokemonCreato = PokemonFactory.create(specie, genere, livello, hp, eShiny);
 			listaPokemon.add(pokemonCreato);
 			return pokemonCreato;
 		} catch (Exception e) {
@@ -41,15 +44,15 @@ public class PokemonController {
 					
 				}
 				System.out.println("==== Mosse Disponibili");
-				for (String mossa : pokemon.getMosse()) {
+				for (String mossa : pokemon.getMosse().values()) {
 					System.out.println(mossa);
 				}
 				System.out.println("======================");
 			}
 		}
 	}
-	public void addMossa(Pokemon pokemon, String nomeMossa) {
-		pokemon.getMosse().add(nomeMossa);
+	public void addMossa(Pokemon pokemon, String nomeMossa, int dannoMossa) {
+		pokemon.getMosse().put(dannoMossa, nomeMossa);
 	}
 	
 	public void mostraPokemon() {

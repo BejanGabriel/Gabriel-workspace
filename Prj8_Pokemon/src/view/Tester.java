@@ -13,11 +13,11 @@ public class Tester {
 
 	public static void main(String[] args) {
 		boolean flag = true;
-		Pokemon pikachu = pokeCtrl.creaPokemon("pikachu","F",5,"no");
-		Pokemon charmender = pokeCtrl.creaPokemon("charmender","M",1,"si");
-		Pokemon bulbasaur = pokeCtrl.creaPokemon("bulbasaur","F",9,"no");
-		Pokemon charmenderJR = pokeCtrl.creaPokemon("charmender","F",23,"no");
-		Pokemon pikachuJR = pokeCtrl.creaPokemon("pikachu","M",10000,"si");
+		Pokemon pikachu = pokeCtrl.creaPokemon("pikachu","F",5, 30,"no");
+		Pokemon charmender = pokeCtrl.creaPokemon("charmender","M",1, 10,"si");
+		Pokemon bulbasaur = pokeCtrl.creaPokemon("bulbasaur","F",9, 37,"no");
+		Pokemon charmenderJR = pokeCtrl.creaPokemon("charmender","F",23, 300, "no");
+		Pokemon pikachuJR = pokeCtrl.creaPokemon("pikachu","M",10000, 2000, "si");
 
 		do {
 			mostraMenu();
@@ -43,6 +43,8 @@ public class Tester {
 			case 6:
 				infoPokemon();
 				break;
+			case 7:
+				combattimento();
 			case 0:
 				flag = false;
 				break;
@@ -55,6 +57,20 @@ public class Tester {
 
 	}
 
+	private static void combattimento() {
+		pokeCtrl.mostraPokemon();
+		System.out.println("--Selezione il tuo pokemon: ");
+		int selettorePokemon = scan.nextInt();
+		Pokemon tuoPokemon = pokeCtrl.pokemonSelezionato(selettorePokemon);
+		System.out.println("-----Hai scelto " + tuoPokemon.getNome()+"\n");
+		pokeCtrl.mostraPokemon();
+		System.out.println("--Seleziona il pokemon avversario");
+		int selettorePokemonAvv = scan.nextInt();
+		Pokemon pokemonAvversario = pokeCtrl.pokemonSelezionato(selettorePokemon);
+		System.out.println("Hai selezionato " + tuoPokemon.getNome() + " per combattere " + pokemonAvversario.getNome());
+		tuoPokemon.attacca(pokemonAvversario, selettorePokemonAvv);
+	}
+
 	private static void mostraMenu() {
 		System.out.println("\n==== Benvenuto nel Pokedex ====");
 		System.out.println("1. Crea Pokemon");
@@ -63,6 +79,7 @@ public class Tester {
 		System.out.println("4. Mostra evoluzione di un pokemon");
 		System.out.println("5. Gestisci mosse  di un pokemon");
 		System.out.println("6. Mostra info pokemon");
+		System.out.println("7. Fai combattere i pokemon");
 		System.out.println("0. Esci");
 
 	}
@@ -75,10 +92,12 @@ public class Tester {
 		String genere = scan.next();
 		System.out.println("Che livello avrà il pokemon?");
 		int livello = scan.nextInt();
+		System.out.println("Quanta vita ha?");
+		int hp = scan.nextInt();
 		System.out.println("Il pokemon è shiny?");
 		String shiny = scan.next();
 
-		Pokemon pikachu = pokeCtrl.creaPokemon(nomePokemon, genere, livello, shiny);
+		Pokemon pikachu = pokeCtrl.creaPokemon(nomePokemon, genere, livello, hp, shiny);
 
 	}
 
@@ -102,7 +121,9 @@ public class Tester {
 		if(selettore == 1) {
 			System.out.println("Quale mossa vuoi che " + pokemonSelezionato.getNome() + " impari?");
 			String nomeMossa = scan.next();
-			pokeCtrl.addMossa(pokemonSelezionato, nomeMossa);      
+			System.out.println("Quanto danno farà questa mossa?");
+			int dannoMossa = scan.nextInt();
+			pokeCtrl.addMossa(pokemonSelezionato, nomeMossa, dannoMossa);      
 		}
 		
 
@@ -113,7 +134,7 @@ public class Tester {
 		int pokemon = scan.nextInt();
 		Pokemon pokemonSelezionato = pokeCtrl.pokemonSelezionato(pokemon);
 
-	}
+	              }
 
 	private static void LevelUp() {
 		// TODO Auto-generated method stub

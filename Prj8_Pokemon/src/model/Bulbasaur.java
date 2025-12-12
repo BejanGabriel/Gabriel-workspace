@@ -7,12 +7,12 @@ public class Bulbasaur extends Pokemon implements TipoErba, Evolvibile{
 
 	private int livelloEvoluzione = 13;
 
-	public Bulbasaur(String genere, int livello, boolean shiny) {
-		super("Bulbasaur", genere, livello, shiny);
+	public Bulbasaur(String genere, int livello, int HP, boolean shiny) {
+		super("Bulbasaur", genere, livello, HP, shiny);
 		
 		// Aggiunta mosse Bulbasaur
-		getMosse().add("Azione");
-		getMosse().add("Carica");
+		getMosse().put(5, "Azione");
+		getMosse().put(3, "Carica");
 		
 	}
 
@@ -41,7 +41,7 @@ public class Bulbasaur extends Pokemon implements TipoErba, Evolvibile{
 		this.setNome(getProssimaEvoluzione());
 		String nuovaMossa = "Scintilla";
 		setNome(getProssimaEvoluzione());
-		this.getMosse().add(nuovaMossa);
+		this.getMosse().put(10, "Semi-Traglia");
 	}
 
 	public String infoEvoluzione() {
@@ -49,11 +49,12 @@ public class Bulbasaur extends Pokemon implements TipoErba, Evolvibile{
 	}
 
 
-
 	@Override
-	public void attacca() {
-		System.out.println(this.getNome() + " usa Carica!");
+	public void attacca(Pokemon pokemon, int sceltaMossa) {
+		// TODO Auto-generated method stub
 		
 	}
+
+
 
 }

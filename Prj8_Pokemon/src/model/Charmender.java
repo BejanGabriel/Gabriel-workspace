@@ -7,12 +7,12 @@ public class Charmender extends Pokemon implements TipoFuoco, Evolvibile{
 
 	private int livelloEvoluzione = 13;
 
-	public Charmender(String genere, int livello, boolean shiny) {
-		super("Charmender", genere, livello, shiny);
+	public Charmender(String genere, int livello, int HP, boolean shiny) {
+		super("Charmender", genere, livello, HP, shiny);
 		
 		// Aggiunta mosse Charmender
-		getMosse().add("Azione");
-		getMosse().add("Carica");
+		getMosse().put(5, "Azione");
+		getMosse().put(3, "Carica");
 		
 	}
 
@@ -40,18 +40,16 @@ public class Charmender extends Pokemon implements TipoFuoco, Evolvibile{
 		this.setNome(getProssimaEvoluzione());
 		String nuovaMossa = "Scintilla";
 		setNome(getProssimaEvoluzione());
-		this.getMosse().add(nuovaMossa);
+		this.getMosse().put(9, nuovaMossa);
 	}
 
 	public String infoEvoluzione() {
 		return "Charmender [livelloEvoluzione=" + livelloEvoluzione + "]";
 	}
 
-
-
 	@Override
-	public void attacca() {
-		System.out.println(this.getNome() + " usa azione!");
+	public void attacca(Pokemon pokemon, int sceltaMossa) {
+		// TODO Auto-generated method stub
 		
 	}
 

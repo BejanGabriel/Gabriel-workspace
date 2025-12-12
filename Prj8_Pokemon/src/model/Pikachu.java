@@ -9,14 +9,25 @@ public class Pikachu extends Pokemon implements TipoElettro, Evolvibile {
 
 	private int livelloEvoluzione = 13;
 
-	public Pikachu(String genere, int livello, boolean shiny) {
-		super("Pikachu", genere, livello, shiny);
+	public Pikachu(String genere, int livello, int HP, boolean shiny) {
+		super("Pikachu", genere, livello, HP, shiny);
 		
 		// Aggiunta mosse pikachu
-		getMosse().add("Azione");
-		getMosse().add("Carica");
+		getMosse().put(5, "Azione");
+		getMosse().put(3, "Carica");
 		
 	}
+
+	public int getLivelloEvoluzione() {
+		return livelloEvoluzione;
+	}
+
+
+
+	public void setLivelloEvoluzione(int livelloEvoluzione) {
+		this.livelloEvoluzione = livelloEvoluzione;
+	}
+
 
 
 	@Override
@@ -42,19 +53,28 @@ public class Pikachu extends Pokemon implements TipoElettro, Evolvibile {
 		this.setNome(getProssimaEvoluzione());
 		String nuovaMossa = "TuonoShock";
 		setNome(getProssimaEvoluzione());
-		this.getMosse().add(nuovaMossa);
+		this.getMosse().put(8, nuovaMossa);
 	}
 
 	public String infoEvoluzione() {
-		return "Pikachu [livelloEvoluzione=" + livelloEvoluzione + "]";
+		return "Pikachu si evolverà al lvl: " + livelloEvoluzione;
 	}
 
 
 
 	@Override
-	public void attacca() {
-		System.out.println(this.getNome() + " usa fulmine!");
+	public void attacca(Pokemon pokemonAttaccato, int mossaScelta) {
+		System.out.println("Che mossa vuoi fare a " + this.getNome());
+		int contatore = 0;
+			String output = "";
+			if (this.getMosse().size() == 0) {
+			 System.out.println(this.getNome() + " non ha nessuna mossa");	
+			}
+			for (String mossa : getMosse().values()) {
+				output += (++contatore) + ") " + mossa + "\n";
+			}
+			System.out.println(output);
+		}
 		
 	}
 
-}
