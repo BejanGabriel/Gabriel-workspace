@@ -1,15 +1,32 @@
 package view;
 
+import java.util.Scanner;
+
+import controller.PokemonController;
 import model.Pikachu;
 import model.Pokemon;
 
 public class Tester{
 
+	private static PokemonController pokeCtrl = new PokemonController();
+	private static Scanner scan = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		Pikachu p = new Pikachu("Pikachu", "M", "Azione", "Giallo", 0.40, 6.00, false, 1, 10);
 		
-		p.toString();
+		System.out.println("Quale pokemon vuoi creare?");
+		String pokemon = scan.next();
+		System.out.println("Il pokemon è 'M' o 'F' ?");
+		String genere = scan.next();
+		System.out.println("Che livello avrà il pokemon?");
+		int livello = scan.nextInt();
+		System.out.println("Il pokemon è shiny?");
+		String shiny = scan.next();
+		
+		
+		Pokemon pikachu = pokeCtrl.creaPokemon(pokemon);
+		
+		pikachu.infoPokemon();
+		
 }
 
 }

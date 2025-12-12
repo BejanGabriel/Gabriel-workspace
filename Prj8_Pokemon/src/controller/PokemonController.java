@@ -1,35 +1,28 @@
 package controller;
 
-import model.Bulbasaur;
-import model.Charmender;
-import model.Pikachu;
+import factory.PokemonFactory;
 import model.Pokemon;
 
 public class PokemonController {
 
-	public int lvlUp(Pokemon pokemon, int livelli) {
-		return pokemon.getLivello() + livelli;
+	public void lvlUp(Pokemon pokemon, int livelli) {
+		pokemon.setLivello(pokemon.getLivello()+livelli);
 	}
 
-	public Pokemon creaPokemon(String specie) {
-
-		specie.toLowerCase();
-
-		switch (specie) {
-
-		case "pikachu":
-			return new Pikachu(specie, specie, specie, specie, 0, 0, false, 0, 0);
-			break;
-			
-		case "charmender":
-			return new Charmender(specie, specie, specie, specie, 0, 0, false, 0);
-			break;
-			
-		case "bulbasaur":
-			return new Bulbasaur(specie, specie, specie, specie, 0, 0, false, 0);
-			break;
-
+	public Pokemon creaPokemon(String specie, String genere, int livello, String shiny) {
+		
+		boolean eShiny = false;
+		
+		if(shiny.toLowerCase().equals("si")) {
+			eShiny = true;
 		}
+		
+		try {
+			return PokemonFactory.create(specie, genere, livello, eShiny);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 
 	}
 }
