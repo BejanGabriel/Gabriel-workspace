@@ -1,6 +1,5 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import utils.Evolvibile;
@@ -9,11 +8,14 @@ import utils.TipoElettro;
 public class Pikachu extends Pokemon implements TipoElettro, Evolvibile {
 
 	private int livelloEvoluzione = 13;
-	private List<String> mosse;
 
-	public Pikachu(String genere, int livello, boolean shiny, List<String> mosse) {
+	public Pikachu(String genere, int livello, boolean shiny) {
 		super("Pikachu", genere, livello, shiny);
-		this.mosse = new ArrayList<>();
+		
+		// Aggiunta mosse pikachu
+		getMosse().add("Azione");
+		getMosse().add("Carica");
+		
 	}
 
 
@@ -40,21 +42,22 @@ public class Pikachu extends Pokemon implements TipoElettro, Evolvibile {
 		this.setNome(getProssimaEvoluzione());
 		String nuovaMossa = "TuonoShock";
 		setNome(getProssimaEvoluzione());
-		this.mosse.add(nuovaMossa);
+		this.getMosse().add(nuovaMossa);
 	}
 
-	@Override
-	public String toString() {
+	public String info() {
 		return "Pikachu [livelloEvoluzione=" + livelloEvoluzione + ", mosse=" + mostraMosse() + ", toString()="
-				+ super.toString() + "]";
+				+ super.infoPokemon() + "]";
 	}
 
 	public String mostraMosse() {
 		
-		if(mosse.size() == 0) {
+		this.getMosse().add(MOSSE);
+		
+		if(this.getMosse().size() == 0) {
 			return this.getNome() + " non ha nessuna mossa";
 		}
-		for (String mossa : mosse) {
+		for (String mossa : this.getMosse()) {
 			return mossa;
 		}
 		return null;

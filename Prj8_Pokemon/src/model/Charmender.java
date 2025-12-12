@@ -1,28 +1,69 @@
 package model;
 
-public class Charmender extends Pokemon{
+import java.util.ArrayList;
+import java.util.List;
 
-	public Charmender(String nome, String genere, String mosseConosciute, String colore, double altezza, double peso,
-			boolean shiny, int livello) {
-		super(nome, genere, mosseConosciute, colore, altezza, peso, shiny, livello);
-		// TODO Auto-generated constructor stub
+import utils.Evolvibile;
+import utils.TipoFuoco;
+
+public class Charmender extends Pokemon implements TipoFuoco, Evolvibile{
+
+	private int livelloEvoluzione = 13;
+	private List<String> mosse;
+
+	public Charmender(String genere, int livello, boolean shiny, List<String> mosse) {
+		super("Charmender", genere, livello, shiny);
+		this.mosse = new ArrayList<>();
 	}
+
 
 	@Override
 	public boolean puoEvolvere() {
-		// TODO Auto-generated method stub
-		return false;
+		if (this.getLivello() == livelloEvoluzione) {
+			System.out.println(this.getNome() + " può evolvere");
+			return true;
+		} else {
+			System.out.println(getNome() + " non è ancora pronto.");
+			return false;
+		}
 	}
 
 	@Override
 	public String getProssimaEvoluzione() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Charmeleon";
+	}
+
+	// Il pokemon evolve ed il suo nome cambia con quello della sua evoluzione
+	@Override
+	public void evolve() {
+		System.out.println(this.getNome() + " si stà evolvendo in " + getProssimaEvoluzione());
+		this.setNome(getProssimaEvoluzione());
+		String nuovaMossa = "Scintilla";
+		setNome(getProssimaEvoluzione());
+		this.mosse.add(nuovaMossa);
 	}
 
 	@Override
-	public void evolve() {
-		// TODO Auto-generated method stub
+	public String toString() {
+		return "Pikachu [livelloEvoluzione=" + livelloEvoluzione + ", mosse=" + mostraMosse() + ", toString()="
+				+ super.toString() + "]";
+	}
+
+	public String mostraMosse() {
+		
+		if(mosse.size() == 0) {
+			return this.getNome() + " non ha nessuna mossa";
+		}
+		for (String mossa : mosse) {
+			return mossa;
+		}
+		return null;
+	}
+
+
+	@Override
+	public void attacca() {
+		System.out.println(this.getNome() + " usa fulmine!");
 		
 	}
 

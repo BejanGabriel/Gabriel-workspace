@@ -3,7 +3,7 @@ package utils;
 public interface TipoElettro {
 	String FORZA = "Acqua, Volante";
 	String DEBOLEZZA = "Terra";
-	String MOSSE = "Tuonoshock, Fulmine, Elettro palla";
+	String MOSSE = "Fulmine";
 	
 	default void mostraInfo() {
 		System.out.println("Il tipo Elettro è forte contro i tipi: " + FORZA);

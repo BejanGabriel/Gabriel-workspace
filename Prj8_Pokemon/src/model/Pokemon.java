@@ -1,11 +1,16 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Pokemon{
 	private String nome;
 	private String genere;
 	private int livello;
 	private boolean shiny;
+	private List<String> mosse = new ArrayList<>();
+
+
 	
 	public Pokemon(String nome, String genere, int livello, boolean shiny) {
 		this.nome = nome;
@@ -53,10 +58,31 @@ public abstract class Pokemon{
 		this.shiny = shiny;
 	}
 
-	@Override
-	public String toString() {
-		return "Pokemon [nome=" + nome + ", genere=" + genere + ", livello=" + livello + ", shiny=" + shiny + "]";
+	public String infoPokemon() {
+		return "Pokemon [nome=" + nome + ", genere=" + genere + ", livello=" + livello +
+				", shiny=" + shiny + ", mosse disponibili: " + mostraMosse()+"]";
 	}
+
+	public List<String> getMosse() {
+		return mosse;
+	}
+
+	public void setMosse(List<String> mosse) {
+		this.mosse = mosse;
+	}
+	
+	public String mostraMosse() {
+		String output = "";
+		if(this.getMosse().size() == 0) {
+			return this.getNome() + " non ha nessuna mossa";
+		}
+		for (String mossa : this.getMosse()) {
+			output += "\n"+mossa;
+		}
+		return output;
+	}
+
+
 	
 	
 	

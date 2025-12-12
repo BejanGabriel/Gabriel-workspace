@@ -14,7 +14,7 @@ public class Tester{
 	public static void main(String[] args) {
 		
 		System.out.println("Quale pokemon vuoi creare?");
-		String pokemon = scan.next();
+		String nomePokemon = scan.next();
 		System.out.println("Il pokemon è 'M' o 'F' ?");
 		String genere = scan.next();
 		System.out.println("Che livello avrà il pokemon?");
@@ -23,9 +23,9 @@ public class Tester{
 		String shiny = scan.next();
 		
 		
-		Pokemon pikachu = pokeCtrl.creaPokemon(pokemon);
+		Pokemon pikachu = pokeCtrl.creaPokemon(nomePokemon, genere, livello, shiny);
 		
-		pikachu.infoPokemon();
+		System.out.println(pikachu.infoPokemon());
 		
 }
 
