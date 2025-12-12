@@ -2,8 +2,6 @@ package factory;
 
 import model.Pikachu;
 import model.Pokemon;
-
-
 import model.Bulbasaur;
 import model.Charmender;
 
@@ -21,9 +19,11 @@ public class PokemonFactory {
 		case "pikachu":
 			return new Pikachu(genere, livello, shiny);
 		case "charmender":
-	
-					
+			return new Charmender(genere, livello, shiny);
+		case "bulbasaur":
+			return new Bulbasaur(genere, livello, shiny);
+		default:
+			return null;
 		}
-		return null;
 	}
 }

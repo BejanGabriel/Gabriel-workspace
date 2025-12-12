@@ -1,19 +1,19 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import utils.Evolvibile;
 import utils.TipoFuoco;
 
 public class Charmender extends Pokemon implements TipoFuoco, Evolvibile{
 
 	private int livelloEvoluzione = 13;
-	private List<String> mosse;
 
-	public Charmender(String genere, int livello, boolean shiny, List<String> mosse) {
+	public Charmender(String genere, int livello, boolean shiny) {
 		super("Charmender", genere, livello, shiny);
-		this.mosse = new ArrayList<>();
+		
+		// Aggiunta mosse Charmender
+		getMosse().add("Azione");
+		getMosse().add("Carica");
+		
 	}
 
 
@@ -23,7 +23,7 @@ public class Charmender extends Pokemon implements TipoFuoco, Evolvibile{
 			System.out.println(this.getNome() + " può evolvere");
 			return true;
 		} else {
-			System.out.println(getNome() + " non è ancora pronto.");
+			System.out.println(getNome() + " non è ancora pronto. Deve raggiungere il livello " + livelloEvoluzione);
 			return false;
 		}
 	}
@@ -40,30 +40,18 @@ public class Charmender extends Pokemon implements TipoFuoco, Evolvibile{
 		this.setNome(getProssimaEvoluzione());
 		String nuovaMossa = "Scintilla";
 		setNome(getProssimaEvoluzione());
-		this.mosse.add(nuovaMossa);
+		this.getMosse().add(nuovaMossa);
 	}
 
-	@Override
-	public String toString() {
-		return "Pikachu [livelloEvoluzione=" + livelloEvoluzione + ", mosse=" + mostraMosse() + ", toString()="
-				+ super.toString() + "]";
+	public String infoEvoluzione() {
+		return "Charmender [livelloEvoluzione=" + livelloEvoluzione + "]";
 	}
 
-	public String mostraMosse() {
-		
-		if(mosse.size() == 0) {
-			return this.getNome() + " non ha nessuna mossa";
-		}
-		for (String mossa : mosse) {
-			return mossa;
-		}
-		return null;
-	}
 
 
 	@Override
 	public void attacca() {
-		System.out.println(this.getNome() + " usa fulmine!");
+		System.out.println(this.getNome() + " usa azione!");
 		
 	}
 

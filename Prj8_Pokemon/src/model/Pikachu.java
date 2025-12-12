@@ -25,7 +25,7 @@ public class Pikachu extends Pokemon implements TipoElettro, Evolvibile {
 			System.out.println(this.getNome() + " può evolvere");
 			return true;
 		} else {
-			System.out.println(getNome() + " non è ancora pronto.");
+			System.out.println(getNome() + " non è ancora pronto. Deve raggiungere il livello " + livelloEvoluzione);
 			return false;
 		}
 	}
@@ -45,23 +45,10 @@ public class Pikachu extends Pokemon implements TipoElettro, Evolvibile {
 		this.getMosse().add(nuovaMossa);
 	}
 
-	public String info() {
-		return "Pikachu [livelloEvoluzione=" + livelloEvoluzione + ", mosse=" + mostraMosse() + ", toString()="
-				+ super.infoPokemon() + "]";
+	public String infoEvoluzione() {
+		return "Pikachu [livelloEvoluzione=" + livelloEvoluzione + "]";
 	}
 
-	public String mostraMosse() {
-		
-		this.getMosse().add(MOSSE);
-		
-		if(this.getMosse().size() == 0) {
-			return this.getNome() + " non ha nessuna mossa";
-		}
-		for (String mossa : this.getMosse()) {
-			return mossa;
-		}
-		return null;
-	}
 
 
 	@Override
