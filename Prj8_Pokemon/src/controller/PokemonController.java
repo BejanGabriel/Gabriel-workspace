@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import factory.PokemonFactory;
 import model.Pokemon;
 
 public class PokemonController {
-	private static int CONTATORE= 0;
+
+	private static Scanner scan = new Scanner(System.in);
+	private static int nextID = 1;
 	private static List<Pokemon> listaPokemon = new ArrayList<Pokemon>();
 	private static Map<Integer, Pokemon> pokemons = new HashMap<>();
 
@@ -28,6 +31,7 @@ public class PokemonController {
 		try {
 			Pokemon pokemonCreato = PokemonFactory.create(specie, genere, livello, hp, eShiny);
 			listaPokemon.add(pokemonCreato);
+			pokemons.put(nextID++, pokemonCreato);
 			return pokemonCreato;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -36,46 +40,55 @@ public class PokemonController {
 
 	}
 
-	public void mostraMosse(String nomePokemon) {
-		for (Pokemon pokemon : listaPokemon) {
-			if (pokemon.getNome().equalsIgnoreCase(nomePokemon)) {
-				if (pokemon.getMosse().size() == 0) {
-					System.out.println(pokemon.getNome() + " non ha nessuna mossa");
-					
-				}
-				System.out.println("==== Mosse Disponibili");
-				for (String mossa : pokemon.getMosse().values()) {
-					System.out.println(mossa);
-				}
-				System.out.println("======================");
-			}
+	public String mostraMosse(int idPokemon) {
+
+		Pokemon pokemon = pokemons.get(idPokemon);
+		if (pokemon == null)
+			return "ID non valido.";
+
+		if (pokemon.getMosse().isEmpty()) {
+			return pokemon.getNome() + " non ha nessuna mossa";
 		}
+
+		StringBuilder sb = new StringBuilder();
+		for (var entry : pokemon.getMosse().entrySet()) {
+			sb.append("[").append(entry.getKey()).append(" dmg] ").append(entry.getValue()).append("\n");
+		}
+		return sb.toString();
 	}
+
 	public void addMossa(Pokemon pokemon, String nomeMossa, int dannoMossa) {
 		pokemon.getMosse().put(dannoMossa, nomeMossa);
 	}
-	
-	public void mostraPokemon() {
+
+	public void mostraPokemonMappa() {
 		int contatore = 0;
-		if(listaPokemon.size() == 0) {
-			return;
+		if (pokemons.size() == 0) {
+			System.out.println("Nessun pokemon presente");
 		}
-		for (Pokemon pokemon : listaPokemon) {
-			System.out.println((++contatore) + ") " + pokemon.getNome() + " lvl: " +pokemon.getLivello());
+		for (Pokemon pokemon : pokemons.values()) {
+			System.out.println((++contatore) + ") " + pokemon.getNome() + " lvl: " + pokemon.getLivello());
 		}
 	}
-	public Pokemon pokemonSelezionato(int selettore) {
+
+	public Pokemon pokemonSelezionato(String messaggio) {
+		
+		mostraPokemonMappa();
+		System.out.println(messaggio);
+		int selettore = scan.nextInt();
+		
 		int contatore = 0;
-		if(listaPokemon.size() == 0) {
+		
+		if (listaPokemon.size() == 0) {
 			System.out.println("Non ci sono pokemon presenti");
 			return null;
 		}
-		for (Pokemon pokemon : listaPokemon) {
-			System.out.println((++contatore) + ") " + pokemon.getNome() + " lvl: " +pokemon.getLivello());
-			if(contatore == selettore) {
-				return pokemon;
+//		for (Pokemon pokemon : listaPokemon) {
+//			System.out.println((++contatore) + ") " + pokemon.getNome() + " lvl: " + pokemon.getLivello());
+			if (pokemons.containsKey(selettore)) {
+				return pokemons.get(selettore);
 			}
-		}
+//		}
 		return null;
 	}
 

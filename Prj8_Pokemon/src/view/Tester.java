@@ -19,6 +19,8 @@ public class Tester {
 		Pokemon charmenderJR = pokeCtrl.creaPokemon("charmender","F",23, 300, "no");
 		Pokemon pikachuJR = pokeCtrl.creaPokemon("pikachu","M",10000, 2000, "si");
 
+		pokeCtrl.mostraPokemonMappa();
+		
 		do {
 			mostraMenu();
 
@@ -58,17 +60,12 @@ public class Tester {
 	}
 
 	private static void combattimento() {
-		pokeCtrl.mostraPokemon();
-		System.out.println("--Selezione il tuo pokemon: ");
-		int selettorePokemon = scan.nextInt();
-		Pokemon tuoPokemon = pokeCtrl.pokemonSelezionato(selettorePokemon);
+		Pokemon tuoPokemon = pokeCtrl.pokemonSelezionato("Segli il tuo pokemon");
 		System.out.println("-----Hai scelto " + tuoPokemon.getNome()+"\n");
-		pokeCtrl.mostraPokemon();
-		System.out.println("--Seleziona il pokemon avversario");
-		int selettorePokemonAvv = scan.nextInt();
-		Pokemon pokemonAvversario = pokeCtrl.pokemonSelezionato(selettorePokemon);
-		System.out.println("Hai selezionato " + tuoPokemon.getNome() + " per combattere " + pokemonAvversario.getNome());
-		tuoPokemon.attacca(pokemonAvversario, selettorePokemonAvv);
+		Pokemon pokemonAvversario = pokeCtrl.pokemonSelezionato("Segli il pokemon avversario");
+		System.out.println("L'avversario ha scelto " + pokemonAvversario.getNome());
+		System.out.println(tuoPokemon.getNome() + " VS " + pokemonAvversario.getNome());
+		tuoPokemon.attacca(tuoPokemon, 1);
 	}
 
 	private static void mostraMenu() {
@@ -102,7 +99,7 @@ public class Tester {
 	}
 
 	private static void infoPokemon() {
-		pokeCtrl.mostraPokemon();
+		pokeCtrl.mostraPokemonMappa();
 		System.out.println("Di quale pokemon vuoi sapere le informazioni?");
 		int pokemon = scan.nextInt();
 		Pokemon pokemonSelezionato = pokeCtrl.pokemonSelezionato(pokemon);
@@ -110,10 +107,8 @@ public class Tester {
 	}
 
 	private static void aggiungiRimuoviMosse() {
-		pokeCtrl.mostraPokemon();
-		System.out.println("A chi vuoi far imparare / dimenticare una mossa?");
-		int pokemon = scan.nextInt();
-		Pokemon pokemonSelezionato = pokeCtrl.pokemonSelezionato(pokemon);
+
+		Pokemon pokemonSelezionato = pokeCtrl.pokemonSelezionato("A quale pokemon desideri effetuare modifiche?");
 		System.out.println("Hai selezionato: " + pokemonSelezionato.getNome() + "\nLe sue mosse sono: " + pokemonSelezionato.getMosse() );
 		System.out.println("1. Aggiungi mossa");
 		System.out.println("2. Rimuovi una mossa");
@@ -130,9 +125,7 @@ public class Tester {
 	}
 
 	private static void evoluzionePokemon() {
-		System.out.println("Di chi vuoi sapre le info in base all'evoluzione");
-		int pokemon = scan.nextInt();
-		Pokemon pokemonSelezionato = pokeCtrl.pokemonSelezionato(pokemon);
+		
 
 	              }
 
@@ -142,8 +135,12 @@ public class Tester {
 	}
 
 	private static void mostraMossePokemon() {
-		// TODO Auto-generated method stub
+		System.out.println(pokeCtrl.mostraMosse(1));
 
 	}
+	
+//	private static void mostraPokemons() {
+//		pokeCtrl.mostraPokemonMappa();
+//	}
 
 }
