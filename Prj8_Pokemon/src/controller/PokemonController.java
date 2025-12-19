@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import factory.PokemonFactory;
+import model.Mossa;
 import model.Pokemon;
 
 public class PokemonController {
@@ -43,22 +44,26 @@ public class PokemonController {
 	public String mostraMosse(int idPokemon) {
 
 		Pokemon pokemon = pokemons.get(idPokemon);
-		if (pokemon == null)
+		if (pokemon == null) {
 			return "ID non valido.";
-
-		if (pokemon.getMosse().isEmpty()) {
-			return pokemon.getNome() + " non ha nessuna mossa";
+		} else {
+			return pokemon.mostraMosse();
 		}
 
-		StringBuilder sb = new StringBuilder();
-		for (var entry : pokemon.getMosse().entrySet()) {
-			sb.append("[").append(entry.getKey()).append(" dmg] ").append(entry.getValue()).append("\n");
-		}
-		return sb.toString();
 	}
 
-	public void addMossa(Pokemon pokemon, String nomeMossa, int dannoMossa) {
-		pokemon.getMosse().put(dannoMossa, nomeMossa);
+	public void addMossa(Pokemon pokemon, String nomeMossa, int dannoMossa, String tipoMossa) {
+		pokemon.imparaMossa(new Mossa(nomeMossa, dannoMossa, tipoMossa));
+	}
+
+	public boolean dimenticaMossa(Pokemon pokemon, int indice) {
+		if (indice > 0 && indice <= pokemon.getListaMosse().size()) {
+			Mossa daRimuovere = pokemon.getListaMosse().get(indice-1);
+			pokemon.dimenticaMossa(daRimuovere);
+			return true;
+		}
+		return false;
+
 	}
 
 	public void mostraPokemonMappa() {
@@ -71,23 +76,24 @@ public class PokemonController {
 		}
 	}
 
+	// Metodo da riutilizzare per selezionare un pokemon, con un messaggio personalizzato
 	public Pokemon pokemonSelezionato(String messaggio) {
-		
+
 		mostraPokemonMappa();
 		System.out.println(messaggio);
-		int selettore = scan.nextInt();
-		
+
+		int selettorePokemon = scan.nextInt();
 		int contatore = 0;
-		
+
 		if (listaPokemon.size() == 0) {
 			System.out.println("Non ci sono pokemon presenti");
 			return null;
 		}
 //		for (Pokemon pokemon : listaPokemon) {
 //			System.out.println((++contatore) + ") " + pokemon.getNome() + " lvl: " + pokemon.getLivello());
-			if (pokemons.containsKey(selettore)) {
-				return pokemons.get(selettore);
-			}
+		if (pokemons.containsKey(selettorePokemon)) {
+			return pokemons.get(selettorePokemon);
+		}
 //		}
 		return null;
 	}

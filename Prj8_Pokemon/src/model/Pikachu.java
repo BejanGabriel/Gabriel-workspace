@@ -13,9 +13,8 @@ public class Pikachu extends Pokemon implements TipoElettro, Evolvibile {
 		super("Pikachu", genere, livello, HP, shiny);
 		
 		// Aggiunta mosse pikachu
-		getMosse().put(5, "Azione");
-		getMosse().put(3, "Carica");
-		
+			getListaMosse().add(new Mossa("Azione", 5, "normale"));
+			getListaMosse().add(new Mossa("Carica", 3, "normale"));
 	}
 
 	public int getLivelloEvoluzione() {
@@ -51,9 +50,8 @@ public class Pikachu extends Pokemon implements TipoElettro, Evolvibile {
 	public void evolve() {
 		System.out.println(this.getNome() + " si stà evolvendo in " + getProssimaEvoluzione());
 		this.setNome(getProssimaEvoluzione());
-		String nuovaMossa = "TuonoShock";
-		setNome(getProssimaEvoluzione());
-		this.getMosse().put(8, nuovaMossa);
+		Mossa nuovaMossa = new Mossa("Fulmine", 9, "elettro");
+		this.getListaMosse().add(nuovaMossa);
 	}
 
 	public String infoEvoluzione() {
@@ -67,10 +65,10 @@ public class Pikachu extends Pokemon implements TipoElettro, Evolvibile {
 		System.out.println("Che mossa vuoi fare a " + this.getNome());
 		int contatore = 0;
 			String output = "";
-			if (this.getMosse().size() == 0) {
+			if (this.getListaMosse().size() == 0) {
 			 System.out.println(this.getNome() + " non ha nessuna mossa");	
 			}
-			for (String mossa : getMosse().values()) {
+			for (Mossa mossa : getListaMosse()) {
 				output += (++contatore) + ") " + mossa + "\n";
 			}
 			System.out.println(output);

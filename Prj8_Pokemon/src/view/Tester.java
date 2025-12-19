@@ -14,9 +14,9 @@ public class Tester {
 	public static void main(String[] args) {
 		boolean flag = true;
 		Pokemon pikachu = pokeCtrl.creaPokemon("pikachu","F",5, 30,"no");
-		Pokemon charmender = pokeCtrl.creaPokemon("charmender","M",1, 10,"si");
-		Pokemon bulbasaur = pokeCtrl.creaPokemon("bulbasaur","F",9, 37,"no");
-		Pokemon charmenderJR = pokeCtrl.creaPokemon("charmender","F",23, 300, "no");
+//		Pokemon charmender = pokeCtrl.creaPokemon("charmender","M",1, 10,"si");
+//		Pokemon bulbasaur = pokeCtrl.creaPokemon("bulbasaur","F",9, 37,"no");
+//		Pokemon charmenderJR = pokeCtrl.creaPokemon("charmender","F",23, 300, "no");
 		Pokemon pikachuJR = pokeCtrl.creaPokemon("pikachu","M",10000, 2000, "si");
 
 		pokeCtrl.mostraPokemonMappa();
@@ -74,7 +74,7 @@ public class Tester {
 		System.out.println("2. Visualizza le mosse di un pokemon");
 		System.out.println("3. Fai salire di livello un pokemon");
 		System.out.println("4. Mostra evoluzione di un pokemon");
-		System.out.println("5. Gestisci mosse  di un pokemon");
+		System.out.println("5. Gestisci mosse di un pokemon");
 		System.out.println("6. Mostra info pokemon");
 		System.out.println("7. Fai combattere i pokemon");
 		System.out.println("0. Esci");
@@ -99,26 +99,35 @@ public class Tester {
 	}
 
 	private static void infoPokemon() {
-		pokeCtrl.mostraPokemonMappa();
-		System.out.println("Di quale pokemon vuoi sapere le informazioni?");
-		int pokemon = scan.nextInt();
-		Pokemon pokemonSelezionato = pokeCtrl.pokemonSelezionato(pokemon);
+		Pokemon pokemonSelezionato = pokeCtrl.pokemonSelezionato("Di quale pokemon vuoi sapere le informazioni?");
 		System.out.println(pokemonSelezionato.infoPokemon());
 	}
 
 	private static void aggiungiRimuoviMosse() {
 
-		Pokemon pokemonSelezionato = pokeCtrl.pokemonSelezionato("A quale pokemon desideri effetuare modifiche?");
-		System.out.println("Hai selezionato: " + pokemonSelezionato.getNome() + "\nLe sue mosse sono: " + pokemonSelezionato.getMosse() );
+		Pokemon pokemonSelezionato = pokeCtrl.pokemonSelezionato("Su quale pokemon vuoi cambiare le mosse?");
+		
+		System.out.println("Hai selezionato: " + pokemonSelezionato.getNome() + "\nLe sue mosse sono: " + pokemonSelezionato.mostraMosse() );
 		System.out.println("1. Aggiungi mossa");
 		System.out.println("2. Rimuovi una mossa");
+		
 		int selettore = scan.nextInt();
+		
 		if(selettore == 1) {
 			System.out.println("Quale mossa vuoi che " + pokemonSelezionato.getNome() + " impari?");
 			String nomeMossa = scan.next();
 			System.out.println("Quanto danno farà questa mossa?");
 			int dannoMossa = scan.nextInt();
-			pokeCtrl.addMossa(pokemonSelezionato, nomeMossa, dannoMossa);      
+			System.out.println("Di che tipo è la mossa?");
+			String tipoMossa = scan.next();
+			pokeCtrl.addMossa(pokemonSelezionato, nomeMossa, dannoMossa,tipoMossa.toLowerCase());      
+		}else if(selettore == 2) {
+			System.out.println(pokemonSelezionato.mostraMosse());
+			System.out.println("Quale mossa vuoi eliminare?");
+			int eliminaMossa = scan.nextInt();
+			pokeCtrl.dimenticaMossa(pokemonSelezionato, eliminaMossa);
+			
+			
 		}
 		
 
