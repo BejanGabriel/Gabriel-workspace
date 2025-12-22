@@ -19,19 +19,19 @@ public class Main {
 //		utente.setEmail("PAZZ.MARC@mail.com");
 //		utente.setPassword("123");
 		
-		//TESTING CLIENTE -> TESTING
+		//TESTING CLIENTE -> OK!
 		Cliente cliente = new Cliente();
 		cliente.setNomeAzienda("Pippo.s.r.l");
 		cliente.setRefereneAzienda("Luca Marconi");
 		cliente.setCategoriaMerceologica("Sviluppatore");
 		cliente.setTipologiaCliente("In Acquisizione");
 		
-		
+		// UPDATING utente_assegnato FK -> OK!
 		GenericDAO<Cliente> gdU = new ClienteDAOImpl();
 		//gdU.create(cliente);
 		gdU.readAll();
 		
-		gdU.assegnazioneByID(4, 1);
+		gdU.assegnazioneByID(3, 4);
 		
 		
 		

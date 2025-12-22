@@ -91,11 +91,11 @@ public class ClienteDAOImpl extends RiferimentoConnessione implements GenericDAO
 	}
 
 	@Override
-	public boolean assegnazioneByID(int id1, int id2) {
+	public boolean assegnazioneByID(int idSet, int idWhere) {
 		try {
 			ps = conn.prepareStatement("UPDATE cliente SET utente_associato = ? WHERE id_cliente = ?");
-			ps.setInt(1, id1);
-			ps.setInt(2, id2);
+			ps.setInt(1, idSet);
+			ps.setInt(2, idWhere);
 			ps.executeUpdate();
 			return true;
 		} catch (Exception e) {

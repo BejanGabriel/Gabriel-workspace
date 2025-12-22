@@ -58,4 +58,10 @@ public class UtenteDAOImpl extends RiferimentoConnessione implements GenericDAO<
 		return false;
 	}
 
+	@Override
+	public boolean assegnazioneByID(int idSet, int idWhere) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
