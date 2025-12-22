@@ -8,7 +8,6 @@ import java.util.List;
 
 public class FilmDAOImpl implements FilmDAO {
 	
-	private Statement statement;
 	private PreparedStatement ps;
 	private ResultSet rs;
 	private DatabaseConnection connessione;

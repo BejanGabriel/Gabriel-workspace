@@ -8,6 +8,7 @@ public class Cliente {
 	private String categoriaMerceologica;
 	private String tipologiaCliente;
 	private int utenteAssociato;
+	
 	public int getIdCliente() {
 		return idCliente;
 	}
