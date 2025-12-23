@@ -7,7 +7,7 @@ import java.util.List;
 import model.Utente;
 import utilitis.RiferimentoConnessione;
 
-public class UtenteDAOImpl extends RiferimentoConnessione implements GenericDAO<Utente> {
+public class UtenteDAOImpl extends RiferimentoConnessione implements GenericDAO<Utente>, Associazioni{
 	
 	private PreparedStatement ps;
 	private ResultSet rs;
@@ -36,8 +36,24 @@ public class UtenteDAOImpl extends RiferimentoConnessione implements GenericDAO<
 
 	@Override
 	public Utente readByID(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Utente u = null;
+		try {
+			ps = conn.prepareStatement("SELECT * FROM utente WHERE id_utente = ?");
+			ps.setInt(1, id);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				u = new Utente();
+				u.setIdUtente(rs.getInt("id_utente"));
+				u.setNomeUtente(rs.getString("nome_utente"));
+				u.setEmail(rs.getString("email"));
+				u.setRuolo(rs.getString("ruolo"));
+				u.setPassword(rs.getString("password"));
+				u.setDataRegistrazione(rs.getDate("data_registrazione"));
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return u;
 	}
 
 	@Override
@@ -60,6 +76,12 @@ public class UtenteDAOImpl extends RiferimentoConnessione implements GenericDAO<
 
 	@Override
 	public boolean assegnazioneByID(int idSet, int idWhere) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean associazioneById(int idSet, int idWhere) {
 		// TODO Auto-generated method stub
 		return false;
 	}

@@ -8,7 +8,7 @@ import java.util.List;
 import model.Cliente;
 import utilitis.RiferimentoConnessione;
 
-public class ClienteDAOImpl extends RiferimentoConnessione implements GenericDAO<Cliente>{
+public class ClienteDAOImpl extends RiferimentoConnessione implements GenericDAO<Cliente>, Associazioni{
 	
 	private PreparedStatement ps;
 	private ResultSet rs;
@@ -27,9 +27,9 @@ public class ClienteDAOImpl extends RiferimentoConnessione implements GenericDAO
 					+ "VALUES (?, ?, ?, ?);"); //come assegnare un utente?
 			// ===== MEMO =====
 			//L'associazione avviene in un secondo momento con una join, inizialmente sarà null.
-			// è vero, questa non è una join, l'assegnazione avviene in un altro momento
+			// NO, questa non è una join, l'assegnazione avviene in un altro momento
 			// ma è sempre insert, quindi UPDATE siccome gia esiste
-			// sfruttanto 'where id_cliente = ?' 
+			// sfruttando 'where id_cliente = ?' 
 			// La Join è solo per visualizzare, non per inserire.
 			// Logica che dovrà essere poi richiamata dal service, qui solo esegue QUERY.
 			
@@ -47,8 +47,26 @@ public class ClienteDAOImpl extends RiferimentoConnessione implements GenericDAO
 
 	@Override
 	public Cliente readByID(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Cliente c = null;
+		
+		try {
+			ps = conn.prepareStatement("SELECT * FROM cliente WHERE id_cliente = ?;");
+			ps.setInt(1, id);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				c = new Cliente();
+				c.setIdCliente(rs.getInt("id_cliente"));
+				c.setNomeAzienda(rs.getString("nome_azienda"));
+				c.setRefereneAzienda(rs.getString("referente_azienda"));
+				c.setCategoriaMerceologica(rs.getString("categoria_merceologica"));
+				c.setTipologiaCliente(rs.getString("tipologia_cliente"));
+				c.setUtenteAssociato(rs.getInt("utente_associato"));
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return c;
 	}
 
 	@Override
@@ -80,18 +98,56 @@ public class ClienteDAOImpl extends RiferimentoConnessione implements GenericDAO
 
 	@Override
 	public boolean update(Cliente cliente) {
-		// TODO Auto-generated method stub
+		try {
+			ps = conn.prepareStatement("UPDATE cliente SET"
+					+ "nome_azienda = ?,"
+					+ "referente_azienda = ?,"
+					+ "categoria_merceologica = ?,"
+					+ "tipologia_cliente = ?"
+					+ "WHERE id_cliente = ?;");
+			ps.setString(1, cliente.getNomeAzienda());
+			ps.setString(2, cliente.getRefereneAzienda());
+			ps.setString(3, cliente.getCategoriaMerceologica());
+			ps.setString(4, cliente.getTipologiaCliente());
+			ps.setInt(5, cliente.getIdCliente());
+			ps.executeQuery();
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		return false;
 	}
 
 	@Override
 	public boolean deleteByID(int id) {
-		// TODO Auto-generated method stub
+		try {
+			ps = conn.prepareStatement("DELETE FROM cliente WHERE id_cliente = ?;");
+			ps.setInt(1, id);
+			ps.executeQuery();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public boolean assegnazioneByID(int idSet, int idWhere) {
+		try {
+			ps = conn.prepareStatement("UPDATE cliente SET utente_associato = ? WHERE id_cliente = ?");
+			ps.setInt(1, idSet);
+			ps.setInt(2, idWhere);
+			ps.executeUpdate();
+			return true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean associazioneById(int idSet, int idWhere) {
 		try {
 			ps = conn.prepareStatement("UPDATE cliente SET utente_associato = ? WHERE id_cliente = ?");
 			ps.setInt(1, idSet);

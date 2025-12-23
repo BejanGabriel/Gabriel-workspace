@@ -1,4 +1,6 @@
 package view;
+import java.util.List;
+
 import dao.ClienteDAOImpl;
 import dao.GenericDAO;
 import dao.UtenteDAOImpl;
@@ -19,19 +21,25 @@ public class Main {
 //		utente.setEmail("PAZZ.MARC@mail.com");
 //		utente.setPassword("123");
 		
+//		GenericDAO<Utente> gdU = new UtenteDAOImpl();
+//		Utente u = gdU.readByID(1);
+//		System.out.println(u);
 		//TESTING CLIENTE -> OK!
-		Cliente cliente = new Cliente();
-		cliente.setNomeAzienda("Pippo.s.r.l");
-		cliente.setRefereneAzienda("Luca Marconi");
-		cliente.setCategoriaMerceologica("Sviluppatore");
-		cliente.setTipologiaCliente("In Acquisizione");
+//		Cliente cliente = new Cliente();
+//		cliente.setNomeAzienda("Pippo.s.r.l");
+//		cliente.setRefereneAzienda("Luca Marconi");
+//		cliente.setCategoriaMerceologica("Sviluppatore");
+//		cliente.setTipologiaCliente("In Acquisizione");
 		
 		// UPDATING utente_assegnato FK -> OK!
-		GenericDAO<Cliente> gdU = new ClienteDAOImpl();
+		GenericDAO<Cliente> gdC = new ClienteDAOImpl();
 		//gdU.create(cliente);
-		gdU.readAll();
+		List<Cliente> listaClienti = gdC.readAll();
+		Cliente c = gdC.readByID(1);
+		System.out.println("=== Cliente Singolo ===\n" + c);
+		System.out.println("=== Lista Clienti ===\n" + listaClienti);
 		
-		gdU.assegnazioneByID(3, 4);
+		gdC.assegnazioneByID(3, 4);
 		
 		
 		
