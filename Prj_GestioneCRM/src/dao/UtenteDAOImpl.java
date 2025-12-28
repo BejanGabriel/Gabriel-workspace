@@ -2,12 +2,14 @@ package dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
+import model.Cliente;
 import model.Utente;
 import utilitis.RiferimentoConnessione;
 
-public class UtenteDAOImpl extends RiferimentoConnessione implements GenericDAO<Utente>, Associazioni{
+public class UtenteDAOImpl extends RiferimentoConnessione implements UtenteDAO{
 	
 	private PreparedStatement ps;
 	private ResultSet rs;
@@ -58,8 +60,28 @@ public class UtenteDAOImpl extends RiferimentoConnessione implements GenericDAO<
 
 	@Override
 	public List<Utente> readAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Utente> allUtenti = new ArrayList<>();
+		try {
+			ps = conn.prepareStatement("SELECT * FROM utente;");
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Utente utente = new Utente();
+				utente.setIdUtente(rs.getInt("id_utente"));
+				utente.setNomeUtente(rs.getString("nome_utente"));
+				utente.setRuolo(rs.getString("ruolo"));
+				utente.setEmail(rs.getString("email"));
+				utente.setPassword(rs.getString("password"));
+				
+				allUtenti.add(utente);
+				
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return allUtenti;
 	}
 
 	@Override
@@ -70,18 +92,6 @@ public class UtenteDAOImpl extends RiferimentoConnessione implements GenericDAO<
 
 	@Override
 	public boolean deleteByID(int id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean assegnazioneByID(int idSet, int idWhere) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean associazioneById(int idSet, int idWhere) {
 		// TODO Auto-generated method stub
 		return false;
 	}

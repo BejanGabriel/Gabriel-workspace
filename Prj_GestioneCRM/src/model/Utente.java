@@ -10,6 +10,17 @@ public class Utente {
 	private String email;
 	private String password;
 	private Date dataRegistrazione;
+	
+	public  Utente() {
+		
+	}
+	
+	public Utente(String nomeUtente, String ruolo, String email, String password) {
+		this.nomeUtente = nomeUtente;
+		this.ruolo = ruolo;
+		this.email = email;
+		this.password = password;
+	}
 	public int getIdUtente() {
 		return idUtente;
 	}

@@ -8,7 +8,7 @@ import java.util.List;
 import model.Appuntamento;
 import utilitis.RiferimentoConnessione;
 
-public class AppuntamentoDAOImpl extends RiferimentoConnessione implements GenericDAO<Appuntamento> {
+public class AppuntamentoDAOImpl extends RiferimentoConnessione implements AppuntamentoDAO{
 
 	private PreparedStatement ps;
 	private ResultSet rs;
@@ -17,15 +17,19 @@ public class AppuntamentoDAOImpl extends RiferimentoConnessione implements Gener
 	}
 
 	@Override
-	public boolean create(Appuntamento entity) {
-		// id_appuntament(col-1) è gia automaticamente gesti da mysql.
+	public boolean create(Appuntamento appuntamento) {
+		// id_appuntament(col-1) è gia automaticamente gestita da mysql.
 		// appuntamento ha 2 foreign key, id_cliente(col-2) e utente_associato(col-5)
 		try {
 			ps = conn.prepareStatement(
-					"INSERTI INTO appuntamento (id_cliente, data_appuntamento, descrizione, utente_associato)"
-							+ " value (?,?);");
+					"INSERT INTO appuntamento (id_cliente, descrizione, utente_associato)"
+							+ " value (?,?,?);");
+			ps.setInt(1, appuntamento.getIdCliente());
+			ps.setString(2, appuntamento.getDescrizione());
+			ps.setInt(3, appuntamento.getUtenteAssociato());
+			ps.executeQuery();
+			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;

@@ -9,6 +9,21 @@ public class Cliente {
 	private String tipologiaCliente;
 	private int utenteAssociato;
 	
+	
+	
+	public Cliente(String nomeAzienda, String refereneAzienda, String categoriaMerceologica, String tipologiaCliente,
+			int utenteAssociato) {
+		super();
+		this.nomeAzienda = nomeAzienda;
+		this.refereneAzienda = refereneAzienda;
+		this.categoriaMerceologica = categoriaMerceologica;
+		this.tipologiaCliente = tipologiaCliente;
+		this.utenteAssociato = utenteAssociato;
+	}
+
+	public Cliente() {
+	}
+	
 	public int getIdCliente() {
 		return idCliente;
 	}

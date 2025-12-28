@@ -8,7 +8,7 @@ import java.util.List;
 import model.Cliente;
 import utilitis.RiferimentoConnessione;
 
-public class ClienteDAOImpl extends RiferimentoConnessione implements GenericDAO<Cliente>, Associazioni{
+public class ClienteDAOImpl extends RiferimentoConnessione implements ClienteDAO{
 	
 	private PreparedStatement ps;
 	private ResultSet rs;
@@ -23,20 +23,21 @@ public class ClienteDAOImpl extends RiferimentoConnessione implements GenericDAO
 	public boolean create(Cliente cliente) {
 		try {
 			// creazione cliente
-			ps = conn.prepareStatement("INSERT INTO cliente (nome_azienda, referente_azienda, categoria_merceologica, tipologia_cliente)"
-					+ "VALUES (?, ?, ?, ?);"); //come assegnare un utente?
+			ps = conn.prepareStatement("INSERT INTO cliente (nome_azienda, referente_azienda, categoria_merceologica, tipologia_cliente, utente_associato)"
+					+ "VALUES (?, ?, ?, ?, ?);"); //come assegnare un utente?
 			// ===== MEMO =====
 			//L'associazione avviene in un secondo momento con una join, inizialmente sarà null.
 			// NO, questa non è una join, l'assegnazione avviene in un altro momento
 			// ma è sempre insert, quindi UPDATE siccome gia esiste
 			// sfruttando 'where id_cliente = ?' 
 			// La Join è solo per visualizzare, non per inserire.
-			// Logica che dovrà essere poi richiamata dal service, qui solo esegue QUERY.
+			// Logica che dovrà essere poi richiamata dal service, qui esegue solo la QUERY.
 			
 			ps.setString(1, cliente.getNomeAzienda());
 			ps.setString(2, cliente.getRefereneAzienda());
 			ps.setString(3, cliente.getCategoriaMerceologica());
 			ps.setString(4, cliente.getTipologiaCliente());
+			ps.setInt(5, cliente.getUtenteAssociato());
 			ps.executeUpdate();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -133,21 +134,6 @@ public class ClienteDAOImpl extends RiferimentoConnessione implements GenericDAO
 
 	@Override
 	public boolean assegnazioneByID(int idSet, int idWhere) {
-		try {
-			ps = conn.prepareStatement("UPDATE cliente SET utente_associato = ? WHERE id_cliente = ?");
-			ps.setInt(1, idSet);
-			ps.setInt(2, idWhere);
-			ps.executeUpdate();
-			return true;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	@Override
-	public boolean associazioneById(int idSet, int idWhere) {
 		try {
 			ps = conn.prepareStatement("UPDATE cliente SET utente_associato = ? WHERE id_cliente = ?");
 			ps.setInt(1, idSet);

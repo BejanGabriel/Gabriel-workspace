@@ -9,7 +9,6 @@ public interface GenericDAO<T> {
 	List<T> readAll();
 	boolean update(T entity);
 	boolean deleteByID(int id);
-	boolean assegnazioneByID(int idSet, int idWhere);
 	
 	
 }
