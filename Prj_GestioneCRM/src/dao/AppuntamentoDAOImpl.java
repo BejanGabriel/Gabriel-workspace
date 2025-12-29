@@ -3,12 +3,13 @@ package dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import model.Appuntamento;
-import utilitis.RiferimentoConnessione;
+import shortCuts.Utilitys;
 
-public class AppuntamentoDAOImpl extends RiferimentoConnessione implements AppuntamentoDAO{
+public class AppuntamentoDAOImpl extends Utilitys implements AppuntamentoDAO{
 
 	private PreparedStatement ps;
 	private ResultSet rs;
@@ -27,7 +28,7 @@ public class AppuntamentoDAOImpl extends RiferimentoConnessione implements Appun
 			ps.setInt(1, appuntamento.getIdCliente());
 			ps.setString(2, appuntamento.getDescrizione());
 			ps.setInt(3, appuntamento.getUtenteAssociato());
-			ps.executeQuery();
+			ps.executeUpdate();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -37,14 +38,45 @@ public class AppuntamentoDAOImpl extends RiferimentoConnessione implements Appun
 
 	@Override
 	public Appuntamento readByID(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Appuntamento a = null;
+		try {
+			ps = conn.prepareStatement("SELECT * FROM appuntamento WHERE id_appuntamento = ?);");
+			ps.setInt(1, id);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				a = new Appuntamento();
+				a.setIdAppuntamento(rs.getInt("id_appuntamento"));
+				a.setIdCliente(rs.getInt("id_cliente"));
+				a.setDescrizione(rs.getString("descrizione"));
+				a.setUtenteAssociato(rs.getInt("utente_associato"));
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return a;
 	}
 
 	@Override
 	public List<Appuntamento> readAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Appuntamento> appuntamenti = new ArrayList<>();
+		try {
+			ps = conn.prepareStatement("SELECT * FROM appuntamento;");
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				Appuntamento a = new Appuntamento();
+				a.setIdAppuntamento(rs.getInt("id_appuntamento"));
+				a.setIdCliente(rs.getInt("id_cliente"));
+				a.setDataAppuntamento(rs.getDate("data_appuntamento"));
+				a.setDescrizione(rs.getString("descrizione"));
+				a.setUtenteAssociato(rs.getInt("utente_associato"));
+				
+				appuntamenti.add(a);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return appuntamenti;
 	}
 
 	@Override
@@ -55,7 +87,15 @@ public class AppuntamentoDAOImpl extends RiferimentoConnessione implements Appun
 
 	@Override
 	public boolean deleteByID(int id) {
-		// TODO Auto-generated method stub
+			
+		try {
+			ps = conn.prepareStatement("DELETE FROM appuntamento WHERE id_appuntamento = ?;");
+			ps.setInt(1, id);
+			ps.executeUpdate();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 

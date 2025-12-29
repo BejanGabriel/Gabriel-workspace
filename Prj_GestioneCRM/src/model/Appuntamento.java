@@ -10,6 +10,15 @@ public class Appuntamento {
 	private String descrizione;
 	private int utenteAssociato;
 	
+	public Appuntamento() {
+	}
+
+	public Appuntamento(int idCliente, String descrizione, int utenteAssociato) {
+		this.idCliente = idCliente;
+		this.descrizione = descrizione;
+		this.utenteAssociato = utenteAssociato;
+	}
+	
 	public int getIdAppuntamento() {
 		return idAppuntamento;
 	}

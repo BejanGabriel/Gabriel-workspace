@@ -40,8 +40,16 @@ public class UtenteService {
 			System.out.println("La lista è vuota");
 			return null;
 		}
-
 		return utenteDAO.readAll();
+	}
+	
+	public void eliminaUtente(int id) {
+		if(id > 0) {
+			utenteDAO.deleteByID(id);
+			System.out.println("Utente eliminato.");
+			return;
+		}
+		System.out.println("Utente non eliminato!");
 	}
 	
 }

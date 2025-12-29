@@ -62,5 +62,4 @@ public class Utente {
 		return "Utente [idUtente=" + idUtente + ", nomeUtente=" + nomeUtente + ", ruolo=" + ruolo + ", email=" + email
 				+ ", password=" + password + ", dataRegistrazione=" + dataRegistrazione + "]";
 	}
-	
 }

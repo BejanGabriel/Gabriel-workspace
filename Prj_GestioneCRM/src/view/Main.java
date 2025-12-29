@@ -5,21 +5,31 @@ import java.util.Scanner;
 import database.DBConnection;
 import model.Cliente;
 import model.Utente;
+import service.AppuntamentoService;
 import service.ClienteService;
 import service.UtenteService;
 
-public class Main {
+// main troppo grosso, bisogna dividerlo in vari menu apositi.
+// per ora lascio cosi, più avanti frammento la logica.
+
+public class Main{
+	
 	private static Scanner scan = new Scanner(System.in);
 	private static UtenteService us = new UtenteService();
 	private static ClienteService cs = new ClienteService();
+	private static AppuntamentoService as = new AppuntamentoService();
+	
 	public static void main(String[] args) {
 		
 		// apertura della connessione all'avvio del main.
 		DBConnection connessione = DBConnection.getInstance();
 		connessione.getConnessione();
 //		aggiuntiUtente();
-		aggiungiCliente();
+//		aggiungiCliente();
+		eliminaCliente();
 //		System.out.println(us.getAllUtenti());
+//		creaAppuntamento();
+		
 		
 		//TESTING UTENTE -> OK!
 //		Utente utente = new Utente();
@@ -75,7 +85,7 @@ public class Main {
 		us.aggiungiUtente(nome,ruolo,email,password);
 	}
 	
-	private static int segliUtente() {
+	private static Utente scegliUtente() {
 		List<Utente> utenti = us.getAllUtenti();
 		int contatore = 0;
 		for(Utente u : utenti) {
@@ -84,7 +94,20 @@ public class Main {
 		System.out.println("Seleziona un utente: ");
 		int scelta = scan.nextInt();
 		scan.nextLine();
-		return utenti.get(scelta-1).getIdUtente();
+		return utenti.get(scelta-1);
+	}
+	
+	
+	private static Cliente scegliCliente() {
+		List<Cliente> clienti = cs.getAllClienti();
+		int contatore = 0;
+		for(Cliente c : clienti) {
+			System.out.println(++contatore + ") " + c.getRefereneAzienda());
+		}
+		System.out.println("Seleziona un utente: ");
+		int scelta = scan.nextInt();
+		scan.nextLine();
+		return clienti.get(scelta-1);
 	}
 	
 	private static void aggiungiCliente() {
@@ -98,8 +121,24 @@ public class Main {
 		System.out.println("Inserisci il tipo di cliente: ");
 		String tipoCliente = scan.nextLine();
 		System.out.println("Segli l'utente associato:");
-		int utenteAssociato = segliUtente();
+		int utenteAssociato = scegliUtente().getIdUtente();
 		cs.aggiungiCliente(nomeAzienda, referenteAzienda, catMerceologica, tipoCliente, utenteAssociato);
 
+	}
+	
+	private static void creaAppuntamento() {
+		System.out.println("Con quale Cliente sarà l'appuntamento?");
+		int idCliente = scegliCliente().getIdCliente();
+		System.out.println("Inserisci descrizione dell'appuntamento: ");
+		String descrizione = scan.nextLine();
+		System.out.println("Quale utente si occuperà dell'appuntamento?");
+		int utenteAssegnato = scegliUtente().getIdUtente();
+		as.creaAppuntamento(idCliente, descrizione, utenteAssegnato);
+	}
+	
+	private static void eliminaCliente() {
+		System.out.println("Quale cliente vuoi eliminare?");
+		int idCliente = scegliCliente().getIdCliente();
+		cs.eliminaCliente(idCliente);
 	}
 }

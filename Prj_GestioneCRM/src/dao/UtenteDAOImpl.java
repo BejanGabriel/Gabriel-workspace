@@ -7,9 +7,9 @@ import java.util.List;
 
 import model.Cliente;
 import model.Utente;
-import utilitis.RiferimentoConnessione;
+import shortCuts.Utilitys;
 
-public class UtenteDAOImpl extends RiferimentoConnessione implements UtenteDAO{
+public class UtenteDAOImpl extends Utilitys implements UtenteDAO{
 	
 	private PreparedStatement ps;
 	private ResultSet rs;

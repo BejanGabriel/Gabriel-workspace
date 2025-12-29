@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Cliente;
-import utilitis.RiferimentoConnessione;
+import shortCuts.Utilitys;
 
-public class ClienteDAOImpl extends RiferimentoConnessione implements ClienteDAO{
+public class ClienteDAOImpl extends Utilitys implements ClienteDAO{
 	
 	private PreparedStatement ps;
 	private ResultSet rs;
@@ -124,7 +124,7 @@ public class ClienteDAOImpl extends RiferimentoConnessione implements ClienteDAO
 		try {
 			ps = conn.prepareStatement("DELETE FROM cliente WHERE id_cliente = ?;");
 			ps.setInt(1, id);
-			ps.executeQuery();
+			ps.executeUpdate();
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
