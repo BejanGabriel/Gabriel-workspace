@@ -23,4 +23,6 @@ public abstract class Utilitys {
 		return lista.get(scelta-1);
 	}
 	
+	// metodo validatore da usere nelle classi DAOImpl per controllare la correttezza del dato inserito / ricevuto.
+	
 }

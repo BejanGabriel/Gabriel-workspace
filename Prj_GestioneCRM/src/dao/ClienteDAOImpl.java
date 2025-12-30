@@ -111,10 +111,9 @@ public class ClienteDAOImpl extends Utilitys implements ClienteDAO{
 			ps.setString(3, cliente.getCategoriaMerceologica());
 			ps.setString(4, cliente.getTipologiaCliente());
 			ps.setInt(5, cliente.getIdCliente());
-			ps.executeQuery();
-			return true;
+			ps.executeUpdate();
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return false;
 	}
@@ -125,13 +124,14 @@ public class ClienteDAOImpl extends Utilitys implements ClienteDAO{
 			ps = conn.prepareStatement("DELETE FROM cliente WHERE id_cliente = ?;");
 			ps.setInt(1, id);
 			ps.executeUpdate();
-			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
 
+	
+	// ATTUALMENTE NON SERVE PIù --- RIMUOVERE SUCCESSIVAMENTE DAL CODICE
 	@Override
 	public boolean assegnazioneByID(int idSet, int idWhere) {
 		try {

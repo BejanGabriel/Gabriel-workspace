@@ -2,6 +2,9 @@ package view;
 
 import java.util.List;
 import java.util.Scanner;
+
+import controller.ClienteMenu;
+import controller.UtenteMenu;
 import database.DBConnection;
 import model.Cliente;
 import model.Utente;
@@ -18,15 +21,38 @@ public class Main{
 	private static UtenteService us = new UtenteService();
 	private static ClienteService cs = new ClienteService();
 	private static AppuntamentoService as = new AppuntamentoService();
+	private static UtenteMenu um = new UtenteMenu();
+	private static ClienteMenu cm = new ClienteMenu();
 	
 	public static void main(String[] args) {
 		
 		// apertura della connessione all'avvio del main.
 		DBConnection connessione = DBConnection.getInstance();
 		connessione.getConnessione();
+		
+		boolean continua = true;
+		do {
+			mostraMenu();
+			System.out.println("Quale operazione vuoi effettuare? ");
+			int scelta = scan.nextInt();
+			scan.nextLine();
+			switch(scelta) {
+			case 1:
+					um.mostraMenu();
+					break;
+			case 2: 
+				System.out.println("Step 2!!");
+				break;
+			case 0: 
+				System.out.println("Chiusura in corso...");
+				continua = false;
+			}
+		} while(continua);
+		
+		// =========== AREA TESTING =========== 
 //		aggiuntiUtente();
 //		aggiungiCliente();
-		eliminaCliente();
+//		eliminaCliente();
 //		System.out.println(us.getAllUtenti());
 //		creaAppuntamento();
 		
@@ -68,6 +94,16 @@ public class Main{
 		
 		//questa verrà avviato solo dopo aver finito tutto quello che volevo fare.
 		connessione.close();
+		
+	}
+
+	private static void mostraMenu() {
+		
+		System.out.println("==== Menu Globale ====");
+		System.out.println("1. Menu Utente");
+		System.out.println("2. Menu Cliente");
+		System.out.println("3. Menu Appuntamento");
+		System.out.println("0. Esci");
 		
 	}
 

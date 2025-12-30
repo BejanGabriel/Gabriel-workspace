@@ -72,6 +72,7 @@ public class UtenteDAOImpl extends Utilitys implements UtenteDAO{
 				utente.setRuolo(rs.getString("ruolo"));
 				utente.setEmail(rs.getString("email"));
 				utente.setPassword(rs.getString("password"));
+				utente.setDataRegistrazione(rs.getDate("data_registrazione"));
 				
 				allUtenti.add(utente);
 				
@@ -86,13 +87,35 @@ public class UtenteDAOImpl extends Utilitys implements UtenteDAO{
 
 	@Override
 	public boolean update(Utente utente) {
-		// TODO Auto-generated method stub
+		try {
+			ps = conn.prepareStatement("UPDATE utente SET "
+					+ "nome_utente = ?,"
+					+ "ruolo = ?,"
+					+ "email = ?,"
+					+ "password = ?"
+					+ "WHERE id_utente = ?");
+			ps.setString(1, utente.getNomeUtente());
+			ps.setString(2, utente.getRuolo());
+			ps.setString(3, utente.getEmail());
+			ps.setString(4, utente.getPassword());
+			ps.setInt(5, utente.getIdUtente());
+			ps.executeUpdate();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public boolean deleteByID(int id) {
-		// TODO Auto-generated method stub
+		try {
+			ps = conn.prepareStatement("DELETE FROM utente WHERE id_utente = ?");
+			ps.setInt(1, id);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 

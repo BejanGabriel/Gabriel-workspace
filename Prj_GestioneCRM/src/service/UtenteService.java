@@ -28,16 +28,16 @@ public class UtenteService {
 	
 	public Utente getSingoloUtente(int idUtente) {
 		if(idUtente > 0) {
-			System.out.println("=== UTENTE TROVATO ===");
+			System.out.println("Utente trovato.");
 			return utenteDAO.readByID(idUtente);
 		}
-		System.out.println("Utente non trovato");
+		System.out.println("Utente non trovato!");
 		return null;
 	}
 	
 	public List<Utente> getAllUtenti(){
 		if(utenteDAO.readAll().size() == 0) {
-			System.out.println("La lista è vuota");
+			System.out.println("La lista è vuota!");
 			return null;
 		}
 		return utenteDAO.readAll();
@@ -50,6 +50,15 @@ public class UtenteService {
 			return;
 		}
 		System.out.println("Utente non eliminato!");
+	}
+	
+	public void modificaUtente(Utente utente) {
+		if(utente != null) {
+			utenteDAO.update(utente);
+			System.out.println("Utente aggiornato");
+			return;
+		}
+		System.out.println("Utente non aggiornato!");
 	}
 	
 }

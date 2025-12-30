@@ -80,8 +80,23 @@ public class AppuntamentoDAOImpl extends Utilitys implements AppuntamentoDAO{
 	}
 
 	@Override
-	public boolean update(Appuntamento entity) {
-		// TODO Auto-generated method stub
+	public boolean update(Appuntamento appuntamento) {
+		try {
+			ps = conn.prepareStatement("UPDATE appuntamento SET"
+					+ " data_appuntamento = ?,"
+					+ "descrizione = ?,"
+					+ "utente_associato = ?"
+					+ "WHERE id_appuntamento = ?;");
+			ps.setDate(1, appuntamento.getDataAppuntamento());
+			//La data va aggiustata di formato, da fare nel controller di appuntamento.
+			ps.setString(2, appuntamento.getDescrizione());
+			ps.setInt(3, appuntamento.getUtenteAssociato());
+			ps.setInt(4, appuntamento.getIdAppuntamento());
+			ps.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 

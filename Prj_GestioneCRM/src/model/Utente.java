@@ -31,6 +31,13 @@ public class Utente {
 		return nomeUtente;
 	}
 	public void setNomeUtente(String nomeUtente) {
+//		int min = 3;
+//		int max = 10;
+//		if(nomeUtente == null || nomeUtente.length() < min || nomeUtente.length() > max || !nomeUtente.matches("[^a-zA-Z+]")) {
+//			throw new IllegalArgumentException("Il nome utente deve contenere tra " + min + " e " + max + " caratteri alfabetici");
+//		} else {
+//			this.nomeUtente = nomeUtente;
+//		}
 		this.nomeUtente = nomeUtente;
 	}
 	public String getRuolo() {
@@ -49,6 +56,13 @@ public class Utente {
 		return password;
 	}
 	public void setPassword(String password) {
+//		int min = 5;
+//		int max = 30;
+//		if(password.length() < min || password.length() > max) {
+//			throw new IllegalArgumentException("La password deve essere lunga tra " + min + " e " + max + " caratteri alfanumerici.");
+//		}else {
+//			this.password = password;
+//		}
 		this.password = password;
 	}
 	public Date getDataRegistrazione() {
