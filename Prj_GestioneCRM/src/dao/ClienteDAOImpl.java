@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Cliente;
-import shortCuts.Utilitys;
+import shortCuts.Scorciatoia;
 
-public class ClienteDAOImpl extends Utilitys implements ClienteDAO{
+public class ClienteDAOImpl extends Scorciatoia implements ClienteDAO{
 	
 	private PreparedStatement ps;
 	private ResultSet rs;

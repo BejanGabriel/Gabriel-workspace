@@ -7,9 +7,9 @@ import java.util.List;
 
 import model.Cliente;
 import model.Utente;
-import shortCuts.Utilitys;
+import shortCuts.Scorciatoia;
 
-public class UtenteDAOImpl extends Utilitys implements UtenteDAO{
+public class UtenteDAOImpl extends Scorciatoia implements UtenteDAO{
 	
 	private PreparedStatement ps;
 	private ResultSet rs;

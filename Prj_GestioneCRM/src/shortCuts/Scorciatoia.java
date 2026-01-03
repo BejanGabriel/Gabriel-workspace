@@ -6,9 +6,11 @@ import java.util.Scanner;
 
 import database.DBConnection;
 // Può sembrare una classe inutile, e sicuramente lo è per un progetto cosi piccolo. Ma se mai mi dovessi ampliare, o cambiare db
-public abstract class Utilitys {
+public abstract class Scorciatoia {
 	// Connessione al db
 	protected Connection conn = DBConnection.getInstance().getConnessione();
+	
+	
 	
 	// metodo generico per la scelta di un elemento
 	

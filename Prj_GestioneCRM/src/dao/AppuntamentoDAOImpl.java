@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Appuntamento;
-import shortCuts.Utilitys;
+import shortCuts.Scorciatoia;
 
-public class AppuntamentoDAOImpl extends Utilitys implements AppuntamentoDAO{
+public class AppuntamentoDAOImpl extends Scorciatoia implements AppuntamentoDAO{
 
 	private PreparedStatement ps;
 	private ResultSet rs;

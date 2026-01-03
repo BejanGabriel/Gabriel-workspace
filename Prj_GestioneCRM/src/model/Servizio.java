@@ -6,9 +6,23 @@ public class Servizio {
 	private String nomeServizio;
 	private String descrizione;
 	private double prezzo;
+	
 	public int getIdServizio() {
 		return idServizio;
 	}
+	
+	
+	
+	public Servizio() {
+	}
+
+	public Servizio(String nomeServizio, String descrizione, double prezzo) {
+		super();
+		this.nomeServizio = nomeServizio;
+		this.descrizione = descrizione;
+		this.prezzo = prezzo;
+	}
+
 	public void setIdServizio(int idServizio) {
 		this.idServizio = idServizio;
 	}

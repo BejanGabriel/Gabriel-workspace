@@ -162,14 +162,14 @@ public class Main{
 
 	}
 	
-	private static void creaAppuntamento() {
-		System.out.println("Con quale Cliente sarà l'appuntamento?");
-		int idCliente = scegliCliente().getIdCliente();
+	private static void creaAppuntamento(Cliente idCliente) {
+//		System.out.println("Con quale Cliente sarà l'appuntamento?");
+//		int idCliente = scegliCliente().getIdCliente();
 		System.out.println("Inserisci descrizione dell'appuntamento: ");
 		String descrizione = scan.nextLine();
 		System.out.println("Quale utente si occuperà dell'appuntamento?");
 		int utenteAssegnato = scegliUtente().getIdUtente();
-		as.creaAppuntamento(idCliente, descrizione, utenteAssegnato);
+		as.creaAppuntamento(idCliente.getIdCliente(), descrizione, utenteAssegnato);
 	}
 	
 	private static void eliminaCliente() {
