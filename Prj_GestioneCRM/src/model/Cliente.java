@@ -5,13 +5,13 @@ public class Cliente {
 	private int idCliente;
 	private String nomeAzienda;
 	private String refereneAzienda;
-	private String categoriaMerceologica;
+	private CategoriaMerceologica categoriaMerceologica;
 	private String tipologiaCliente;
 	private int utenteAssociato;
 	
 	
 	
-	public Cliente(String nomeAzienda, String refereneAzienda, String categoriaMerceologica, String tipologiaCliente,
+	public Cliente(String nomeAzienda, String refereneAzienda, CategoriaMerceologica categoriaMerceologica, String tipologiaCliente,
 			int utenteAssociato) {
 		super();
 		this.nomeAzienda = nomeAzienda;
@@ -42,11 +42,11 @@ public class Cliente {
 	public void setRefereneAzienda(String refereneAzienda) {
 		this.refereneAzienda = refereneAzienda;
 	}
-	public String getCategoriaMerceologica() {
+	public CategoriaMerceologica getCategoriaMerceologica() {
 		return categoriaMerceologica;
 	}
-	public void setCategoriaMerceologica(String categoriaMerceologica) {
-		this.categoriaMerceologica = categoriaMerceologica;
+	public void setCategoriaMerceologica(CategoriaMerceologica categoria) {
+		this.categoriaMerceologica = categoria;
 	}
 	public String getTipologiaCliente() {
 		return tipologiaCliente;
@@ -63,7 +63,7 @@ public class Cliente {
 	@Override
 	public String toString() {
 		return "Cliente [idCliente=" + idCliente + ", nomeAzienda=" + nomeAzienda + ", refereneAzienda="
-				+ refereneAzienda + ", categoriaMerceologica=" + categoriaMerceologica + ", tipologiaCliente="
+				+ refereneAzienda + ", categoriaMerceologica=" + categoriaMerceologica.getNome() + ", tipologiaCliente="
 				+ tipologiaCliente + ", utenteAssociato=" + utenteAssociato + "]";
 	}
 	

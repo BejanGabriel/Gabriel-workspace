@@ -56,7 +56,6 @@ public class UtenteService {
 		if(utente != null) {
 			utenteDAO.update(utente);
 			System.out.println("Utente aggiornato");
-			return;
 		}
 		System.out.println("Utente non aggiornato!");
 	}

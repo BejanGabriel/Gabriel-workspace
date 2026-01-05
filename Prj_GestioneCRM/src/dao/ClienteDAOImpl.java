@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.CategoriaMerceologica;
 import model.Cliente;
 import shortCuts.Scorciatoia;
 
@@ -35,7 +36,7 @@ public class ClienteDAOImpl extends Scorciatoia implements ClienteDAO{
 			
 			ps.setString(1, cliente.getNomeAzienda());
 			ps.setString(2, cliente.getRefereneAzienda());
-			ps.setString(3, cliente.getCategoriaMerceologica());
+			ps.setString(3, cliente.getCategoriaMerceologica().getNome());
 			ps.setString(4, cliente.getTipologiaCliente());
 			ps.setInt(5, cliente.getUtenteAssociato());
 			ps.executeUpdate();
@@ -59,7 +60,7 @@ public class ClienteDAOImpl extends Scorciatoia implements ClienteDAO{
 				c.setIdCliente(rs.getInt("id_cliente"));
 				c.setNomeAzienda(rs.getString("nome_azienda"));
 				c.setRefereneAzienda(rs.getString("referente_azienda"));
-				c.setCategoriaMerceologica(rs.getString("categoria_merceologica"));
+				c.setCategoriaMerceologica(CategoriaMerceologica.valueOf(rs.getString("categoria_merceologica").toUpperCase()));
 				c.setTipologiaCliente(rs.getString("tipologia_cliente"));
 				c.setUtenteAssociato(rs.getInt("utente_associato"));
 				
@@ -81,7 +82,7 @@ public class ClienteDAOImpl extends Scorciatoia implements ClienteDAO{
 				Cliente cliente = new Cliente();
 				cliente.setIdCliente(rs.getInt("id_cliente"));
 				cliente.setNomeAzienda(rs.getString("nome_azienda"));
-				cliente.setCategoriaMerceologica(rs.getString("categoria_merceologica"));
+				cliente.setCategoriaMerceologica(CategoriaMerceologica.valueOf(rs.getString("categoria_merceologica").toUpperCase()));
 				cliente.setRefereneAzienda(rs.getString("referente_azienda"));
 				cliente.setTipologiaCliente(rs.getString("tipologia_cliente"));
 				cliente.setUtenteAssociato(rs.getInt("utente_associato"));
@@ -100,17 +101,19 @@ public class ClienteDAOImpl extends Scorciatoia implements ClienteDAO{
 	@Override
 	public boolean update(Cliente cliente) {
 		try {
-			ps = conn.prepareStatement("UPDATE cliente SET"
+			ps = conn.prepareStatement("UPDATE cliente SET "
 					+ "nome_azienda = ?,"
 					+ "referente_azienda = ?,"
 					+ "categoria_merceologica = ?,"
-					+ "tipologia_cliente = ?"
+					+ "tipologia_cliente = ?,"
+					+ "utente_associato = ? "
 					+ "WHERE id_cliente = ?;");
 			ps.setString(1, cliente.getNomeAzienda());
 			ps.setString(2, cliente.getRefereneAzienda());
-			ps.setString(3, cliente.getCategoriaMerceologica());
+			ps.setString(3, cliente.getCategoriaMerceologica().getNome());
 			ps.setString(4, cliente.getTipologiaCliente());
-			ps.setInt(5, cliente.getIdCliente());
+			ps.setInt(5, cliente.getUtenteAssociato());
+			ps.setInt(6, cliente.getIdCliente());
 			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -4,6 +4,7 @@ import java.util.List;
 
 import dao.ClienteDAO;
 import dao.ClienteDAOImpl;
+import model.CategoriaMerceologica;
 import model.Cliente;
 
 public class ClienteService {
@@ -14,7 +15,7 @@ public class ClienteService {
 		this.clienteDAO = new ClienteDAOImpl();
 	}
 
-	public boolean aggiungiCliente(String nomeAzienda, String referenteAzienda, String cattMerceologica, String tipoCliente, int utenteAssociato) {
+	public boolean aggiungiCliente(String nomeAzienda, String referenteAzienda, CategoriaMerceologica cattMerceologica, String tipoCliente, int utenteAssociato) {
 		if (nomeAzienda == null || nomeAzienda.isBlank()) {
 			//Il primo elemento NOT NULL in sql è il nome_azienda, se già in partenza è sbagliato o mancante blocco tutto.
 			System.out.println("Cliente non creato!");
@@ -27,28 +28,31 @@ public class ClienteService {
 
 	public Cliente getSingoloCliente(int idCliente) {
 		if (idCliente > 0) {
-			System.out.println("Cliente trovato");
 			return clienteDAO.readByID(idCliente);
 		}
-		System.out.println("Cliente non trovato!");
-		return null;
+		throw new IllegalArgumentException("Cliente non trovato!");
 	}
 
 	public List<Cliente> getAllClienti() {
 		if(!clienteDAO.readAll().isEmpty()) {
 			return clienteDAO.readAll();
 		}
-		System.out.println("La lista dei clienti è vuota!");
-		return null;
+		throw new IllegalArgumentException("La lista dei clienti è vuota!");
 	}
 	
 	public void eliminaCliente(int id) {
 		if(id > 0) {
 			clienteDAO.deleteByID(id);
-			System.out.println("Cliente eliminato.");
-			return;
+
 		}
-		System.out.println("Cliente non trovato!");
+		throw new IllegalArgumentException("Cliente non trovato!");
+	}
+	
+	public void modificaCliente(Cliente modificato) {
+		if(modificato == null) {
+			throw new IllegalArgumentException("Cliente non modificato!");
+		}
+		clienteDAO.update(modificato);
 	}
 
 }

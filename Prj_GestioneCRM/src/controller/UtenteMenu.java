@@ -35,7 +35,7 @@ public class UtenteMenu {
 				System.out.println("Inserisci ID Utente");
 				int idUtente = scan.nextInt();
 				scan.nextLine();
-				us.getSingoloUtente(idUtente);
+				System.out.println(us.getSingoloUtente(idUtente)); 
 				break;
 			case 4:
 				System.out.println("=== Lista Utenti ===");
@@ -100,6 +100,7 @@ public class UtenteMenu {
 		System.out.println("Seleziona un utente: ");
 		int scelta = scan.nextInt();
 		scan.nextLine();
+		if(scelta == 0) return null;
 		return utenti.get(scelta - 1);
 	}
 
