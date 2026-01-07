@@ -7,6 +7,7 @@ import java.util.List;
 
 import model.CategoriaMerceologica;
 import model.Cliente;
+import model.TipologiaCliente;
 import shortCuts.Scorciatoia;
 
 public class ClienteDAOImpl extends Scorciatoia implements ClienteDAO{
@@ -37,7 +38,7 @@ public class ClienteDAOImpl extends Scorciatoia implements ClienteDAO{
 			ps.setString(1, cliente.getNomeAzienda());
 			ps.setString(2, cliente.getRefereneAzienda());
 			ps.setString(3, cliente.getCategoriaMerceologica().getNome());
-			ps.setString(4, cliente.getTipologiaCliente());
+			ps.setString(4, cliente.getTipologiaCliente().getNome());
 			ps.setInt(5, cliente.getUtenteAssociato());
 			ps.executeUpdate();
 		} catch (Exception e) {
@@ -61,7 +62,7 @@ public class ClienteDAOImpl extends Scorciatoia implements ClienteDAO{
 				c.setNomeAzienda(rs.getString("nome_azienda"));
 				c.setRefereneAzienda(rs.getString("referente_azienda"));
 				c.setCategoriaMerceologica(CategoriaMerceologica.valueOf(rs.getString("categoria_merceologica").toUpperCase()));
-				c.setTipologiaCliente(rs.getString("tipologia_cliente"));
+				c.setTipologiaCliente(TipologiaCliente.valueOf(rs.getString("tipologia_cliente").toUpperCase().replace(" ", "")));
 				c.setUtenteAssociato(rs.getInt("utente_associato"));
 				
 			}
@@ -84,7 +85,7 @@ public class ClienteDAOImpl extends Scorciatoia implements ClienteDAO{
 				cliente.setNomeAzienda(rs.getString("nome_azienda"));
 				cliente.setCategoriaMerceologica(CategoriaMerceologica.valueOf(rs.getString("categoria_merceologica").toUpperCase()));
 				cliente.setRefereneAzienda(rs.getString("referente_azienda"));
-				cliente.setTipologiaCliente(rs.getString("tipologia_cliente"));
+				cliente.setTipologiaCliente(TipologiaCliente.valueOf(rs.getString("tipologia_cliente").toUpperCase().replace(" ", "")));
 				cliente.setUtenteAssociato(rs.getInt("utente_associato"));
 				
 				allClienti.add(cliente);
@@ -111,7 +112,7 @@ public class ClienteDAOImpl extends Scorciatoia implements ClienteDAO{
 			ps.setString(1, cliente.getNomeAzienda());
 			ps.setString(2, cliente.getRefereneAzienda());
 			ps.setString(3, cliente.getCategoriaMerceologica().getNome());
-			ps.setString(4, cliente.getTipologiaCliente());
+			ps.setString(4, cliente.getTipologiaCliente().getNome());
 			ps.setInt(5, cliente.getUtenteAssociato());
 			ps.setInt(6, cliente.getIdCliente());
 			ps.executeUpdate();
@@ -148,6 +149,84 @@ public class ClienteDAOImpl extends Scorciatoia implements ClienteDAO{
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	@Override
+	public List<Cliente> readByCategoria(String categoria) {
+		List<Cliente> clientiCategoria = new ArrayList<>();
+		try {
+			ps= conn.prepareStatement("SELECT * FROM cliente WHERE categoria_merceologica = ?");
+			ps.setString(1, categoria);
+			
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				Cliente c = new Cliente();
+				c.setIdCliente(rs.getInt("id_cliente"));
+				c.setNomeAzienda(rs.getString("nome_azienda"));
+				c.setRefereneAzienda(rs.getString("referente_azienda"));
+				c.setCategoriaMerceologica(CategoriaMerceologica.valueOf(rs.getString("categoria_merceologica").toUpperCase()));
+				c.setTipologiaCliente(TipologiaCliente.valueOf(rs.getString("tipologia_cliente").toUpperCase().replace(" ", "")));
+				c.setUtenteAssociato(rs.getInt("utente_associato"));
+				
+				clientiCategoria.add(c);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return clientiCategoria;
+	}
+
+	@Override
+	public List<Cliente> readByTipologia(String tipologia) {
+		List<Cliente> clientiTipologia = new ArrayList<>();
+		try {
+			ps= conn.prepareStatement("SELECT * FROM cliente WHERE tipologia_cliente = ?");
+			ps.setString(1, tipologia);
+			
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				Cliente c = new Cliente();
+				c.setIdCliente(rs.getInt("id_cliente"));
+				c.setNomeAzienda(rs.getString("nome_azienda"));
+				c.setRefereneAzienda(rs.getString("referente_azienda"));
+				c.setCategoriaMerceologica(CategoriaMerceologica.valueOf(rs.getString("categoria_merceologica").toUpperCase()));
+				c.setTipologiaCliente(TipologiaCliente.valueOf(rs.getString("tipologia_cliente").toUpperCase().replace(" ", "")));
+				c.setUtenteAssociato(rs.getInt("utente_associato"));
+				
+				clientiTipologia.add(c);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return clientiTipologia;
+		
+	}
+	
+
+	@Override
+	public List<Cliente> readByUtente(int idUtente) {
+		List<Cliente> clientiUtente = new ArrayList<>();
+		try {
+			ps= conn.prepareStatement("SELECT * FROM cliente WHERE utente_associato = ?");
+			ps.setInt(1, idUtente);
+			
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				Cliente c = new Cliente();
+				c.setIdCliente(rs.getInt("id_cliente"));
+				c.setNomeAzienda(rs.getString("nome_azienda"));
+				c.setRefereneAzienda(rs.getString("referente_azienda"));
+				c.setCategoriaMerceologica(CategoriaMerceologica.valueOf(rs.getString("categoria_merceologica").toUpperCase()));
+				c.setTipologiaCliente(TipologiaCliente.valueOf(rs.getString("tipologia_cliente").toUpperCase().replace(" ", "")));
+				c.setUtenteAssociato(rs.getInt("utente_associato"));
+				
+				clientiUtente.add(c);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return clientiUtente;
+		
 	}
 	
 }

@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import model.CategoriaMerceologica;
 import model.Cliente;
+import model.TipologiaCliente;
 import model.Utente;
 import service.ClienteService;
 
@@ -34,7 +35,7 @@ public class ClienteMenu {
 			int scelta = scan.nextInt();
 			scan.nextLine();
 			switch (scelta) {
-			case 1: 
+			case 1:
 				aggiungiCliente();
 				break;
 			case 2:
@@ -55,6 +56,10 @@ public class ClienteMenu {
 			case 7:
 				mostraAppuntamentiCliente();
 				break;
+			case 8:
+				Cliente dash = scegliCliente("Di quale cliente vuoi vedere la Dashboard?");
+				dashboard(dash);
+				break;
 			case 0:
 				continua = false;
 				break;
@@ -64,21 +69,74 @@ public class ClienteMenu {
 		} while (continua);
 	}
 
+	private void dashboard(Cliente cliente) {
+		System.out.println("=== Dati Cliente ===");
+		System.out.println(
+				"Nome Azienda: " + cliente.getNomeAzienda() + "\nNome Referente: " + cliente.getRefereneAzienda()
+						+ "\nCategoria Merceologica: " + cliente.getCategoriaMerceologica() + "\nTipo Cliente: "
+						+ cliente.getTipologiaCliente() + "\nUtente Associato: " + cliente.getUtenteAssociato());
+
+	}
+
 	private void mostraAppuntamentiCliente() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void fissaAppuntamento() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void mostraClienti() {
-		System.out.println("==== Lista Clienti ====");
-		for (Cliente c : cs.getAllClienti()) {
-			System.out.println(c);
-		}
+		// mostrare un piccolo menu navigazione che mostri i clienti in base a:
+		// categoria, tipologia, utente assegnato
+		boolean continua = true;
+		do {
+			System.out.println("==== Navigazione Mostra Clienti ====");
+			System.out.println("1) Visualizza per Categoria Merceologica");
+			System.out.println("2) Visualizza per tipologia cliente");
+			System.out.println("3) Visualizza per utente associato");
+			System.out.println("4) Visualizza tutti i clienti");
+			System.out.println("0) Torna Indietro");
+			int scelta = scan.nextInt();
+			scan.nextLine();
+			switch (scelta) {
+			case 1:
+				String categoria = scegliCategoria("Per quale categoria vuoi ricercare?").name();
+				for (Cliente c : cs.ricercaPerCategoria(categoria)) {
+					System.out.println(c);
+				}
+				break;
+			case 2:
+				String tipologia = scegliTipologia("Per quale tipologia vuoi ricercare?").getNome();
+				for(Cliente c : cs.ricercaPerTipologia(tipologia)) {
+					System.out.println(c);
+				}
+				break;
+
+			case 3:
+				int idUtente = um.scegliUtente().getIdUtente();
+				for(Cliente c : cs.ricercaPerUtente(idUtente)) {
+					System.out.println(c);
+				}
+				break;
+
+			case 4:
+				for (Cliente c : cs.getAllClienti()) {
+					System.out.println(c);
+				}
+				break;
+
+			case 0:
+				continua = false;
+				break;
+
+			default:
+				throw new IllegalArgumentException("Non ho capito il comando, hai digitato: " + scelta);
+			}
+		} while (continua);
+
 	}
 
 	private void trovaCliente() {
@@ -86,14 +144,14 @@ public class ClienteMenu {
 		int idCliente = scan.nextInt();
 		scan.nextLine();
 		System.out.println(cs.getSingoloCliente(idCliente));
-		
+
 	}
 
 	private void modificaCliente() {
-		System.out.println("Quale cliente vuoi modificare?");
-		Cliente c = scegliCliente();
-		String nomeAzienda, referenteAzienda, tipologiaCliente;
+		Cliente c = scegliCliente("Quale cliente vuoi modificare?");
+		String nomeAzienda, referenteAzienda;
 		CategoriaMerceologica catt;
+		TipologiaCliente tipologiaCliente;
 		Utente utenteAssociato;
 		System.out.println("Digita nuvo nome azienda: ");
 		nomeAzienda = scan.nextLine();
@@ -103,10 +161,9 @@ public class ClienteMenu {
 		if(!referenteAzienda.isBlank()) c.setRefereneAzienda(referenteAzienda);
 //		catt = segliCategoria("Segli la sua nuovo categoria: "); NON LA FACCIO PERCHE LOGICAMENTE NON SERVE CAMBIARE MAI LA CATEGORIA DI UN CLIENTE
 		// MA SE PROPRIO DOVESSI, BASTA AGGIUNGERE UN NUOVA VOCE NELL'ENUM 'INVARIATA' E AL SELEZIONAMENTO DI QUELLA ATTRAVERSO IL METODO 
-		// segliCategoria() NON SI CAMBIA CATEGORIA, ALTRIMENTI SETTO LA NUOVA.
-		System.out.println("Digitare nuova tipologia cliente: ");
-		tipologiaCliente = scan.nextLine();
-		if(!tipologiaCliente.isBlank()) c.setTipologiaCliente(tipologiaCliente);
+		// scegliCategoria() NON SI CAMBIA CATEGORIA, ALTRIMENTI SETTO LA NUOVA.
+		tipologiaCliente = scegliTipologia("Segli la nuovo tipologia del cliente (0 per lasciare invariato):");
+		if(tipologiaCliente != null) c.setTipologiaCliente(tipologiaCliente);
 		
 		System.out.println("Digitare nuovo utente associato (0 per lasciare invariato): ");
 		utenteAssociato = um.scegliUtente();
@@ -115,8 +172,9 @@ public class ClienteMenu {
 		cs.modificaCliente(c);
 		System.out.println("Cliente ID:" + c.getIdCliente() + " modificato con successo!");
 	}
-	
-	public static Cliente scegliCliente() {
+
+	public static Cliente scegliCliente(String msg) {
+		System.out.println(msg);
 		List<Cliente> clienti = cs.getAllClienti();
 		int contatore = 0;
 		for (Cliente c : clienti) {
@@ -134,35 +192,49 @@ public class ClienteMenu {
 		String nomeAzienda = scan.nextLine();
 		System.out.println("Inserisci referente azienda: ");
 		String referenteAzienda = scan.nextLine();
-		
+
 //		segliCategoria("Inserisci la sua categoria merceologica");  METODO PER SEGLIERE CATEGORIA
 //		System.out.println("Inserisci la sua categoria merceologica: ");
 //		String catMerceologica = scan.nextLine();
-		
+
 		System.out.println("Inserisci il tipo di cliente: ");
 		String tipoCliente = scan.nextLine();
 		System.out.println("Segli l'utente associato:");
 		int utenteAssociato = um.scegliUtente().getIdUtente();
-		cs.aggiungiCliente(nomeAzienda, referenteAzienda, segliCategoria("Inserisci la sua categoria merceologica"), tipoCliente, utenteAssociato);
+		cs.aggiungiCliente(nomeAzienda, referenteAzienda, scegliCategoria("Inserisci la sua categoria merceologica"),
+				scegliTipologia("Inserisci la sua tipologia"), utenteAssociato);
 
 	}
 
-	private CategoriaMerceologica segliCategoria(String msg) {
+	private CategoriaMerceologica scegliCategoria(String msg) {
 		System.out.println(msg);
 		int indice = 0;
-		for(CategoriaMerceologica cat : CategoriaMerceologica.values()) {
+		for (CategoriaMerceologica cat : CategoriaMerceologica.values()) {
 			System.out.println(++indice + ") " + cat.getNome());
 		}
 		int scelta = scan.nextInt();
 		scan.nextLine();
-		return CategoriaMerceologica.values()[scelta-1];
-		
+		return CategoriaMerceologica.values()[scelta - 1];
+
+	}
+
+	private TipologiaCliente scegliTipologia(String msg) {
+		System.out.println(msg);
+		int indice = 0;
+		for (TipologiaCliente tipo : TipologiaCliente.values()) {
+			System.out.println(++indice + ") " + tipo.getNome());
+		}
+		int scelta = scan.nextInt();
+		scan.nextLine();
+		if (scelta == 0) {
+			return null;
+		}
+		return TipologiaCliente.values()[scelta - 1];
 	}
 
 	public void eliminaCliente() {
-		System.out.println("Quale cliente vuoi eliminare?");
-		int idCliente = scegliCliente().getIdCliente();
+		int idCliente = scegliCliente("Quale cliente vuoi eliminare?").getIdCliente();
 		cs.eliminaCliente(idCliente);
 	}
-	
+
 }
