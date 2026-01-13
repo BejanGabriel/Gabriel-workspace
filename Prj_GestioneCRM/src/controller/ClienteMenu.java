@@ -14,6 +14,7 @@ public class ClienteMenu {
 	private static Scanner scan = new Scanner(System.in);
 	private static final ClienteService cs = new ClienteService();
 	private static UtenteMenu um = new UtenteMenu();
+	private static NotaMenu nm = new NotaMenu();
 
 	public ClienteMenu() {
 	}
@@ -51,10 +52,10 @@ public class ClienteMenu {
 				eliminaCliente();
 				break;
 			case 6:
-				fissaAppuntamento();
+				gestioneAppuntamenti();
 				break;
 			case 7:
-				mostraAppuntamentiCliente();
+				gestioneNote();
 				break;
 			case 8:
 				Cliente dash = scegliCliente("Di quale cliente vuoi vedere la Dashboard?");
@@ -69,22 +70,26 @@ public class ClienteMenu {
 		} while (continua);
 	}
 
+	private void gestioneNote() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void gestioneAppuntamenti() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void dashboard(Cliente cliente) {
 		System.out.println("=== Dati Cliente ===");
 		System.out.println(
 				"Nome Azienda: " + cliente.getNomeAzienda() + "\nNome Referente: " + cliente.getRefereneAzienda()
 						+ "\nCategoria Merceologica: " + cliente.getCategoriaMerceologica() + "\nTipo Cliente: "
 						+ cliente.getTipologiaCliente() + "\nUtente Associato: " + cliente.getUtenteAssociato());
-
-	}
-
-	private void mostraAppuntamentiCliente() {
-		// TODO Auto-generated method stub
-
-	}
-
-	private void fissaAppuntamento() {
-		// TODO Auto-generated method stub
+		System.out.println("=== Note Cliente ===");
+		
+		
+		System.out.println("=== Prossimi appuntamenti ===");
 
 	}
 

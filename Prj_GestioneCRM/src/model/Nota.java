@@ -8,7 +8,17 @@ public class Nota {
 	private int idCliente;
 	private String testoNota;
 	private Date dataRegistrazione;
-	private int utenteRegistrato;
+	private int utenteRegistrante;
+	
+	public Nota() {
+	}
+
+	public Nota(int idCliente, String testoNota, int utenteRegistrato) {
+		this.idCliente = idCliente;
+		this.testoNota = testoNota;
+		this.utenteRegistrante = utenteRegistrato;
+	}
+	
 	public int getIdNota() {
 		return idNota;
 	}
@@ -34,16 +44,16 @@ public class Nota {
 		this.dataRegistrazione = dataRegistrazione;
 	}
 	public int getUtenteRegistrato() {
-		return utenteRegistrato;
+		return utenteRegistrante;
 	}
 	public void setUtenteRegistrato(int utenteRegistrato) {
-		this.utenteRegistrato = utenteRegistrato;
+		this.utenteRegistrante = utenteRegistrato;
 	}
 	
 	@Override
 	public String toString() {
 		return "Nota [idNota=" + idNota + ", idCliente=" + idCliente + ", testoNota=" + testoNota
-				+ ", dataRegistrazione=" + dataRegistrazione + ", utenteRegistrato=" + utenteRegistrato + "]";
+				+ ", dataRegistrazione=" + dataRegistrazione + ", utenteRegistrato=" + utenteRegistrante + "]";
 	}
 	
 	
