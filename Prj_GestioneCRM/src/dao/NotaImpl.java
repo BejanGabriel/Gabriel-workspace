@@ -112,7 +112,7 @@ public class NotaImpl extends Scorciatoia implements NotaDAO {
 		List<Nota> listaNotaCliente = new ArrayList<>();
 		try {
 			ps = conn.prepareStatement("SELECT n.id_nota, n.testo_nota descrizione, n.data_registrazione `data`, u.nome_utente utenteRegistrante FROM note_cliente n "
-					+ "JOIN utente u ON n.id_cliente = u.id_utente "
+					+ "JOIN utente u ON n.utente_registrante = u.id_utente "
 					+ "WHERE id_cliente = ?;");
 			ps.setInt(1, idCliente);
 			rs = ps.executeQuery();
