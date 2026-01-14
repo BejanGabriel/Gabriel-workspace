@@ -48,13 +48,16 @@ public class AppuntamentoService {
 		System.out.println("Appuntamento non eliminato!");
 	}
 	
-	public void modificaAppuntamento(Appuntamento appunt) {
+	public boolean modificaAppuntamento(Appuntamento appunt) {
 		if(appunt != null) {
-			appDao.update(appunt);
-			System.out.println("Appuntamento aggiornato.");
-			return;
+			return appDao.update(appunt);
 		}
-		System.out.println("Appuntamento non aggiornato!");
+		return false;
+	}
+
+	public List<Appuntamento> getAppuntamentiCliente(int idCliente) {
+		if(idCliente < 0) throw new IllegalArgumentException("L'id cliente inserito non può essere minore di 0! Hai inserito: " + idCliente);
+		return appDao.readyByUtenteID(idCliente);
 	}
 	
 }

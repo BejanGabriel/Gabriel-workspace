@@ -2,13 +2,13 @@ package service;
 
 import java.util.List;
 
-import dao.GenericDAO;
+import dao.NotaDAO;
 import dao.NotaImpl;
 import model.Nota;
 
 public class NotaService {
 	
-	private GenericDAO<Nota> notaDao;
+	private NotaDAO notaDao;
 
 	public NotaService() {
 		this.notaDao = new NotaImpl();
@@ -23,6 +23,11 @@ public class NotaService {
 	public Nota getSingolaNota(int idNota) {
 		if(idNota < 0) throw new IllegalArgumentException("L'id nota inserito non può essere minore di 0! Hai inserito: " + idNota);
 		return notaDao.readByID(idNota);
+	}
+	
+	public List<Nota> getNoteCliente(int idCliente) {
+		if(idCliente < 0) throw new IllegalArgumentException("L'id cliente inserito non può essere minore di 0! Hai inserito: " + idCliente);
+		return notaDao.readByClienteID(idCliente);
 	}
 	
 	public List<Nota> getAllNota(){

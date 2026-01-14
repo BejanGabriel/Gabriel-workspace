@@ -15,6 +15,7 @@ public class ClienteMenu {
 	private static final ClienteService cs = new ClienteService();
 	private static UtenteMenu um = new UtenteMenu();
 	private static NotaMenu nm = new NotaMenu();
+	private static AppuntamentoMenu am = new AppuntamentoMenu();
 
 	public ClienteMenu() {
 	}
@@ -28,8 +29,8 @@ public class ClienteMenu {
 			System.out.println("3. Trova Cliente");
 			System.out.println("4. Mostra lista Clienti");
 			System.out.println("5. Elimina un Cliente");
-			System.out.println("6. Fissa Appuntamento");
-			System.out.println("7. Acquista un servizio");
+			System.out.println("6. Gestione appuntamenti");
+			System.out.println("7. Gestione Note");
 			System.out.println("8. Vedi lista appuntamenti del cliente");
 			System.out.println("9. Vedi servizi Cliente");
 			System.out.println("0. Torna al menu Generico");
@@ -71,13 +72,12 @@ public class ClienteMenu {
 	}
 
 	private void gestioneNote() {
-		// TODO Auto-generated method stub
+		nm.mostraMenu();
 		
 	}
 
 	private void gestioneAppuntamenti() {
-		// TODO Auto-generated method stub
-		
+		am.mostraMenu();
 	}
 
 	private void dashboard(Cliente cliente) {
@@ -108,29 +108,37 @@ public class ClienteMenu {
 			scan.nextLine();
 			switch (scelta) {
 			case 1:
+				System.out.println("---- Ricerca per Categoria Merceologica ----");
 				String categoria = scegliCategoria("Per quale categoria vuoi ricercare?").name();
 				for (Cliente c : cs.ricercaPerCategoria(categoria)) {
 					System.out.println(c);
 				}
+				System.out.println("--------------------------------\n");
 				break;
 			case 2:
+				System.out.println("---- Ricerca per Tipologia ----");
 				String tipologia = scegliTipologia("Per quale tipologia vuoi ricercare?").getNome();
 				for(Cliente c : cs.ricercaPerTipologia(tipologia)) {
 					System.out.println(c);
 				}
+				System.out.println("--------------------------------\n");
 				break;
 
 			case 3:
-				int idUtente = um.scegliUtente().getIdUtente();
+				System.out.println("---- Ricerca Per UtenteAssociato ----");
+				int idUtente = um.scegliUtente("Quale utente vuoi cercare?").getIdUtente();
 				for(Cliente c : cs.ricercaPerUtente(idUtente)) {
 					System.out.println(c);
 				}
+				System.out.println("--------------------------------\n");
 				break;
 
 			case 4:
+				System.out.println("---- Lista Completa ----");
 				for (Cliente c : cs.getAllClienti()) {
 					System.out.println(c);
 				}
+				System.out.println("------------------------\n");
 				break;
 
 			case 0:
@@ -170,8 +178,7 @@ public class ClienteMenu {
 		tipologiaCliente = scegliTipologia("Segli la nuovo tipologia del cliente (0 per lasciare invariato):");
 		if(tipologiaCliente != null) c.setTipologiaCliente(tipologiaCliente);
 		
-		System.out.println("Digitare nuovo utente associato (0 per lasciare invariato): ");
-		utenteAssociato = um.scegliUtente();
+		utenteAssociato = um.scegliUtente("Digitare nuovo utente associato (0 per lasciare invariato)");
 		if(utenteAssociato != null) c.setUtenteAssociato(utenteAssociato.getIdUtente());
 	
 		cs.modificaCliente(c);
@@ -188,6 +195,7 @@ public class ClienteMenu {
 		System.out.println("Seleziona un cliente: ");
 		int scelta = scan.nextInt();
 		scan.nextLine();
+		if(scelta == 0) return null;
 		return clienti.get(scelta - 1);
 	}
 
@@ -204,8 +212,7 @@ public class ClienteMenu {
 
 		System.out.println("Inserisci il tipo di cliente: ");
 		String tipoCliente = scan.nextLine();
-		System.out.println("Segli l'utente associato:");
-		int utenteAssociato = um.scegliUtente().getIdUtente();
+		int utenteAssociato = um.scegliUtente("Segli l'utente associato").getIdUtente();
 		cs.aggiungiCliente(nomeAzienda, referenteAzienda, scegliCategoria("Inserisci la sua categoria merceologica"),
 				scegliTipologia("Inserisci la sua tipologia"), utenteAssociato);
 

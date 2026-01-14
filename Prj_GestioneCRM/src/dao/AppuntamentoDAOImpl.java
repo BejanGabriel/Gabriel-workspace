@@ -82,19 +82,19 @@ public class AppuntamentoDAOImpl extends Scorciatoia implements AppuntamentoDAO{
 	@Override
 	public boolean update(Appuntamento appuntamento) {
 		try {
-			ps = conn.prepareStatement("UPDATE appuntamento SET"
-					+ " data_appuntamento = ?,"
-					+ "descrizione = ?,"
-					+ "utente_associato = ?"
+			ps = conn.prepareStatement("UPDATE appuntamento SET "
+//					+ "data_appuntamento = ?,"
+					+ "descrizione = ?, "
+					+ "utente_associato = ? "
 					+ "WHERE id_appuntamento = ?;");
-			ps.setDate(1, appuntamento.getDataAppuntamento());
+//			ps.setDate(1, appuntamento.getDataAppuntamento());
 			//La data va aggiustata di formato, da fare nel controller di appuntamento.
-			ps.setString(2, appuntamento.getDescrizione());
-			ps.setInt(3, appuntamento.getUtenteAssociato());
-			ps.setInt(4, appuntamento.getIdAppuntamento());
-			ps.executeUpdate();
+			ps.setString(1, appuntamento.getDescrizione());
+			ps.setInt(2, appuntamento.getUtenteAssociato());
+			ps.setInt(3, appuntamento.getIdAppuntamento());
+			return ps.executeUpdate() > 0;
 			
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return false;
@@ -112,6 +112,32 @@ public class AppuntamentoDAOImpl extends Scorciatoia implements AppuntamentoDAO{
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	@Override
+	public List<Appuntamento> readyByUtenteID(int idCliente) {
+		List<Appuntamento> appuntamentiUtente = new ArrayList<>();
+		try {
+			ps = conn.prepareStatement(" SELECT c.nome_azienda, a.id_appuntamento, a.data_appuntamento, a.descrizione, u.nome_utente"
+					+ " FROM appuntamento a"
+					+ " JOIN cliente c ON c.id_cliente = a.id_cliente"
+					+ " JOIN utente u ON u.id_utente = a.utente_associato"
+					+ " WHERE c.id_cliente = ?;");
+			ps.setInt(1, idCliente);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				Appuntamento a = new Appuntamento();
+				a.setIdAppuntamento(rs.getInt("id_appuntamento"));
+				a.setDataAppuntamento(rs.getDate("data_appuntamento"));
+				a.setDescrizione(rs.getString("descrizione"));
+				a.setNomeCliente(rs.getString("nome_azienda"));
+				a.setNomeUtente(rs.getString("nome_utente"));
+				appuntamentiUtente.add(a);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return appuntamentiUtente;
 	}
 
 }

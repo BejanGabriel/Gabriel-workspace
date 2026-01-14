@@ -58,8 +58,7 @@ public class UtenteMenu {
 	}
 	
 	public void modificaUtente() {
-		System.out.println("Quale utente vuoi modificare?");
-		Utente modificato = scegliUtente();
+		Utente modificato = scegliUtente("Quale utente vuoi modificare?");
 		System.out.println("Laciare vuoti i campi che non si desidera modificare.");
 		String nome, ruolo, email, password;
 		System.out.println("Digita nuovo nome utente: ");
@@ -91,9 +90,10 @@ public class UtenteMenu {
 		us.aggiungiUtente(nome, ruolo, email, password);
 	}
 
-	public static Utente scegliUtente() {
+	public static Utente scegliUtente(String msg) {
 		List<Utente> utenti = us.getAllUtenti();
 		int contatore = 0;
+		System.out.println(msg);
 		for (Utente u : utenti) {
 			System.out.println(++contatore + ") " + u.getNomeUtente());
 		}

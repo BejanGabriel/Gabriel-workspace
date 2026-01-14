@@ -9,16 +9,19 @@ public class Nota {
 	private String testoNota;
 	private Date dataRegistrazione;
 	private int utenteRegistrante;
+	private String nomeUtente;
 	
+
 	public Nota() {
 	}
-
-	public Nota(int idCliente, String testoNota, int utenteRegistrato) {
+	
+	public Nota(int idCliente, String testoNota, int utenteRegistrante) {
+		super();
 		this.idCliente = idCliente;
 		this.testoNota = testoNota;
-		this.utenteRegistrante = utenteRegistrato;
+		this.utenteRegistrante = utenteRegistrante;
 	}
-	
+
 	public int getIdNota() {
 		return idNota;
 	}
@@ -48,6 +51,14 @@ public class Nota {
 	}
 	public void setUtenteRegistrato(int utenteRegistrato) {
 		this.utenteRegistrante = utenteRegistrato;
+	}
+	
+	public String getNomeUtente() {
+		return nomeUtente;
+	}
+	
+	public void setNomeUtente(String nomeUtente) {
+		this.nomeUtente = nomeUtente;
 	}
 	
 	@Override

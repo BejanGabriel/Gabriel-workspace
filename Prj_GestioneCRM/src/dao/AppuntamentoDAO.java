@@ -11,4 +11,5 @@ public interface AppuntamentoDAO {
 	List<Appuntamento> readAll();
 	boolean update(Appuntamento appuntamento);
 	boolean deleteByID(int id);
+	List<Appuntamento> readyByUtenteID(int idCliente);
 }

@@ -9,7 +9,10 @@ public class Appuntamento {
 	private Date dataAppuntamento;
 	private String descrizione;
 	private int utenteAssociato;
+	private String nomeUtente;
+	private String nomeCliente;
 	
+
 	public Appuntamento() {
 	}
 
@@ -48,6 +51,22 @@ public class Appuntamento {
 	}
 	public void setUtenteAssociato(int utenteAssociato) {
 		this.utenteAssociato = utenteAssociato;
+	}
+	
+	public String getNomeUtente() {
+		return nomeUtente;
+	}
+	
+	public void setNomeUtente(String nomeUtente) {
+		this.nomeUtente = nomeUtente;
+	}
+	
+	public String getNomeCliente() {
+		return nomeCliente;
+	}
+	
+	public void setNomeCliente(String nomeCliente) {
+		this.nomeCliente = nomeCliente;
 	}
 	
 	@Override
