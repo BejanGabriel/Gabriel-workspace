@@ -26,16 +26,17 @@ public class UtenteMenu {
 			int scelta = scan.nextInt();
 			scan.nextLine();
 			switch (scelta) {
-			case 1: 
+			case 1:
 				aggiuntiUtente();
 				break;
-			case 2: modificaUtente();
+			case 2:
+				modificaUtente();
 				break;
-			case 3: 
+			case 3:
 				System.out.println("Inserisci ID Utente");
 				int idUtente = scan.nextInt();
 				scan.nextLine();
-				System.out.println(us.getSingoloUtente(idUtente)); 
+				System.out.println(us.getSingoloUtente(idUtente));
 				break;
 			case 4:
 				System.out.println("=== Lista Utenti ===");
@@ -54,25 +55,29 @@ public class UtenteMenu {
 			default:
 				throw new IllegalArgumentException("Unexpected value: " + scelta);
 			}
-		} while(continua);
+		} while (continua);
 	}
-	
+
 	public void modificaUtente() {
 		Utente modificato = scegliUtente("Quale utente vuoi modificare?");
 		System.out.println("Laciare vuoti i campi che non si desidera modificare.");
 		String nome, ruolo, email, password;
 		System.out.println("Digita nuovo nome utente: ");
 		nome = scan.nextLine();
-		if(!nome.isBlank()) modificato.setNomeUtente(nome);
+		if (!nome.isBlank())
+			modificato.setNomeUtente(nome);
 		System.out.println("Digita nuovo ruolo: ");
 		ruolo = scan.nextLine();
-		if(!ruolo.isBlank()) modificato.setRuolo(ruolo);
+		if (!ruolo.isBlank())
+			modificato.setRuolo(ruolo);
 		System.out.println("Digita nuova email: ");
 		email = scan.nextLine();
-		if(!email.isBlank()) modificato.setEmail(email);
+		if (!email.isBlank())
+			modificato.setEmail(email);
 		System.out.println("Digita nuova password: ");
 		password = scan.nextLine();
-		if(!password.isBlank()) modificato.setPassword(password);
+		if (!password.isBlank())
+			modificato.setPassword(password);
 		us.modificaUtente(modificato);
 	}
 
@@ -93,15 +98,25 @@ public class UtenteMenu {
 	public static Utente scegliUtente(String msg) {
 		List<Utente> utenti = us.getAllUtenti();
 		int contatore = 0;
-		System.out.println(msg);
-		for (Utente u : utenti) {
-			System.out.println(++contatore + ") " + u.getNomeUtente());
-		}
-		System.out.println("Seleziona un utente: ");
-		int scelta = scan.nextInt();
-		scan.nextLine();
-		if(scelta == 0) return null;
-		return utenti.get(scelta - 1);
+		int scelta;
+		do {
+			System.out.println(msg);
+			for (Utente u : utenti) {
+				System.out.println(++contatore + ") " + u.getNomeUtente());
+			}
+			System.out.println("Seleziona un utente: ");
+			scelta = scan.nextInt();
+			scan.nextLine();
+
+			if (scelta < 0 || scelta > utenti.size()) {
+				System.out.println("Comando non valido, puoi scegliere solo gli utenti della lista!");
+			}
+
+			if (scelta == 0)
+				return null;
+			
+			return utenti.get(scelta - 1);
+		} while (scelta < 0 || scelta > utenti.size());
 	}
 
 }

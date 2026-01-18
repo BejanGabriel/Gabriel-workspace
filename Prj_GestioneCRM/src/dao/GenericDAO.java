@@ -11,7 +11,7 @@ public interface GenericDAO<T> {
 	List<T> readAll();
 	boolean update(T entity);
 	boolean deleteByID(int id);
-	List<Nota> readByClienteID(int idCliente);
-	
+	List<T> readByClienteID(int idCliente);
+	boolean associaClienteServizio(int idCliente, int idServizio);
 	
 }

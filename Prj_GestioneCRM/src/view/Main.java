@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import controller.ClienteMenu;
+import controller.ServizioMenu;
 import controller.UtenteMenu;
 import database.DBConnection;
 import model.Cliente;
@@ -23,6 +24,7 @@ public class Main {
 	private static AppuntamentoService as = new AppuntamentoService();
 	private static UtenteMenu um = new UtenteMenu();
 	private static ClienteMenu cm = new ClienteMenu();
+	private static ServizioMenu sm = new ServizioMenu();
 
 	public static void main(String[] args) {
 
@@ -36,6 +38,7 @@ public class Main {
 			System.out.println("Quale operazione vuoi effettuare? ");
 			int scelta = scan.nextInt();
 			scan.nextLine();
+				
 			switch (scelta) {
 			case 1:
 				um.mostraMenu();
@@ -43,48 +46,16 @@ public class Main {
 			case 2:
 				cm.mostraMenu();
 				break;
+			case 3:
+				sm.menuServiziGenerali();
+				break;
 			case 0:
 				System.out.println("Chiusura in corso...");
 				continua = false;
 			}
+			
 		} while (continua);
 
-		// =========== AREA TESTING ===========
-//		aggiuntiUtente();
-//		aggiungiCliente();
-//		eliminaCliente();
-//		System.out.println(us.getAllUtenti());
-//		creaAppuntamento();
-
-		// TESTING UTENTE -> OK!
-//		Utente utente = new Utente();
-//		utente.setNomeUtente("MARCO");
-//		utente.setRuolo("PAZZO");
-//		utente.setEmail("PAZZ.MARC@mail.com");
-//		utente.setPassword("123");
-
-//		GenericDAO<Utente> gdU = new UtenteDAOImpl();
-//		Utente u = gdU.readByID(1);
-//		System.out.println(u);
-		// TESTING CLIENTE -> OK!
-//		Cliente cliente = new Cliente();
-//		cliente.setNomeAzienda("Pippo.s.r.l");
-//		cliente.setRefereneAzienda("Luca Marconi");
-//		cliente.setCategoriaMerceologica("Sviluppatore");
-//		cliente.setTipologiaCliente("In Acquisizione");
-
-		// UPDATING utente_assegnato FK -> OK!
-//		ClienteDAO gdC = new ClienteDAOImpl();
-//		//gdU.create(cliente);
-//		List<Cliente> listaClienti = gdC.readAll();
-//		Cliente c = gdC.readByID(1);
-//		
-//		System.out.println("=== Cliente Singolo ===\n" + c);
-//		System.out.println("=== Lista Clienti ===\n" + listaClienti);
-//		
-//		gdC.assegnazioneByID(3, 4);
-
-		// questa verrà avviato solo dopo aver finito tutto quello che volevo fare.
 		connessione.close();
 
 	}
@@ -94,62 +65,9 @@ public class Main {
 		System.out.println("==== Menu Globale ====");
 		System.out.println("1. Menu Utente");
 		System.out.println("2. Menu Cliente");
-		System.out.println("3. Menu Appuntamento");
+		System.out.println("3. Gestisci Servizi");
 		System.out.println("0. Esci");
 
-	}
-
-	private static void aggiuntiUtente() {
-
-		System.out.println("Inserisci nome utente: ");
-		String nome = scan.next();
-		System.out.println("Inserisci il ruolo dell'utente: ");
-		String ruolo = scan.next();
-		System.out.println("Inserisci email dell'utente: ");
-		String email = scan.next();
-		System.out.println("Inserisci password utente: ");
-		String password = scan.next();
-
-		us.aggiungiUtente(nome, ruolo, email, password);
-	}
-
-	private static Utente scegliUtente() {
-		List<Utente> utenti = us.getAllUtenti();
-		int contatore = 0;
-		for (Utente u : utenti) {
-			System.out.println(++contatore + ") " + u.getNomeUtente());
-		}
-		System.out.println("Seleziona un utente: ");
-		int scelta = scan.nextInt();
-		scan.nextLine();
-		return utenti.get(scelta - 1);
-	}
-
-
-//	private static void aggiungiCliente() {
-//		
-//		System.out.println("Inserisci nome azienda: ");
-//		String nomeAzienda = scan.nextLine();
-//		System.out.println("Inserisci referente azienda: ");
-//		String referenteAzienda = scan.nextLine();
-//		System.out.println("Inserisci la sua categoria merceologica: ");
-//		String catMerceologica = scan.nextLine();
-//		System.out.println("Inserisci il tipo di cliente: ");
-//		String tipoCliente = scan.nextLine();
-//		System.out.println("Segli l'utente associato:");
-//		int utenteAssociato = scegliUtente().getIdUtente();
-//		cs.aggiungiCliente(nomeAzienda, referenteAzienda, catMerceologica, tipoCliente, utenteAssociato);
-//
-//	}
-
-	private static void creaAppuntamento(Cliente idCliente) {
-//		System.out.println("Con quale Cliente sarà l'appuntamento?");
-//		int idCliente = scegliCliente().getIdCliente();
-		System.out.println("Inserisci descrizione dell'appuntamento: ");
-		String descrizione = scan.nextLine();
-		System.out.println("Quale utente si occuperà dell'appuntamento?");
-		int utenteAssegnato = scegliUtente().getIdUtente();
-		as.creaAppuntamento(idCliente.getIdCliente(), descrizione, utenteAssegnato);
 	}
 
 }

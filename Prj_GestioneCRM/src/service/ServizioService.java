@@ -4,6 +4,7 @@ import java.util.List;
 
 import dao.GenericDAO;
 import dao.ServizioImpl;
+import model.Nota;
 import model.Servizio;
 
 public class ServizioService {
@@ -48,6 +49,18 @@ public class ServizioService {
 			throw new IllegalArgumentException("L'ID inserito non può essere negativo, hai inserito: " + id);
 		}
 		return servizioDao.deleteByID(id);
+	}
+	
+	public List<Servizio> getServizioByClienteID(int idCliente) {
+		if(idCliente < 0) throw new IllegalArgumentException("L'ID inserito non può essere negativo, hai inserito: " + idCliente);
+		return servizioDao.readByClienteID(idCliente);
+	}
+
+	public void associaServizioCliente(int idCliente, int idServizio) {
+		if(idCliente < 0 || idServizio < 0) throw new IllegalArgumentException(
+				"Gli ID inserito non possoono essere negativi, hai inserito: " + idCliente + ", " + idServizio);
+		 servizioDao.associaClienteServizio(idCliente, idServizio);
+		
 	}
 	
 

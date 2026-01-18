@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,9 +15,10 @@ public class ClienteMenu {
 
 	private static Scanner scan = new Scanner(System.in);
 	private static final ClienteService cs = new ClienteService();
-	private static UtenteMenu um = new UtenteMenu();
-	private static NotaMenu nm = new NotaMenu();
-	private static AppuntamentoMenu am = new AppuntamentoMenu();
+	private static final UtenteMenu um = new UtenteMenu();
+	private static final NotaMenu nm = new NotaMenu();
+	private static final AppuntamentoMenu am = new AppuntamentoMenu();
+	private static final ServizioMenu sm = new ServizioMenu();
 
 	public ClienteMenu() {
 	}
@@ -31,9 +34,9 @@ public class ClienteMenu {
 			System.out.println("5. Elimina un Cliente");
 			System.out.println("6. Gestione appuntamenti");
 			System.out.println("7. Gestione Note");
-			System.out.println("8. Vedi lista appuntamenti del cliente");
-			System.out.println("9. Vedi servizi Cliente");
+			System.out.println("8. Gestione Servizi Cliente");
 			System.out.println("0. Torna al menu Generico");
+
 			int scelta = scan.nextInt();
 			scan.nextLine();
 			switch (scelta) {
@@ -59,8 +62,7 @@ public class ClienteMenu {
 				gestioneNote();
 				break;
 			case 8:
-				Cliente dash = scegliCliente("Di quale cliente vuoi vedere la Dashboard?");
-				dashboard(dash);
+				gestioneServiziCliente();
 				break;
 			case 0:
 				continua = false;
@@ -71,27 +73,33 @@ public class ClienteMenu {
 		} while (continua);
 	}
 
+	private void gestioneServiziCliente() {
+		sm.mostraMenu();
+
+	}
+
 	private void gestioneNote() {
 		nm.mostraMenu();
-		
+
 	}
 
 	private void gestioneAppuntamenti() {
 		am.mostraMenu();
 	}
 
-	private void dashboard(Cliente cliente) {
-		System.out.println("=== Dati Cliente ===");
-		System.out.println(
-				"Nome Azienda: " + cliente.getNomeAzienda() + "\nNome Referente: " + cliente.getRefereneAzienda()
-						+ "\nCategoria Merceologica: " + cliente.getCategoriaMerceologica() + "\nTipo Cliente: "
-						+ cliente.getTipologiaCliente() + "\nUtente Associato: " + cliente.getUtenteAssociato());
-		System.out.println("=== Note Cliente ===");
-		
-		
-		System.out.println("=== Prossimi appuntamenti ===");
-
-	}
+//	private void dashboard(Cliente cliente) {
+//		System.out.println("=== Dati Cliente ===");
+//		System.out.println(
+//				"Nome Azienda: " + cliente.getNomeAzienda() + "\nNome Referente: " + cliente.getRefereneAzienda()
+//						+ "\nCategoria Merceologica: " + cliente.getCategoriaMerceologica() + "\nTipo Cliente: "
+//						+ cliente.getTipologiaCliente() + "\nUtente Associato: " + cliente.getUtenteAssociato());
+//		System.out.println("=== Note Cliente ===");
+//		
+//		
+//		System.out.println("=== Prossimi appuntamenti ===");
+//	
+//			HA DETTO CHE NON SERVE, MI FERMO DAL CONTINUARE QUESTO PEZZO
+//	}
 
 	private void mostraClienti() {
 		// mostrare un piccolo menu navigazione che mostri i clienti in base a:
@@ -113,12 +121,12 @@ public class ClienteMenu {
 				for (Cliente c : cs.ricercaPerCategoria(categoria)) {
 					System.out.println(c);
 				}
-				System.out.println("--------------------------------\n");
+				System.out.println("--------------------------------------------\n");
 				break;
 			case 2:
 				System.out.println("---- Ricerca per Tipologia ----");
 				String tipologia = scegliTipologia("Per quale tipologia vuoi ricercare?").getNome();
-				for(Cliente c : cs.ricercaPerTipologia(tipologia)) {
+				for (Cliente c : cs.ricercaPerTipologia(tipologia)) {
 					System.out.println(c);
 				}
 				System.out.println("--------------------------------\n");
@@ -127,10 +135,10 @@ public class ClienteMenu {
 			case 3:
 				System.out.println("---- Ricerca Per UtenteAssociato ----");
 				int idUtente = um.scegliUtente("Quale utente vuoi cercare?").getIdUtente();
-				for(Cliente c : cs.ricercaPerUtente(idUtente)) {
+				for (Cliente c : cs.ricercaPerUtente(idUtente)) {
 					System.out.println(c);
 				}
-				System.out.println("--------------------------------\n");
+				System.out.println("-------------------------------------\n");
 				break;
 
 			case 4:
@@ -168,34 +176,55 @@ public class ClienteMenu {
 		Utente utenteAssociato;
 		System.out.println("Digita nuvo nome azienda: ");
 		nomeAzienda = scan.nextLine();
-		if(!nomeAzienda.isBlank()) c.setNomeAzienda(nomeAzienda);
+		if (!nomeAzienda.isBlank())
+			c.setNomeAzienda(nomeAzienda);
 		System.out.println("Digita nuovo referente dell'azienda: ");
 		referenteAzienda = scan.nextLine();
-		if(!referenteAzienda.isBlank()) c.setRefereneAzienda(referenteAzienda);
+		if (!referenteAzienda.isBlank())
+			c.setRefereneAzienda(referenteAzienda);
 //		catt = segliCategoria("Segli la sua nuovo categoria: "); NON LA FACCIO PERCHE LOGICAMENTE NON SERVE CAMBIARE MAI LA CATEGORIA DI UN CLIENTE
-		// MA SE PROPRIO DOVESSI, BASTA AGGIUNGERE UN NUOVA VOCE NELL'ENUM 'INVARIATA' E AL SELEZIONAMENTO DI QUELLA ATTRAVERSO IL METODO 
+		// MA SE PROPRIO DOVESSI, BASTA AGGIUNGERE UN NUOVA VOCE NELL'ENUM 'INVARIATA' E
+		// AL SELEZIONAMENTO DI QUELLA ATTRAVERSO IL METODO
 		// scegliCategoria() NON SI CAMBIA CATEGORIA, ALTRIMENTI SETTO LA NUOVA.
 		tipologiaCliente = scegliTipologia("Segli la nuovo tipologia del cliente (0 per lasciare invariato):");
-		if(tipologiaCliente != null) c.setTipologiaCliente(tipologiaCliente);
-		
+		if (tipologiaCliente != null)
+			c.setTipologiaCliente(tipologiaCliente);
+
 		utenteAssociato = um.scegliUtente("Digitare nuovo utente associato (0 per lasciare invariato)");
-		if(utenteAssociato != null) c.setUtenteAssociato(utenteAssociato.getIdUtente());
-	
+		if (utenteAssociato != null)
+			c.setUtenteAssociato(utenteAssociato.getIdUtente());
+
 		cs.modificaCliente(c);
 		System.out.println("Cliente ID:" + c.getIdCliente() + " modificato con successo!");
 	}
 
 	public static Cliente scegliCliente(String msg) {
 		System.out.println(msg);
+
 		List<Cliente> clienti = cs.getAllClienti();
 		int contatore = 0;
+
 		for (Cliente c : clienti) {
 			System.out.println(++contatore + ") " + c.getRefereneAzienda());
 		}
-		System.out.println("Seleziona un cliente: ");
-		int scelta = scan.nextInt();
-		scan.nextLine();
-		if(scelta == 0) return null;
+
+		int scelta;
+		// validazione della scelta del cliente, nel caso inserisse un numero non
+		// permesso.
+		do {
+			System.out.println("Seleziona un cliente: ");
+
+			scelta = scan.nextInt();
+			scan.nextLine();
+
+			if (scelta == 0)
+				return null;
+
+			if (scelta < 0 || scelta > clienti.size()) {
+				System.out.println("Numero non valido, hai inserito: " + scelta + ". Riprova");
+			}
+		} while (scelta < 0 || scelta > clienti.size());
+
 		return clienti.get(scelta - 1);
 	}
 
@@ -210,9 +239,7 @@ public class ClienteMenu {
 //		System.out.println("Inserisci la sua categoria merceologica: ");
 //		String catMerceologica = scan.nextLine();
 
-		System.out.println("Inserisci il tipo di cliente: ");
-		String tipoCliente = scan.nextLine();
-		int utenteAssociato = um.scegliUtente("Segli l'utente associato").getIdUtente();
+		int utenteAssociato = um.scegliUtente("Segli l'utente da associargli").getIdUtente();
 		cs.aggiungiCliente(nomeAzienda, referenteAzienda, scegliCategoria("Inserisci la sua categoria merceologica"),
 				scegliTipologia("Inserisci la sua tipologia"), utenteAssociato);
 

@@ -6,7 +6,11 @@ public class Servizio {
 	private String nomeServizio;
 	private String descrizione;
 	private double prezzo;
+	private String nomeCliente;
 	
+
+
+
 	public int getIdServizio() {
 		return idServizio;
 	}
@@ -43,6 +47,14 @@ public class Servizio {
 	}
 	public void setPrezzo(double prezzo) {
 		this.prezzo = prezzo;
+	}
+	
+	public String getNomeCliente() {
+		return nomeCliente;
+	}
+	
+	public void setNomeCliente(String nomeCliente) {
+		this.nomeCliente = nomeCliente;
 	}
 	
 	@Override

@@ -2,7 +2,7 @@ Create database gestione_crm;
 
 use gestione_crm;
 
-create table utente(
+create table if not exists utente(
 id_utente int auto_increment primary key,
 nome_utente varchar(50) not null,
 ruolo varchar(100),
@@ -10,7 +10,7 @@ email varchar(100) not null unique,
 `password` varchar(100)not null,
 data_registrazione date default (current_date));
 
-Create table cliente (
+Create table if not exists cliente (
 id_cliente int auto_increment primary key,
 nome_azienda varchar(100) not null,
 referente_azienda varchar(50),
@@ -21,13 +21,13 @@ constraint fk_cliente_utente foreign key (utente_associato) references utente(id
 on delete cascade); -- constraint per poter eliminare il cliente quando l'utente viene eliminato.
 
  
-create table servizio_consulenza (
+create table if not exists servizio_consulenza (
 id_servizio int auto_increment primary key,
 nome_servizio varchar(100) not null,
 descrizione text,
 prezzo decimal(10,2));
 
-create table note_cliente (
+create table if not exists note_cliente (
 id_nota int auto_increment primary key,
 id_cliente int,
 testo_nota text not null,
@@ -39,25 +39,32 @@ foreign key (utente_registrante) references utente(id_utente)
 ); 
 
 
-create table appuntamento (
+create table if not exists appuntamento (
 id_appuntamento int auto_increment primary key,
 id_cliente int,
 data_appuntamento date default (current_date),
 descrizione text not null,
 utente_associato int,
-constraint fk_appuntamento_cliente foreign key (id_cliente) references cliente(id_cliente),
-foreign key (utente_associato) references utente(id_utente));
+constraint appuntamento_ibfk_1 foreign key(utente_associato) references utente (id_utente),
+constraint fk_appuntamento_cliente foreign key (id_cliente) references cliente(id_cliente)on delete cascade) ;
 
-create table tag_cliente (
+create table if not exists tag_cliente (
 id_tag int auto_increment primary key,
 nome_tag varchar(20) not null unique); -- unique garantisce univocità ai tag
 
-create table cliente_tag (
+create table if not exists cliente_tag (
 id_cliente_tag int auto_increment primary key,
 id_cliente int,
 id_tag int,
-foreign key (id_cliente) references cliente(id_cliente),
+constraint  cliente_tag_idfk_1 foreign key (id_cliente) references cliente(id_cliente),
 foreign key (id_tag) references tag_cliente(id_tag));
+
+create table if not exists servizio_cliente(
+id_servizio_cliente int auto_increment primary key,
+id_servizio int not null,
+id_cliente int not null,
+foreign key (id_servizio) references servizio_consulenza(id_servizio),
+foreign key (id_cliente) references cliente(id_cliente) on delete cascade);
 
 -- da eseguire in questo ordine per via delle 'costrizioni'
 
@@ -90,6 +97,11 @@ insert into tag_cliente (id_tag, nome_tag) values
     (1, 'Premium'),
     (2, 'Potenziale'),
     (3, 'Nuovo Cliente');
+    
+insert into servizio_cliente (id_cliente, id_servizio) values
+	(1,1),
+	(1,2),
+	(2,3);
 
 insert into cliente_tag (id_cliente_tag, id_cliente, id_tag) values
     (1, 1, 1),

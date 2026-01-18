@@ -113,10 +113,10 @@ public class NotaMenu {
 
 	private void creaNota(Cliente clienteScelto) {
 		System.out.println("---- Creazione Nota ----");
+		int idCliente = cm.scegliCliente("| Quale cliente è l'intestatario della nota??").getIdCliente();
+		int utenteRegistrante = um.scegliUtente("| Segli utente incaricato").getIdUtente();
 		System.out.println("| Inserisci testo della nota: ");
 		String testo = scan.nextLine();
-		int utenteRegistrante = um.scegliUtente("| Segli utente incaricato").getIdUtente();
-		int idCliente = cm.scegliCliente("| Quale cliente vuole aggiungere la nota?").getIdCliente();
 		ns.creaNota(idCliente, testo, utenteRegistrante);
 		System.out.println("-------------------------\n");
 	}

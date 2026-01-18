@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,11 +79,12 @@ public class UtenteDAOImpl extends Scorciatoia implements UtenteDAO{
 				
 			}
 			
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+			return allUtenti;
+			
+		} catch (SQLException e) {
+			//lacio un errore a runtime per sapere se 
+			throw new RuntimeException("Errore nel DB durante lettura Utenti: " + e);
 		}
-		return allUtenti;
 	}
 
 	@Override
@@ -99,12 +101,14 @@ public class UtenteDAOImpl extends Scorciatoia implements UtenteDAO{
 			ps.setString(3, utente.getEmail());
 			ps.setString(4, utente.getPassword());
 			ps.setInt(5, utente.getIdUtente());
-			ps.executeUpdate();
+			int rows = ps.executeUpdate();
+			return rows > 0;
 			
-		}catch (Exception e) {
+		}catch (SQLException e) {
+			System.out.println("Qualcosa è andto storto durante l'aggiornamento dell'utente!");
 			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 
 	@Override
@@ -112,11 +116,14 @@ public class UtenteDAOImpl extends Scorciatoia implements UtenteDAO{
 		try {
 			ps = conn.prepareStatement("DELETE FROM utente WHERE id_utente = ?");
 			ps.setInt(1, id);
-			ps.executeUpdate();
-		} catch (Exception e) {
+			int rows = ps.executeUpdate();
+			//mi faccio restituire le righe coinvolte, se sono 0 non è stato modificato nulla, se > 0 si.
+			return rows > 0;
+		} catch (SQLException e) {
+			System.out.println("Qualcosa è andato storto durante l'eliminazione dell'utente!");
 			e.printStackTrace();
+			return false;
 		}
-		return false;
 	}
 
 }
