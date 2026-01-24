@@ -15,44 +15,52 @@ public class AppuntamentoService {
 	}
 	
 	public boolean creaAppuntamento(int idCliente, String descrizione, int idUtente) {
-		if(idCliente > 0) {
-			Appuntamento a = new Appuntamento(idCliente, descrizione, idUtente);
-			appDao.create(a);
+		if(idCliente < 0) {
+			throw new IllegalArgumentException("Errore: L'ID del cliente non è valido!");
 		}
+		Appuntamento a = new Appuntamento(idCliente, descrizione, idUtente);
+		return appDao.create(a);
 		
-		return false;
 	}
 	
 	public Appuntamento getSingoloAppuntamento(int id) {
-		if(id > 0) {
-			return appDao.readByID(id);
+		if(id < 0) {
+			throw new IllegalArgumentException("L'ID inserito non è valido!");
 		}
-		System.out.println("Appuntamento non trovato!");
-		return null;
+		Appuntamento trovato = appDao.readByID(id);
+		if(trovato == null) {
+			throw new IllegalStateException("Errore: L'appuntamento cercato non è presente nel database!");
+		}else {
+			return trovato;
+		}
 	}
 	
 	public List<Appuntamento> getAppuntamenti(){
-		if(!appDao.readAll().isEmpty()) {
 			return appDao.readAll();
-		}
-		System.out.println("Lista Appuntamenti vuota!");
-		return null;
 	}
 	
-	public void eliminaAppuntamento(int id) {
-		if(id > 0) {
-			appDao.deleteByID(id);
-			System.out.println("Appuntamento rimosso.");
-			return;
+	public boolean eliminaAppuntamento(int id) {
+		if(id < 0) {
+			throw new IllegalArgumentException("Errore: L'ID dell'appuntamento da eliminare non è valido!");
 		}
-		System.out.println("Appuntamento non eliminato!");
+		boolean eliminato = appDao.deleteByID(id);
+		if(!eliminato) {
+			throw new IllegalStateException("Errore: Non è stato trovato nessun appuntamento da eliminare");
+		}else {
+			return eliminato;
+		}
 	}
 	
 	public boolean modificaAppuntamento(Appuntamento appunt) {
-		if(appunt != null) {
-			return appDao.update(appunt);
+		if(appunt == null) {
+			throw new IllegalArgumentException("Errore: L'appuntamento selezionato risulta essere inesistente!");
 		}
-		return false;
+		boolean modificato = appDao.update(appunt);
+		if(!modificato) {
+			throw new IllegalStateException("Errore: Non è stato possibile modificare l'appuntamento selezionato");
+		}else {
+			return modificato;
+		}
 	}
 
 	public List<Appuntamento> getAppuntamentiCliente(int idCliente) {

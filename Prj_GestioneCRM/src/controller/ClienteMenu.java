@@ -1,6 +1,5 @@
 package controller;
 
-import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -36,39 +35,44 @@ public class ClienteMenu {
 			System.out.println("7. Gestione Note");
 			System.out.println("8. Gestione Servizi Cliente");
 			System.out.println("0. Torna al menu Generico");
+			
+			try {
 
-			int scelta = scan.nextInt();
-			scan.nextLine();
-			switch (scelta) {
-			case 1:
-				aggiungiCliente();
-				break;
-			case 2:
-				modificaCliente();
-				break;
-			case 3:
-				trovaCliente();
-				break;
-			case 4:
-				mostraClienti();
-				break;
-			case 5:
-				eliminaCliente();
-				break;
-			case 6:
-				gestioneAppuntamenti();
-				break;
-			case 7:
-				gestioneNote();
-				break;
-			case 8:
-				gestioneServiziCliente();
-				break;
-			case 0:
-				continua = false;
-				break;
-			default:
-				throw new IllegalArgumentException("Non ho capito il comando, hai inserito: " + scelta);
+				int scelta = scan.nextInt();
+				scan.nextLine();
+				switch (scelta) {
+				case 1:
+					aggiungiCliente();
+					break;
+				case 2:
+					modificaCliente();
+					break;
+				case 3:
+					trovaCliente();
+					break;
+				case 4:
+					mostraClienti();
+					break;
+				case 5:
+					eliminaCliente();
+					break;
+				case 6:
+					gestioneAppuntamenti();
+					break;
+				case 7:
+					gestioneNote();
+					break;
+				case 8:
+					gestioneServiziCliente();
+					break;
+				case 0:
+					continua = false;
+					break;
+				default:
+					throw new IllegalArgumentException("Non ho capito il comando, hai inserito: " + scelta);
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("Sono ammessi solo caratteri numerici");
 			}
 		} while (continua);
 	}
@@ -118,16 +122,44 @@ public class ClienteMenu {
 			case 1:
 				System.out.println("---- Ricerca per Categoria Merceologica ----");
 				String categoria = scegliCategoria("Per quale categoria vuoi ricercare?").name();
-				for (Cliente c : cs.ricercaPerCategoria(categoria)) {
-					System.out.println(c);
+				try {
+
+					List<Cliente> clientiPerCategoria = cs.ricercaPerCategoria(categoria);
+
+					if (clientiPerCategoria.size() == 0) {
+						System.out.println("Non sono stati trovati clienti per questa categoria");
+					} else {
+						for (Cliente c : clientiPerCategoria) {
+							System.out.println(c);
+						}
+					}
+				} catch (IllegalArgumentException e) {
+					System.out.println(e.getMessage());
+				} catch (RuntimeException e) {
+					System.out.println(e.getMessage());
 				}
 				System.out.println("--------------------------------------------\n");
 				break;
+
 			case 2:
 				System.out.println("---- Ricerca per Tipologia ----");
 				String tipologia = scegliTipologia("Per quale tipologia vuoi ricercare?").getNome();
-				for (Cliente c : cs.ricercaPerTipologia(tipologia)) {
-					System.out.println(c);
+				try {
+
+					List<Cliente> clientiPerTipologia = cs.ricercaPerTipologia(tipologia);
+
+					if (clientiPerTipologia.isEmpty()) {
+						System.out.println("Non sono stati trovati clienti per questa tipologia!");
+					} else {
+
+						for (Cliente c : cs.ricercaPerTipologia(tipologia)) {
+							System.out.println(c);
+						}
+					}
+				} catch (IllegalArgumentException e) {
+					System.out.println(e.getMessage());
+				} catch (RuntimeException e) {
+					System.out.println(e.getMessage());
 				}
 				System.out.println("--------------------------------\n");
 				break;
@@ -135,8 +167,18 @@ public class ClienteMenu {
 			case 3:
 				System.out.println("---- Ricerca Per UtenteAssociato ----");
 				int idUtente = um.scegliUtente("Quale utente vuoi cercare?").getIdUtente();
-				for (Cliente c : cs.ricercaPerUtente(idUtente)) {
-					System.out.println(c);
+				try {
+
+					List<Cliente> clientiPerUtente = cs.ricercaPerUtente(idUtente);
+					if (clientiPerUtente.isEmpty()) {
+						System.out.println("Non sono stati trovati clienti legati a questo utente!");
+					} else {
+						for (Cliente c : cs.ricercaPerUtente(idUtente)) {
+							System.out.println(c);
+						}
+					}
+				} catch (IllegalArgumentException e) {
+					System.out.println(e.getMessage());
 				}
 				System.out.println("-------------------------------------\n");
 				break;
@@ -162,16 +204,26 @@ public class ClienteMenu {
 
 	private void trovaCliente() {
 		System.out.println("Inserisci ID Cliente da cercare: ");
-		int idCliente = scan.nextInt();
-		scan.nextLine();
-		System.out.println(cs.getSingoloCliente(idCliente));
+
+		try {
+
+			int idCliente = scan.nextInt();
+			scan.nextLine();
+			System.out.println(cs.getSingoloCliente(idCliente));
+
+		} catch (InputMismatchException e) {
+			System.out.println("Errore: sono ammessi solo caratteri numerici!");
+			scan.nextLine();
+		} catch (RuntimeException e) {
+			System.out.println(e.getMessage());
+		}
 
 	}
 
 	private void modificaCliente() {
 		Cliente c = scegliCliente("Quale cliente vuoi modificare?");
 		String nomeAzienda, referenteAzienda;
-		CategoriaMerceologica catt;
+//		CategoriaMerceologica catt;
 		TipologiaCliente tipologiaCliente;
 		Utente utenteAssociato;
 		System.out.println("Digita nuvo nome azienda: ");
@@ -194,8 +246,14 @@ public class ClienteMenu {
 		if (utenteAssociato != null)
 			c.setUtenteAssociato(utenteAssociato.getIdUtente());
 
-		cs.modificaCliente(c);
-		System.out.println("Cliente ID:" + c.getIdCliente() + " modificato con successo!");
+		boolean modificato = cs.modificaCliente(c);
+
+		if (modificato) {
+			System.out.println("Cliente modificato con successo.");
+		} else {
+			System.out.println("Non è stato possibile modificare l'utente!");
+		}
+
 	}
 
 	public static Cliente scegliCliente(String msg) {
@@ -211,7 +269,7 @@ public class ClienteMenu {
 		int scelta;
 		// validazione della scelta del cliente, nel caso inserisse un numero non
 		// permesso.
-		do {
+		while(true) {
 			System.out.println("Seleziona un cliente: ");
 
 			scelta = scan.nextInt();
@@ -220,12 +278,12 @@ public class ClienteMenu {
 			if (scelta == 0)
 				return null;
 
-			if (scelta < 0 || scelta > clienti.size()) {
-				System.out.println("Numero non valido, hai inserito: " + scelta + ". Riprova");
+			if (scelta >= 1 && scelta <= clienti.size()) {
+				return clienti.get(scelta - 1);
 			}
-		} while (scelta < 0 || scelta > clienti.size());
+			System.out.println("Numero non valido, hai inserito: " + scelta + ". Riprova");
+		} //while (scelta < 0 && scelta > clienti.size());
 
-		return clienti.get(scelta - 1);
 	}
 
 	public void aggiungiCliente() {
@@ -240,40 +298,103 @@ public class ClienteMenu {
 //		String catMerceologica = scan.nextLine();
 
 		int utenteAssociato = um.scegliUtente("Segli l'utente da associargli").getIdUtente();
-		cs.aggiungiCliente(nomeAzienda, referenteAzienda, scegliCategoria("Inserisci la sua categoria merceologica"),
-				scegliTipologia("Inserisci la sua tipologia"), utenteAssociato);
+
+		try {
+
+			boolean aggiunto = cs.aggiungiCliente(nomeAzienda, referenteAzienda,
+					scegliCategoria("Inserisci la sua categoria merceologica"),
+					scegliTipologia("Inserisci la sua tipologia"), utenteAssociato);
+			if (aggiunto) {
+				System.out.println("Cliente creato con successo.");
+			} else {
+				System.out.println("Non è stata possibile la creazione!");
+			}
+
+		} catch (IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+		} catch (RuntimeException e) {
+			System.out.println(e.getMessage());
+		}
 
 	}
 
 	private CategoriaMerceologica scegliCategoria(String msg) {
+		CategoriaMerceologica[] categorie = CategoriaMerceologica.values();
 		System.out.println(msg);
+
 		int indice = 0;
-		for (CategoriaMerceologica cat : CategoriaMerceologica.values()) {
+		for (CategoriaMerceologica cat : categorie) {
 			System.out.println(++indice + ") " + cat.getNome());
 		}
-		int scelta = scan.nextInt();
-		scan.nextLine();
-		return CategoriaMerceologica.values()[scelta - 1];
+		// impedisco all'utente di inserire un numero che non è tra quelli stampati
+		while (true) {
+			try {
+				int scelta = scan.nextInt();
+				scan.nextLine();
 
+				if (scelta >= 1 && scelta <= CategoriaMerceologica.values().length) {
+					return CategoriaMerceologica.values()[scelta - 1];
+				}
+
+				System.out.println("Sono ammessi solo i caratteri numerici indicati!!");
+
+			} catch (InputMismatchException e) {
+				System.out.println("Hai inserito un carattere non ammesso!");
+				scan.nextLine(); // per pulizia del parametro precedentemente inserito
+			}
+		}
 	}
 
 	private TipologiaCliente scegliTipologia(String msg) {
+		TipologiaCliente[] tipologie = TipologiaCliente.values();
 		System.out.println(msg);
+
 		int indice = 0;
-		for (TipologiaCliente tipo : TipologiaCliente.values()) {
+		for (TipologiaCliente tipo : tipologie) {
 			System.out.println(++indice + ") " + tipo.getNome());
 		}
-		int scelta = scan.nextInt();
-		scan.nextLine();
-		if (scelta == 0) {
-			return null;
+
+		while (true) {
+			try {
+				int scelta = scan.nextInt();
+				scan.nextLine();
+				// uscita dal metodo quando non si vuole cambiare la tipologia
+				if (scelta == 0) {
+					return null;
+				}
+
+				if (scelta >= 1 && scelta <= tipologie.length) {
+					return TipologiaCliente.values()[scelta - 1];
+				}
+
+				System.out.println("Sono ammessi solo i caratteri numerici indicati!");
+
+			} catch (InputMismatchException e) {
+				System.out.println("Hai inserito un carattere non ammesso!");
+				scan.nextLine();
+			}
 		}
-		return TipologiaCliente.values()[scelta - 1];
 	}
 
 	public void eliminaCliente() {
+
 		int idCliente = scegliCliente("Quale cliente vuoi eliminare?").getIdCliente();
-		cs.eliminaCliente(idCliente);
+
+		try {
+
+			boolean eliminato = cs.eliminaCliente(idCliente);
+
+			if (eliminato) {
+				System.out.println("Cliente eliminato con successo.");
+			} else {
+				System.out.println("Non è stata possibile l'eliminazione!");
+			}
+
+		} catch (IllegalArgumentException | IllegalStateException e) {
+			System.out.println(e.getMessage());
+		} catch (RuntimeException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 }

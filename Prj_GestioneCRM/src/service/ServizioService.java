@@ -2,17 +2,16 @@ package service;
 
 import java.util.List;
 
-import dao.GenericDAO;
-import dao.ServizioImpl;
-import model.Nota;
+import dao.ServizioDAO;
+import dao.ServizioDAOImpl;
 import model.Servizio;
 
 public class ServizioService {
 
-	private final GenericDAO<Servizio> servizioDao;
+	private final ServizioDAO servizioDao;
 
 	public ServizioService() {
-		this.servizioDao = new ServizioImpl();
+		this.servizioDao = new ServizioDAOImpl();
 	}
 
 	public boolean aggiungiServizio(String nomeServerizio, String descrizione, double prezzo) {
@@ -56,10 +55,10 @@ public class ServizioService {
 		return servizioDao.readByClienteID(idCliente);
 	}
 
-	public void associaServizioCliente(int idCliente, int idServizio) {
+	public boolean associaServizioCliente(int idCliente, int idServizio) {
 		if(idCliente < 0 || idServizio < 0) throw new IllegalArgumentException(
-				"Gli ID inserito non possoono essere negativi, hai inserito: " + idCliente + ", " + idServizio);
-		 servizioDao.associaClienteServizio(idCliente, idServizio);
+				"Gli ID inserito non possono essere negativi");
+		 return servizioDao.associaClienteServizio(idCliente, idServizio);
 		
 	}
 	

@@ -17,8 +17,7 @@ referente_azienda varchar(50),
 categoria_merceologica varchar(50),
 tipologia_cliente varchar(100),
 utente_associato int,
-constraint fk_cliente_utente foreign key (utente_associato) references utente(id_utente)
-on delete cascade); -- constraint per poter eliminare il cliente quando l'utente viene eliminato.
+constraint fk_cliente_utente foreign key (utente_associato) references utente(id_utente) on delete cascade); -- constraint per poter eliminare il cliente quando l'utente viene eliminato.
 
  
 create table if not exists servizio_consulenza (

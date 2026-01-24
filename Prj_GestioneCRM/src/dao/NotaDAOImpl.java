@@ -2,13 +2,14 @@ package dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import model.Nota;
 import shortCuts.Scorciatoia;
 
-public class NotaImpl extends Scorciatoia implements NotaDAO {
+public class NotaDAOImpl extends Scorciatoia implements NotaDAO {
 	private PreparedStatement ps;
 	private ResultSet rs;
 
@@ -20,12 +21,11 @@ public class NotaImpl extends Scorciatoia implements NotaDAO {
 			ps.setString(2, nota.getTestoNota());
 			ps.setInt(3, nota.getUtenteRegistrato());
 
-			ps.executeUpdate();
+			return ps.executeUpdate() > 0;
 
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			throw new RuntimeException("Errore nel DB durante la creazione della Nota! ", e);
 		}
-		return false;
 	}
 
 	@Override
@@ -43,11 +43,14 @@ public class NotaImpl extends Scorciatoia implements NotaDAO {
 				n.setTestoNota(rs.getString("testo_nota"));
 				n.setDataRegistrazione(rs.getDate("data_registrazione"));
 				n.setUtenteRegistrato(rs.getInt("utente_registrante"));
+
+				return n;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			//nota non trovata
+			return null;
+		} catch (SQLException e) {
+			throw new RuntimeException("Errore nel DB durante la ricerca della singola nota! ", e);
 		}
-		return n;
 	}
 
 	@Override
@@ -66,12 +69,13 @@ public class NotaImpl extends Scorciatoia implements NotaDAO {
 				n.setUtenteRegistrato(rs.getInt("utente_registrante"));
 
 				listaNote.add(n);
-
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			
+			return listaNote;
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("Errore nel DB durante la lettura delle note!", e);
 		}
-		return listaNote;
 	}
 
 	@Override
@@ -86,12 +90,11 @@ public class NotaImpl extends Scorciatoia implements NotaDAO {
 			ps.setInt(2, nota.getUtenteRegistrato());
 			ps.setInt(3, nota.getIdNota());
 
-			ps.executeUpdate();
+			return ps.executeUpdate() > 0;
 
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			throw new RuntimeException("Errore nel DB durante l'aggiornamento della nota!", e);
 		}
-		return false;
 	}
 
 	@Override
@@ -99,12 +102,12 @@ public class NotaImpl extends Scorciatoia implements NotaDAO {
 		try {
 			ps = conn.prepareStatement("DELETE FROM note_cliente WHERE id_nota = ?;");
 			ps.setInt(1, id);
-			ps.executeUpdate();
+			
+			return ps.executeUpdate() > 0;
 
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			throw new RuntimeException("Errore nel DB durante l'eliminazione della nota!", e);
 		}
-		return false;
 	}
 
 	@Override
@@ -125,10 +128,11 @@ public class NotaImpl extends Scorciatoia implements NotaDAO {
 				listaNotaCliente.add(n);
 			}
 			
-		} catch (Exception e) {
-			e.printStackTrace();
+			return listaNotaCliente;
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("Errore nel DB durante la lettura delle note per cliente ID! ", e);
 		}
-		return listaNotaCliente;
 	}
 
 }

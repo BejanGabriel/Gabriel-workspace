@@ -1,17 +1,11 @@
 package view;
 
-import java.util.List;
 import java.util.Scanner;
 
 import controller.ClienteMenu;
 import controller.ServizioMenu;
 import controller.UtenteMenu;
 import database.DBConnection;
-import model.Cliente;
-import model.Utente;
-import service.AppuntamentoService;
-import service.ClienteService;
-import service.UtenteService;
 
 // main troppo grosso, bisogna dividerlo in vari menu apositi.
 // per ora lascio cosi, più avanti frammento la logica.
@@ -19,9 +13,6 @@ import service.UtenteService;
 public class Main {
 
 	private static Scanner scan = new Scanner(System.in);
-	private static UtenteService us = new UtenteService();
-	private static ClienteService cs = new ClienteService();
-	private static AppuntamentoService as = new AppuntamentoService();
 	private static UtenteMenu um = new UtenteMenu();
 	private static ClienteMenu cm = new ClienteMenu();
 	private static ServizioMenu sm = new ServizioMenu();

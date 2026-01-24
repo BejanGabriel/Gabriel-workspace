@@ -6,11 +6,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Nota;
 import model.Servizio;
 import shortCuts.Scorciatoia;
 
-public class ServizioImpl extends Scorciatoia implements GenericDAO<Servizio> {
+public class ServizioDAOImpl extends Scorciatoia implements ServizioDAO {
 	private static PreparedStatement ps;
 	private static ResultSet rs;
 
@@ -22,31 +21,35 @@ public class ServizioImpl extends Scorciatoia implements GenericDAO<Servizio> {
 			ps.setString(1, servizio.getNomeServizio());
 			ps.setString(2, servizio.getDescrizione());
 			ps.setDouble(3, servizio.getPrezzo());
-			ps.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
+
+			return ps.executeUpdate() > 0;
+
+		} catch (SQLException e) {
+			throw new RuntimeException("Errore nel DB durante la creazione del servizio!", e);
 		}
-		return false;
 	}
 
 	@Override
 	public Servizio readByID(int id) {
-		Servizio servizio = null;
 		try {
 			ps = conn.prepareStatement("SELECT * FROM servizio_consulenza WHERE id_servizio = ?;");
 			ps.setInt(1, id);
-			ps.executeQuery();
+
+			rs = ps.executeQuery();
+
 			while (rs.next()) {
-				servizio = new Servizio();
+				Servizio servizio = new Servizio();
 				servizio.setIdServizio(rs.getInt("id_servizio"));
 				servizio.setNomeServizio(rs.getString("nome_servizio"));
 				servizio.setDescrizione(rs.getString("descrizione"));
 				servizio.setPrezzo(rs.getDouble("prezzo"));
+
+				return servizio;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			return null;
+		} catch (SQLException e) {
+			throw new RuntimeException("Errore nel DB durante la lettura del singolo servizio!", e);
 		}
-		return null;
 	}
 
 	@Override
@@ -55,45 +58,52 @@ public class ServizioImpl extends Scorciatoia implements GenericDAO<Servizio> {
 		try {
 			ps = conn.prepareStatement("SELECT * FROM servizio_consulenza");
 			rs = ps.executeQuery();
+
 			while (rs.next()) {
 				Servizio s = new Servizio();
 				s.setIdServizio(rs.getInt("id_servizio"));
 				s.setNomeServizio(rs.getString("nome_servizio"));
 				s.setDescrizione(rs.getString("descrizione"));
 				s.setPrezzo(rs.getDouble("prezzo"));
+
 				listaServizi.add(s);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+
+			return listaServizi;
+
+		} catch (SQLException e) {
+			throw new RuntimeException("Errore nel DB durante la lettura dei servizi!", e);
 		}
-		return listaServizi;
 	}
 
 	@Override
 	public boolean update(Servizio servizio) {
 		try {
-			ps = conn.prepareStatement("UPDATE servizio_consulenza SET " + "nome_servizio = ?," + "descrizione = ?,"
-					+ "prezzo = ?" + "WHERE id_servizio = ?;");
+			ps = conn.prepareStatement("UPDATE servizio_consulenza SET " + "nome_servizio = ?, " + "descrizione = ?, "
+					+ "prezzo = ? " + "WHERE id_servizio = ?;");
 			ps.setString(1, servizio.getNomeServizio());
 			ps.setString(2, servizio.getDescrizione());
 			ps.setDouble(3, servizio.getPrezzo());
-			ps.executeQuery();
+			ps.setInt(4, servizio.getIdServizio());
+			
+			return ps.executeUpdate() > 0;
+			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Errore nel DB durante l'aggiornamento dell'servizio" + e);
 		}
-		return false;
 	}
 
 	@Override
 	public boolean deleteByID(int id) {
 		try {
-			ps = conn.prepareStatement("DELETE FROM servizio_consulenza WHERE id_servizio");
+			ps = conn.prepareStatement("DELETE FROM servizio_consulenza WHERE id_servizio = ?");
 			ps.setInt(1, id);
-			ps.executeUpdate();
+			
+			return ps.executeUpdate() > 0;
+			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Errore nel DB durante l'eliminazione del servizio!  ", e);
 		}
-		return false;
 	}
 
 	@Override
@@ -101,40 +111,41 @@ public class ServizioImpl extends Scorciatoia implements GenericDAO<Servizio> {
 		List<Servizio> serviziCliente = new ArrayList<Servizio>();
 		try {
 			ps = conn.prepareStatement("SELECT nome_servizio, descrizione, prezzo, nome_azienda "
-					+ "FROM servizio_consulenza s"
-					+ "JOIN servizio_cliente sc ON sc.id_servizio =  s.id_servizio"
-					+ "JOIN cliente c ON c.id_cliente = sc.id_cliente"
-					+ "WHERE id_cliente = ?;");
+					+ "FROM servizio_consulenza s " + "JOIN servizio_cliente sc ON sc.id_servizio =  s.id_servizio "
+					+ "JOIN cliente c ON c.id_cliente = sc.id_cliente" + " WHERE id_cliente = ?;");
 			ps.setInt(1, idCliente);
+			
 			rs = ps.executeQuery();
-			while(rs.next()) {
+			
+			while (rs.next()) {
 				Servizio s = new Servizio();
 				s.setNomeServizio(rs.getString("nome_servizio"));
 				s.setDescrizione(rs.getString("descrizione"));
 				s.setPrezzo(rs.getDouble("prezzo"));
 				s.setNomeCliente(rs.getString("nome_azienda"));
+
 				serviziCliente.add(s);
 			}
+
+			return serviziCliente;
+
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Errore nel DB durante la lettura dei servizi del cliente!  ", e);
 		}
-		return serviziCliente;
 	}
-	
+
 	public boolean associaClienteServizio(int idCliente, int idServizio) {
 		try {
 			ps = conn.prepareStatement("INSERT INTO servizio_cliente (id_cliente, id_servizio) VALUES "
-					+ "id_cliente = ?, "
-					+ "id_servizio = ?;");
+					+ "id_cliente = ?, " + "id_servizio = ?;");
 			ps.setInt(1, idCliente);
 			ps.setInt(2, idServizio);
-			ps.executeUpdate();
+
+			return ps.executeUpdate() > 0;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Errore nel DB durante l'associazione Cliente-Servizio!  ", e);
 		}
-		return false;
-		
 	}
 
 }

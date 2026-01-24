@@ -9,7 +9,7 @@ import java.util.List;
 import model.Appuntamento;
 import shortCuts.Scorciatoia;
 
-public class AppuntamentoDAOImpl extends Scorciatoia implements AppuntamentoDAO{
+public class AppuntamentoDAOImpl extends Scorciatoia implements AppuntamentoDAO {
 
 	private PreparedStatement ps;
 	private ResultSet rs;
@@ -23,38 +23,37 @@ public class AppuntamentoDAOImpl extends Scorciatoia implements AppuntamentoDAO{
 		// appuntamento ha 2 foreign key, id_cliente(col-2) e utente_associato(col-5)
 		try {
 			ps = conn.prepareStatement(
-					"INSERT INTO appuntamento (id_cliente, descrizione, utente_associato)"
-							+ " value (?,?,?);");
+					"INSERT INTO appuntamento (id_cliente, descrizione, utente_associato)" + " VALUE (?,?,?);");
 			ps.setInt(1, appuntamento.getIdCliente());
 			ps.setString(2, appuntamento.getDescrizione());
 			ps.setInt(3, appuntamento.getUtenteAssociato());
-			ps.executeUpdate();
-			
+			int rows = ps.executeUpdate();
+			return rows > 0;
+
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Errore nel DB durante la creazione appuntamento!  " + e);
 		}
-		return false;
 	}
 
 	@Override
 	public Appuntamento readByID(int id) {
-		Appuntamento a = null;
 		try {
-			ps = conn.prepareStatement("SELECT * FROM appuntamento WHERE id_appuntamento = ?);");
+			ps = conn.prepareStatement("SELECT * FROM appuntamento WHERE id_appuntamento = ?;");
 			ps.setInt(1, id);
 			rs = ps.executeQuery();
-			while(rs.next()) {
-				a = new Appuntamento();
+			while (rs.next()) {
+				Appuntamento a = new Appuntamento();
 				a.setIdAppuntamento(rs.getInt("id_appuntamento"));
 				a.setIdCliente(rs.getInt("id_cliente"));
 				a.setDescrizione(rs.getString("descrizione"));
 				a.setUtenteAssociato(rs.getInt("utente_associato"));
-				
+
+				return a;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			return null;
+		} catch (SQLException e) {
+			throw new RuntimeException("Errore nel DB durante la ricerca dell'appuntamento!  " + e);
 		}
-		return a;
 	}
 
 	@Override
@@ -63,20 +62,22 @@ public class AppuntamentoDAOImpl extends Scorciatoia implements AppuntamentoDAO{
 		try {
 			ps = conn.prepareStatement("SELECT * FROM appuntamento;");
 			rs = ps.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				Appuntamento a = new Appuntamento();
 				a.setIdAppuntamento(rs.getInt("id_appuntamento"));
 				a.setIdCliente(rs.getInt("id_cliente"));
 				a.setDataAppuntamento(rs.getDate("data_appuntamento"));
 				a.setDescrizione(rs.getString("descrizione"));
 				a.setUtenteAssociato(rs.getInt("utente_associato"));
-				
+
 				appuntamenti.add(a);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+
+			return appuntamenti;
+
+		} catch (SQLException e) {
+			throw new RuntimeException("Errore nella lettura degli appuntamenti nel DB! " + e);
 		}
-		return appuntamenti;
 	}
 
 	@Override
@@ -84,48 +85,44 @@ public class AppuntamentoDAOImpl extends Scorciatoia implements AppuntamentoDAO{
 		try {
 			ps = conn.prepareStatement("UPDATE appuntamento SET "
 //					+ "data_appuntamento = ?,"
-					+ "descrizione = ?, "
-					+ "utente_associato = ? "
-					+ "WHERE id_appuntamento = ?;");
+					+ "descrizione = ?, " + "utente_associato = ? " + "WHERE id_appuntamento = ?;");
 //			ps.setDate(1, appuntamento.getDataAppuntamento());
-			//La data va aggiustata di formato, da fare nel controller di appuntamento.
+			// La data va aggiustata di formato, da fare nel controller di appuntamento.
 			ps.setString(1, appuntamento.getDescrizione());
 			ps.setInt(2, appuntamento.getUtenteAssociato());
 			ps.setInt(3, appuntamento.getIdAppuntamento());
-			return ps.executeUpdate() > 0;
-			
+			int rows = ps.executeUpdate();
+			return rows > 0;
+
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Errore nel DB durante l'aggiornamento dell'appuntamento!  " + e);
 		}
-		return false;
 	}
 
 	@Override
 	public boolean deleteByID(int id) {
-			
+
 		try {
 			ps = conn.prepareStatement("DELETE FROM appuntamento WHERE id_appuntamento = ?;");
 			ps.setInt(1, id);
-			ps.executeUpdate();
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
+			int rows = ps.executeUpdate();
+			return rows > 0;
+		} catch (SQLException e) {
+			throw new RuntimeException("Errore nel DB durante l'eleminazione dell'appuntamento!  " + e);
 		}
-		return false;
 	}
 
 	@Override
 	public List<Appuntamento> readyByUtenteID(int idCliente) {
 		List<Appuntamento> appuntamentiUtente = new ArrayList<>();
 		try {
-			ps = conn.prepareStatement(" SELECT c.nome_azienda, a.id_appuntamento, a.data_appuntamento, a.descrizione, u.nome_utente"
-					+ " FROM appuntamento a"
-					+ " JOIN cliente c ON c.id_cliente = a.id_cliente"
-					+ " JOIN utente u ON u.id_utente = a.utente_associato"
-					+ " WHERE c.id_cliente = ?;");
+			ps = conn.prepareStatement(
+					" SELECT c.nome_azienda, a.id_appuntamento, a.data_appuntamento, a.descrizione, u.nome_utente"
+							+ " FROM appuntamento a" + " JOIN cliente c ON c.id_cliente = a.id_cliente"
+							+ " JOIN utente u ON u.id_utente = a.utente_associato" + " WHERE c.id_cliente = ?;");
 			ps.setInt(1, idCliente);
 			rs = ps.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				Appuntamento a = new Appuntamento();
 				a.setIdAppuntamento(rs.getInt("id_appuntamento"));
 				a.setDataAppuntamento(rs.getDate("data_appuntamento"));
@@ -134,10 +131,10 @@ public class AppuntamentoDAOImpl extends Scorciatoia implements AppuntamentoDAO{
 				a.setNomeUtente(rs.getString("nome_utente"));
 				appuntamentiUtente.add(a);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			return appuntamentiUtente;
+		} catch (SQLException e) {
+			throw new RuntimeException("ERRORE: Qualcosa non va con il DB durante la lettura degli appuntamenti per utente!!" + e);
 		}
-		return appuntamentiUtente;
 	}
 
 }

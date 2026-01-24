@@ -11,7 +11,6 @@ public interface ClienteDAO {
 	List<Cliente> readAll();
 	boolean update(Cliente cliente);
 	boolean deleteByID(int id);
-	boolean assegnazioneByID(int idSet, int idWhere);
 	List<Cliente> readByCategoria(String categoria);
 	List<Cliente> readByTipologia(String tipologia);
 	List<Cliente> readByUtente(int idUtente);

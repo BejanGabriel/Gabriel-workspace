@@ -16,61 +16,79 @@ public class ClienteService {
 		this.clienteDAO = new ClienteDAOImpl();
 	}
 
-	public boolean aggiungiCliente(String nomeAzienda, String referenteAzienda, CategoriaMerceologica cattMerceologica, TipologiaCliente tipoCliente, int utenteAssociato) {
+	public boolean aggiungiCliente(String nomeAzienda, String referenteAzienda, CategoriaMerceologica cattMerceologica,
+			TipologiaCliente tipoCliente, int utenteAssociato) {
 		if (nomeAzienda == null || nomeAzienda.isBlank()) {
-			//Il primo elemento NOT NULL in sql è il nome_azienda, se già in partenza è sbagliato o mancante blocco tutto.
-			System.out.println("Cliente non creato!");
-			return false;
+			// Il primo elemento NOT NULL in sql è il nome_azienda, se già in partenza è
+			// sbagliato o mancante blocco tutto.
+			throw new IllegalArgumentException("Il nome inserito risulta invalido, riprova!");
 		}
 		Cliente cliente = new Cliente(nomeAzienda, referenteAzienda, cattMerceologica, tipoCliente, utenteAssociato);
-		System.out.println("Cliente creato correttamente");
 		return clienteDAO.create(cliente);
 	}
 
 	public Cliente getSingoloCliente(int idCliente) {
-		if (idCliente > 0) {
-			return clienteDAO.readByID(idCliente);
+		if (idCliente < 0) {
+			throw new IllegalArgumentException("L'ID cliente inserito non è valido");
+
 		}
-		throw new IllegalArgumentException("Cliente non trovato!");
+		Cliente trovato = clienteDAO.readByID(idCliente);
+
+		if (trovato == null) {
+			throw new IllegalStateException("Non è stato trovato alcun cliente con questo ID");
+		}
+		return trovato;
+
 	}
 
 	public List<Cliente> getAllClienti() {
-		if(!clienteDAO.readAll().isEmpty()) {
-			return clienteDAO.readAll();
-		}
-		throw new IllegalArgumentException("La lista dei clienti è vuota!");
+		return clienteDAO.readAll();
 	}
-	
-	public void eliminaCliente(int id) {
-		if(id > 0) {
-			clienteDAO.deleteByID(id);
 
+	public boolean eliminaCliente(int id) {
+		if (id < 0) {
+			throw new IllegalArgumentException("L' ID cliente inserito non è valido");
 		}
-		throw new IllegalArgumentException("Cliente non trovato!");
+		boolean eliminato = clienteDAO.deleteByID(id);
+
+		if (!eliminato) {
+			throw new IllegalStateException("Non è stato trovato alcun cliente da eliminare");
+		} else {
+			return eliminato;
+		}
 	}
-	
-	public void modificaCliente(Cliente modificato) {
-		if(modificato == null) {
-			throw new IllegalArgumentException("Cliente non modificato!");
+
+	public boolean modificaCliente(Cliente modificato) {
+		if (modificato == null) {
+			throw new IllegalArgumentException("Errore: il cliente risulta essere inesistente!");
 		}
-		clienteDAO.update(modificato);
+		boolean aggiornato = clienteDAO.update(modificato);
+
+		if (!aggiornato) {
+			throw new IllegalStateException("Non è stato trovato alcun Cliente!");
+		} else {
+			return aggiornato;
+		}
 	}
 
 	public List<Cliente> ricercaPerCategoria(String categoria) {
-		if(categoria.isBlank()) throw new IllegalArgumentException("Non esiste la categoria: " + categoria);
-		if(clienteDAO.readByCategoria(categoria).size() == 0) System.out.println("Non vi sono clienti per la categoria: " + categoria );
+		if (categoria.isBlank()) {
+			throw new IllegalArgumentException("Errore: Non esiste la categoria: " + categoria);
+		}
 		return clienteDAO.readByCategoria(categoria);
 	}
-	
-	public List<Cliente> ricercaPerTipologia(String tipo){
-		if(tipo.isBlank()) throw new IllegalArgumentException("Non esiste il tipo: " + tipo);
-		if(clienteDAO.readByTipologia(tipo).size() == 0) System.out.println("Non vi sono clienti con la tipologia: " + tipo);
+
+	public List<Cliente> ricercaPerTipologia(String tipo) {
+		if (tipo.isBlank()) {
+			throw new IllegalArgumentException("Errore: Non esiste il tipo: " + tipo);
+		}
 		return clienteDAO.readByTipologia(tipo);
 	}
-	
-	public List<Cliente> ricercaPerUtente(int idUtente){
-		if(idUtente < 0) throw new IllegalArgumentException("ID Utente non valido, hai inserito: " + idUtente);
-		if(clienteDAO.readByUtente(idUtente).size() == 0) System.out.println("Non vi sono clienti con assegato questo utente");
+
+	public List<Cliente> ricercaPerUtente(int idUtente) {
+		if (idUtente < 0) {
+			throw new IllegalArgumentException("Errore: ID Utente non valido, hai inserito: " + idUtente);
+		}
 		return clienteDAO.readByUtente(idUtente);
 	}
 

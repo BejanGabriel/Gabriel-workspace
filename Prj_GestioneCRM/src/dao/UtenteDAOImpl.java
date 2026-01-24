@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Cliente;
 import model.Utente;
 import shortCuts.Scorciatoia;
 
@@ -30,33 +29,33 @@ public class UtenteDAOImpl extends Scorciatoia implements UtenteDAO{
 			ps.setString(2, utente.getRuolo());
 			ps.setString(3, utente.getEmail());
 			ps.setString(4, utente.getPassword());
-			ps.executeUpdate();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			int rows = ps.executeUpdate();
+			return rows > 0;
+		} catch (SQLException e) {
+			throw new RuntimeException("Errore nel DB nel creare l'utente!:  ", e);
 		}
-		return false;
 	}
 
 	@Override
 	public Utente readByID(int id) {
-		Utente u = null;
 		try {
 			ps = conn.prepareStatement("SELECT * FROM utente WHERE id_utente = ?");
 			ps.setInt(1, id);
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				u = new Utente();
+				Utente u = new Utente();
 				u.setIdUtente(rs.getInt("id_utente"));
 				u.setNomeUtente(rs.getString("nome_utente"));
 				u.setEmail(rs.getString("email"));
 				u.setRuolo(rs.getString("ruolo"));
 				u.setPassword(rs.getString("password"));
 				u.setDataRegistrazione(rs.getDate("data_registrazione"));
+				return u;
 			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			return null;
+		} catch (SQLException e) {
+			throw new RuntimeException("Errore nel DB con la ricerca del singolo utente ", e);
 		}
-		return u;
 	}
 
 	@Override
@@ -82,8 +81,8 @@ public class UtenteDAOImpl extends Scorciatoia implements UtenteDAO{
 			return allUtenti;
 			
 		} catch (SQLException e) {
-			//lacio un errore a runtime per sapere se 
-			throw new RuntimeException("Errore nel DB durante lettura Utenti: " + e);
+			//lacio un errore a runtime per gestire due possibili errori, se la lista utenti sia vuota o se il db è brasato.
+			throw new RuntimeException("Errore nel DB durante lettura Utenti: ", e);
 		}
 	}
 
@@ -105,9 +104,7 @@ public class UtenteDAOImpl extends Scorciatoia implements UtenteDAO{
 			return rows > 0;
 			
 		}catch (SQLException e) {
-			System.out.println("Qualcosa è andto storto durante l'aggiornamento dell'utente!");
-			e.printStackTrace();
-			return false;
+			throw new RuntimeException("Errore nel  DB durante l'update!", e);
 		}
 	}
 
@@ -117,12 +114,11 @@ public class UtenteDAOImpl extends Scorciatoia implements UtenteDAO{
 			ps = conn.prepareStatement("DELETE FROM utente WHERE id_utente = ?");
 			ps.setInt(1, id);
 			int rows = ps.executeUpdate();
-			//mi faccio restituire le righe coinvolte, se sono 0 non è stato modificato nulla, se > 0 si.
+			//mi faccio restituire le righe coinvolte, se sono < 0 non è stato modificato nulla, se > 0 si.
 			return rows > 0;
 		} catch (SQLException e) {
-			System.out.println("Qualcosa è andato storto durante l'eliminazione dell'utente!");
 			e.printStackTrace();
-			return false;
+			throw new RuntimeException("Errore nel DB! durante eliminazione utente!");
 		}
 	}
 
